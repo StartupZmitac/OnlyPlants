@@ -1,8 +1,9 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native';
-import FindPlant from './components/FindPlant/FindPlant';
-
-const App = () => { 
+import { writeNewPlant } from './firebaseConfig'
+export default function App() {
+  console.log('hello')
+  writeNewPlant()
   return (
     <View style={styles.container}>
       <FindPlant />
@@ -15,4 +16,3 @@ const styles = StyleSheet.create({
     flex: 1
     },
 });
-export default App
