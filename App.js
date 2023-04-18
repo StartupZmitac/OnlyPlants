@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native';
-import FindPlant from './components/FindPlant/FindPlant';
+import FindPlant from './src/components/FindPlant/FindPlant';
 
 const App = () => { 
   return (

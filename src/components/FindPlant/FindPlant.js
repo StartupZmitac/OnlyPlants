@@ -1,15 +1,20 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { Text, View, ActivityIndicator, TextInput} from 'react-native';
+import { Text, Button, View, ActivityIndicator, TextInput} from 'react-native';
 import styles from './FindPlant.style.js'
 
+// @flow
 const FindPlant = () => {
   let [isLoading, setIsLoading] = useState(true);
   let [error, setError] = useState();
   let [response, setResponse] = useState();
-  let [query, setQuery] = useState('');
+  let [query, setQuery] = useState('monstera');
 
   useEffect(() => {
+    
+  }, []);
+
+  const handleCall = () => {
     const apiKey = 'sk-ROVe642993dacc8c4178';
     fetch(`https://perenual.com/api/species-list?q=${query}&key=${apiKey}`)
       .then(res => res.json())  
@@ -23,7 +28,7 @@ const FindPlant = () => {
           setError(error);
         }
       )
-  }, []);
+  }
 
   const getContent = () => {
     if (isLoading) {
@@ -33,9 +38,15 @@ const FindPlant = () => {
     if (error) {
       return <Text>{error}</Text>
     }
-    
+
     if(typeof(response)!== 'undefined'){
+
+      console.log(query);
       console.log(response);
+      responseJson = JSON.stringify(response)
+      if(responseJson.includes("Surpassed API Rate Limit")){
+        return <Text>{'Too many API calls :('}</Text>;
+      }
       return <Text>{response.data[0].common_name}</Text>;
     }
   };
@@ -43,8 +54,13 @@ const FindPlant = () => {
   return (
     <View style={styles.container}>
       <TextInput
-        onSubmitEditing={text => setQuery(text)}
+        onChangeText={text => setQuery(text)}
         placeholder="insert plant name"
+      />
+      <Button
+        onPress={handleCall}
+        title="Look up"
+        color="#841584"
       />
       {getContent()}
       <StatusBar style="auto" />
