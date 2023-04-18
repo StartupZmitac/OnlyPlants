@@ -45,7 +45,8 @@ const FindPlant = () => {
       console.log(response);
       responseJson = JSON.stringify(response)
       if(responseJson.includes("Surpassed API Rate Limit")){
-        return <Text>{'Too many API calls :('}</Text>;
+        seconds = responseJson.slice(65,70)
+        return <Text>{`Too many API calls :( Retry in ${seconds} seconds`}</Text>;
       }
       return <Text>{response.data[0].common_name}</Text>;
     }
