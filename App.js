@@ -1,9 +1,14 @@
+
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, Button, Platform } from 'react-native';
 import * as SQLite from 'expo-sqlite';
 import { useState, useEffect } from 'react';
 import * as FileSystem from 'expo-file-system';
 import CustomPlant from './database/CustomPlant.js'
+import React from 'react'
+import { StyleSheet, Text, View } from 'react-native';
+import FindPlant from './src/components/FindPlant/FindPlant';
+
 
 // expo add expo-sqlite
 // expo add expo-file-system
