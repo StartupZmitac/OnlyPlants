@@ -4,9 +4,8 @@ import { StyleSheet, Text, View, TextInput, Button, Platform } from 'react-nativ
 import * as SQLite from 'expo-sqlite';
 import { useState, useEffect } from 'react';
 import * as FileSystem from 'expo-file-system';
-import CustomPlant from './database/CustomPlant.js'
+import CustomPlant from './src/components/CustomPlant/CustomPlant.js'
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native';
 import FindPlant from './src/components/FindPlant/FindPlant';
 
 
