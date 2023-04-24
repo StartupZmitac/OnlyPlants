@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {Text, TextInput, View, Button} from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import * as SQLite from 'expo-sqlite';
+//import init_database from '../../../database/DatabaseInit';
 
 const CustomPlant = () => {
   //const [currentPlant, setCurrentPlant] = useState(undefined);
@@ -13,20 +14,20 @@ const CustomPlant = () => {
   const [edible, setEdible] = useState('');
   const [poisonous, setPoisonous] = useState('');
   const [indoor, setIndoor] = useState('');
-  const [db, setDb] = useState(SQLite.openDatabase('PlantsDatabase.db'));
+  const [db, setDb] = useState(SQLite.openDatabase('PlantsDatabasev2.db'));
 
   const exportDb = async () => {
     if (Platform.OS === "android") {
       const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
       if (permissions.granted) {
         const base64 = await FileSystem.readAsStringAsync(
-          FileSystem.documentDirectory + 'SQLite/PlantsDatabase.db',
+          FileSystem.documentDirectory + 'SQLite/PlantsDatabasev2.db',
           {
             encoding: FileSystem.EncodingType.Base64
           }
         );
 
-        await FileSystem.StorageAccessFramework.createFileAsync(permissions.directoryUri, 'PlantsDatabase.db', 'application/octet-stream')
+        await FileSystem.StorageAccessFramework.createFileAsync(permissions.directoryUri, 'PlantsDatabasev2.db', 'application/octet-stream')
         .then(async (uri) => {
           await FileSystem.writeAsStringAsync(uri, base64, { encoding : FileSystem.EncodingType.Base64 });
         })
@@ -35,7 +36,7 @@ const CustomPlant = () => {
         console.log("Permission not granted");
       }
     } else {
-      await Sharing.shareAsync(FileSystem.documentDirectory + 'SQLite/PlantsDatabase.db');
+      await Sharing.shareAsync(FileSystem.documentDirectory + 'SQLite/PlantsDatabasev2.db');
     }
   }
 
@@ -49,10 +50,25 @@ const CustomPlant = () => {
   }
 
   useEffect(() => {
+    // db.transaction(tx => {
+    //   //tx.executeSql("DROP TABLE IF EXISTS custom")
+    //   tx.executeSql("CREATE TABLE IF NOT EXISTS custom (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT,"
+    //   + "interval INTEGER, sunlight TEXT, cycle TEXT, edible INTEGER, poisonous INTEGER, indoor INTEGER)")
+    // });
+    db.exec([{ sql: 'PRAGMA foreign_keys = ON;', args: [] }], false, () =>
+    console.log('Foreign keys turned on')
+  );    //tx.executeSql("PRAGMA foreign_keys = ON;");
+
+
     db.transaction(tx => {
-      //tx.executeSql("DROP TABLE IF EXISTS custom")
-      tx.executeSql("CREATE TABLE IF NOT EXISTS custom (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT,"
-      + "interval INTEGER, sunlight TEXT, cycle TEXT, edible INTEGER, poisonous INTEGER, indoor INTEGER)")
+      //tx.executeSql("DROP TABLE IF EXISTS watering");
+      //tx.executeSql("PRAGMA foreign_keys = ON;");
+      tx.executeSql("CREATE TABLE IF NOT EXISTS watering (id INTEGER PRIMARY KEY, name TEXT NOT NULL, interval INTEGER NOT NULL);");
+      tx.executeSql("CREATE TABLE IF NOT EXISTS location (id INTEGER PRIMARY KEY, name TEXT NOT NULL, location TEXT NOT NULL);");
+      tx.executeSql("CREATE TABLE IF NOT EXISTS group (id INTEGER PRIMARY KEY, name TEXT NOT NULL, location_id INTEGER NOT NULL, FOREIGN KEY (location_id) REFERENCES location (id));");
+      // tx.executeSql("CREATE TABLE IF NOT EXISTS user_info (id INTEGER PRIMARY KEY, pet INTEGER NOT NULL, username TEXT NOT NULL);");
+      // tx.executeSql("CREATE TABLE IF NOT EXISTS plants ( id INTEGER PRIMARY KEY, name TEXT NOT NULL, sunlight INTEGER NOT NULL, cycle INTEGER NOT NULL, edible INTEGER NOT NULL, poisonous INTEGER NOT NULL, indoor INTEGER NOT NULL, custom INTEGER NOT NULL, watering INTEGER NOT NULL, FOREIGN KEY (watering) REFERENCES watering(id));");
+      // tx.executeSql("CREATE TABLE IF NOT EXISTS planted(id INTEGER PRIMARY KEY, date_planted TEXT NOT NULL, date_watered TEXT NOT NULL, date_notified TEXT NOT NULL, interval INTEGER NOT NULL, custom_name TEXT NOT NULL, inside INTEGER NOT NULL, plant_id INTEGER NOT NULL, group_id INTEGER NOT NULL, location_id INTEGER NOT NULL, FOREIGN KEY (plant_id) REFERENCES plants(id), FOREIGN KEY (group_id) REFERENCES group(id), FOREIGN KEY (location_id) REFERENCES location(id));");
     });
   }, [db]);
   
