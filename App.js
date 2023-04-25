@@ -5,7 +5,7 @@ import * as SQLite from 'expo-sqlite';
 import { useState, useEffect } from 'react';
 import * as FileSystem from 'expo-file-system';
 import CustomPlant from './src/components/CustomPlant/CustomPlant.js'
-import React from 'react'
+import * as React from 'react';
 import FindPlant from './src/components/FindPlant/FindPlant';
 import {Box, Button} from "native-base"
 import { NativeBaseConfigProvider } from 'native-base';
@@ -41,6 +41,7 @@ import { NativeBaseConfigProvider } from 'native-base';
 
 export default function App() {
   return (
+    
     <View style = {styles.container}>
       <CustomPlant />
     </View>
