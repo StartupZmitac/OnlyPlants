@@ -69,6 +69,24 @@ const CustomPlant = () => {
             <Column space={4} alignItems="center">
             <Input 
               variant="rounded"
+              placeholder="Input plant name:"
+              onChangeText={newName => setName(newName)}
+              placeholderTextColor="#F7F6DC"
+              defaultValue={""}
+              fontSize={'20'} 
+              style={styles.inputField}
+            />
+             <Input 
+              variant="rounded"
+              placeholder="Input watering interval (in days):"
+              onChangeText={newInterval => setInterval(newInterval)}
+              placeholderTextColor="#F7F6DC"
+              defaultValue={""}
+              fontSize={'20'} 
+              style={styles.inputField}
+            />
+            <Input 
+              variant="rounded"
               placeholder="Input insolation (optional):"
               onChangeText={newSun => setSunlight(newSun)}
               defaultValue={""}
