@@ -57,7 +57,7 @@ const FindPlant = () => {
     <NativeBaseProvider>
       <Box style={{width: 450}}>
         <Box style={styles.titleBox}>
-          <Heading mt={3} fontSize="4xl" style={{marginTop: '20%', color: '#F7F6DC'}}>Adding custom plant...</Heading>
+          <Heading mt={3} fontSize="4xl" style={{marginTop: '20%', color: '#F7F6DC'}}>Adding new plant...</Heading>
         </Box>
         <Box style={styles.mainBody}>
         <Input 
@@ -70,10 +70,10 @@ const FindPlant = () => {
               style={styles.inputField}
             />
           <Box style={styles.choiceBox}>
-            
+            {getContent()}
           </Box>
-          <Row style={{alignItems: 'center', padding: '10%'}}>
-          <Button size="lg" onPress={addPlant} style={{backgroundColor: '#FFC090', color: "#F7F6DC", marginRight: '10%'}}>Add Plant</Button>
+          <Row style={{alignItems: 'center', padding: '5%'}}>
+          <Button size="lg" onPress={handleCall} style={{backgroundColor: '#FFC090', color: "#F7F6DC"}}>Find</Button>
           </Row>
         </Box>
       </Box>

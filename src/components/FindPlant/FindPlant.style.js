@@ -13,10 +13,12 @@ export default StyleSheet.create({
     width: '80%',
     alignItems: 'center',
     borderRadius: 50,
-    padding: '5%'
+    padding: '5%',
+    fontSize: 20
   },
   inputField:{
     backgroundColor: '#FFC090',
+    color: "#F7F6DC",
     width: '60%',
     height: '100%',
   },
