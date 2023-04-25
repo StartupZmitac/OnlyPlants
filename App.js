@@ -1,13 +1,14 @@
 
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, Button, Platform } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Platform } from 'react-native';
 import * as SQLite from 'expo-sqlite';
 import { useState, useEffect } from 'react';
 import * as FileSystem from 'expo-file-system';
 import CustomPlant from './src/components/CustomPlant/CustomPlant.js'
 import React from 'react'
 import FindPlant from './src/components/FindPlant/FindPlant';
-
+import {Box, Button} from "native-base"
+import { NativeBaseConfigProvider } from 'native-base';
 
 // expo add expo-sqlite
 // expo add expo-file-system

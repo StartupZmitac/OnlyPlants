@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {Text, TextInput, View, Button} from 'react-native';
+import {TextInput, View, Text} from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import * as SQLite from 'expo-sqlite';
+import styles from './CustomPlant.style.js'
+import {Box, Button, IconButton, NativeBaseProvider, Heading, Container, Input, Column, Row} from "native-base"
 
 const CustomPlant = () => {
   //const [currentPlant, setCurrentPlant] = useState(undefined);
@@ -57,56 +59,65 @@ const CustomPlant = () => {
   }, [db]);
   
   return (
-    <View style={{padding: 10}}>
-      <Text style={{padding: 10, fontSize: 42}}>
-        Add custom plant
-      </Text>
-      <TextInput
-        style={{height: 40}}
-        placeholder="Input plant name:"
-        onChangeText={newName => setName(newName)}
-        defaultValue={""}
-      />
-      <TextInput
-        style={{height: 40}}
-        placeholder="Input watering interval (in days):"
-        onChangeText={newInterval => setInterval(newInterval)}
-        defaultValue={""}
-      />
-      <TextInput
-        style={{height: 40}}
-        placeholder="Input insolation (optional):"
-        onChangeText={newSun => setSunlight(newSun)}
-        defaultValue={""}
-      />
-      <TextInput
-        style={{height: 40}}
-        placeholder="Input plant cycle (optional):"
-        onChangeText={newCycle => setCycle(newCycle)}
-        defaultValue={""}
-      />
-      <TextInput
-        style={{height: 40}}
-        placeholder="Input plant edibility (optional):"
-        onChangeText={newEdible => setEdible(newEdible)}
-        defaultValue={""}
-      />
-      <TextInput
-        style={{height: 40}}
-        placeholder="Is the plant poisonous?:"
-        onChangeText={newPoison => setPoisonous(newPoison)}
-        defaultValue={""}
-      />
-      <TextInput
-        style={{height: 40}}
-        placeholder="Is the plan planted indoor?:"
-        onChangeText={newIndoor => setIndoor(newIndoor)}
-        defaultValue={""}
-      />
-      <Button title="Add Plant" onPress={addPlant}/>
-      <Button title="Export Database" onPress={exportDb}/>
-    </View>
+    <NativeBaseProvider>
+      <Box style={{width: 450}}>
+        <Box style={styles.titleBox}>
+          <Heading mt={3} fontSize="4xl" style={{marginTop: '20%', color: '#F7F6DC'}}>Adding custom plant...</Heading>
+        </Box>
+        <Box style={styles.mainBody}>
+          <Box style={styles.choiceBox}>
+            <Column space={4} alignItems="center">
+            <Input 
+              variant="rounded"
+              placeholder="Input insolation (optional):"
+              onChangeText={newSun => setSunlight(newSun)}
+              defaultValue={""}
+              placeholderTextColor="#F7F6DC"
+              fontSize={'20'} 
+              style={styles.inputField} />
+            <Input 
+              variant="rounded"
+              placeholder="Input plant cycle (optional):"
+              onChangeText={newCycle => setCycle(newCycle)}
+              defaultValue={""}
+              placeholderTextColor="#F7F6DC"
+              fontSize={'20'} 
+              style={styles.inputField} />
+            <Input 
+              variant="rounded"
+              placeholder="Input plant edibility (optional):"
+              onChangeText={newEdible => setEdible(newEdible)}
+              defaultValue={""}
+              placeholderTextColor="#F7F6DC"
+              fontSize={'20'} 
+              style={styles.inputField} />
+            <Input 
+              variant="rounded"
+              placeholder="Is the plant poisonous?:"
+              onChangeText={newPoison => setPoisonous(newPoison)}
+              defaultValue={""}
+              placeholderTextColor="#F7F6DC"
+              fontSize={'20'} 
+              style={styles.inputField} />
+            <Input 
+              variant="rounded"
+              placeholder="Is the plan planted indoor?:"
+              onChangeText={newIndoor => setIndoor(newIndoor)}
+              defaultValue={""}
+              placeholderTextColor="#F7F6DC"
+              fontSize={'20'} 
+              style={styles.inputField} />
+            </Column>
+          </Box>
+          <Row style={{alignItems: 'center', padding: '10%'}}>
+          <Button size="lg" onPress={addPlant} style={{backgroundColor: '#FFC090', color: "#F7F6DC", marginRight: '10%'}}>Add Plant</Button>
+          <Button size="lg" onPress={exportDb} style={styles.button}> Export </Button>
+          </Row>
+        </Box>
+      </Box>
+    </NativeBaseProvider>
   );
 };
 
-export default CustomPlant;
+export default CustomPlant;   
+   
