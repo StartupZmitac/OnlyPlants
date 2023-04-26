@@ -7,7 +7,7 @@ import * as FileSystem from 'expo-file-system';
 import CustomPlant from './src/components/CustomPlant/CustomPlant.js'
 import * as React from 'react';
 import FindPlant from './src/components/FindPlant/FindPlant';
-import {Box, Button, Center} from "native-base"
+import {Box, Button, Center, NativeBaseProvider} from "native-base"
 import { NativeBaseConfigProvider } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -44,6 +44,7 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
+    <NativeBaseProvider>
     <NavigationContainer>
       <Stack.Navigator initialRouteName="AddPlant">
         <Stack.Screen 
@@ -90,5 +91,7 @@ export default function App() {
         />  
       </Stack.Navigator>
     </NavigationContainer>
+          
+    </NativeBaseProvider>
   );
 }

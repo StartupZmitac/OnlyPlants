@@ -72,6 +72,7 @@ const FindPlant = () => {
           </Box>
           <Row style={{alignItems: 'center', padding: '5%'}}>
           <Button size="lg" onPress={handleCall} style={{backgroundColor: '#FFC090', color: "#F7F6DC"}}>Find</Button>
+          
           </Row>
         </Box>
       </Box>
