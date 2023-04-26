@@ -5,7 +5,8 @@ export default StyleSheet.create({
     height: '80%',
     width: '100%',
     alignItems: 'center',
-    paddingTop: '10%'
+    paddingTop: '10%',
+    
   },
   choiceBox: {
     backgroundColor: '#F7F6DC',
@@ -14,13 +15,14 @@ export default StyleSheet.create({
     alignItems: 'center',
     borderRadius: 50,
     padding: '5%',
-    fontSize: 20
+    fontSize: 20,
   },
   inputField:{
     backgroundColor: '#FFC090',
     color: "#F7F6DC",
-    width: '60%',
+    width: '30%',
     height: '100%',
+    
   },
   titleBox: {
     backgroundColor: '#7FB77E',

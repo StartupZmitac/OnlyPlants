@@ -60,15 +60,16 @@ const FindPlant = () => {
           <Heading mt={3} fontSize="4xl" style={{marginTop: '20%', color: '#F7F6DC'}}>Adding new plant...</Heading>
         </Box>
         <Box style={styles.mainBody}>
-        <Input 
+          <Input 
               variant="rounded"
               placeholder="Search..."
               onChangeText={text => setQuery(text)}
               placeholderTextColor="#F7F6DC"
               defaultValue={""}
               fontSize={'20'} 
+              width={'80%'}
               style={styles.inputField}
-            />
+          />
           <Box style={styles.choiceBox}>
             {getContent()}
           </Box>
