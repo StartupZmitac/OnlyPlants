@@ -7,8 +7,10 @@ import * as FileSystem from 'expo-file-system';
 import CustomPlant from './src/components/CustomPlant/CustomPlant.js'
 import * as React from 'react';
 import FindPlant from './src/components/FindPlant/FindPlant';
-import {Box, Button} from "native-base"
+import {Box, Button, Center} from "native-base"
 import { NativeBaseConfigProvider } from 'native-base';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // expo add expo-sqlite
 // expo add expo-file-system
@@ -38,29 +40,55 @@ import { NativeBaseConfigProvider } from 'native-base';
   expo start --dev-client
 */
 
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    
-    <View style = {styles.container}>
-      <FindPlant />
-    </View>
-
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="AddPlant">
+        <Stack.Screen 
+        name="AddCustomPlant" 
+        component={CustomPlant} 
+        options={{ 
+          title: 'Adding custom plant...',
+          headerStyle: {
+            backgroundColor: '#7FB77E',
+          },
+          headerTintColor: '#F7F6DC',
+          headerTitleStyle: {
+            fontSize: '35%',
+            color: '#F7F6DC',
+            marginTop: '20%',
+          },
+          headerTitleContainerStyle: {
+            alignItems: 'center',
+            justifyContent: 'center',
+            flex: 1,
+          },
+        }}
+        />
+        <Stack.Screen 
+        name="AddPlant" 
+        component={FindPlant} 
+        options={{ 
+          title: 'Adding new plant...',
+          headerStyle: {
+            backgroundColor: '#7FB77E',
+          },
+          headerTintColor: '#F7F6DC',
+          headerTitleStyle: {
+            fontSize: '35%',
+            color: '#F7F6DC',
+            marginTop: '20%',
+          },
+          headerTitleContainerStyle: {
+            alignItems: 'center',
+            justifyContent: 'center',
+            flex: 1,
+          },
+        }}
+        />  
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'stretch',
-    justifyContent: 'space-between',
-    margin: 8
-  }
-});
