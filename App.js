@@ -7,6 +7,7 @@ import * as FileSystem from 'expo-file-system';
 import CustomPlant from './src/components/CustomPlant/CustomPlant.js'
 import * as React from 'react';
 import FindPlant from './src/components/FindPlant/FindPlant';
+import LoadingScreen from './src/components/LoadingScreen/LoadingScreen.js';
 import {Box, Button} from "native-base"
 import { NativeBaseConfigProvider } from 'native-base';
 
@@ -41,26 +42,6 @@ import { NativeBaseConfigProvider } from 'native-base';
 
 export default function App() {
   return (
-    
-    <View style = {styles.container}>
-      <FindPlant />
-    </View>
-
+      <LoadingScreen />
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'stretch',
-    justifyContent: 'space-between',
-    margin: 8
-  }
-});
