@@ -25,7 +25,7 @@ export default StyleSheet.create({
         height: '20%'
     },
     loadingBar: {
-        top: '50%',
+        top: '30%',
         backgroundColor: "#F7F6DC",
         height: "30%",
         width: "100%",

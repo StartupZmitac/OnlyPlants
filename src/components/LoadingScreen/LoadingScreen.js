@@ -17,6 +17,9 @@ const LoadingScreen = () => {
           useNativeDriver: false
         }).start();
       };
+      const getContent = () => {
+          return "Random plant fun fact";
+      };
     const width = progress.interpolate({
       inputRange: [0, 1],
       outputRange: ['0%', '100%'],
@@ -29,6 +32,7 @@ const LoadingScreen = () => {
                     <Text bold fontSize="5xl" style={{ color: '#ffffff' }}>LOGO</Text> 
                 </Box>
                 <Box style={styles.loadingBarSpace}>
+                    <Text bold fontSize="xl" style={{ color: '#ffffff', top: '10%'}}> {getContent()} </Text>
                     <Box style={styles.loadingBar}>
                         <Animated.View style={[styles.progressBar, { width: width}]} />
                     </Box>
