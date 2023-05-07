@@ -47,8 +47,8 @@ export default function App() {
     <NativeBaseProvider>
       <NavigationContainer>
         <Tab.Navigator>
-          <Tab.Screen name="CustomPlant" component={CustomPlant}/>
-          <Tab.Screen name="FindPlant" component={FindPlant}/>
+          <Tab.Screen name="Add custom plant..." component={CustomPlant}/>
+          <Tab.Screen name="Add plant..." component={FindPlant}/>
         </Tab.Navigator>  
       </NavigationContainer>   
     </NativeBaseProvider>

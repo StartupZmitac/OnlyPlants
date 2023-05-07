@@ -2,14 +2,13 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   mainBody: {
     backgroundColor: '#B1D7B4',
-    height: '93%',
-    width: '100%',
     alignItems: 'center',
-    paddingTop: '10%'
+    paddingTop: '10%',
+    height: '100%'
   },
   choiceBox: {
     backgroundColor: '#F7F6DC',
-    height: '80%',
+    height: '78%',
     width: '80%',
     alignItems: 'center',
     borderRadius: 50,

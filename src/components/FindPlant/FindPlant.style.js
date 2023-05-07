@@ -2,8 +2,7 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   mainBody: {
     backgroundColor: '#B1D7B4',
-    height: '93%',
-    width: '100%',
+    height: '100%',
     alignItems: 'center',
     paddingTop: '7.5%',
     
