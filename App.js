@@ -11,6 +11,7 @@ import {Box, Button, Center, NativeBaseProvider} from "native-base"
 import { NativeBaseConfigProvider } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 // expo add expo-sqlite
 // expo add expo-file-system
@@ -39,59 +40,17 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
   Run on installed app:
   expo start --dev-client
 */
-
-const Stack = createNativeStackNavigator();
 //Tutaj generalnie troche zrobiłem bałagan, bo stack navigator będzie potrzebny do czegoś innego - narazie chcemy tab navigator
+const Tab = createBottomTabNavigator();
 export default function App() {
   return (
     <NativeBaseProvider>
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="AddCustomPlant">
-        <Stack.Screen 
-        name="AddCustomPlant" 
-        component={CustomPlant} 
-        options={{ 
-          title: 'Adding custom plant...',
-          headerStyle: {
-            backgroundColor: '#7FB77E',
-          },
-          headerTintColor: '#F7F6DC',
-          headerTitleStyle: {
-            fontSize: '35%',
-            color: '#F7F6DC',
-            marginTop: '20%',
-          },
-          headerTitleContainerStyle: {
-            alignItems: 'center',
-            justifyContent: 'center',
-            flex: 1,
-          },
-        }}
-        />
-        <Stack.Screen 
-        name="AddPlant" 
-        component={FindPlant} 
-        options={{ 
-          title: 'Adding new plant...',
-          headerStyle: {
-            backgroundColor: '#7FB77E',
-          },
-          headerTintColor: '#F7F6DC',
-          headerTitleStyle: {
-            fontSize: '35%',
-            color: '#F7F6DC',
-            marginTop: '20%',
-          },
-          headerTitleContainerStyle: {
-            alignItems: 'center',
-            justifyContent: 'center',
-            flex: 1,
-          },
-        }}
-        />  
-      </Stack.Navigator>
-    </NavigationContainer>
-          
+      <NavigationContainer>
+        <Tab.Navigator>
+          <Tab.Screen name="CustomPlant" component={CustomPlant}/>
+          <Tab.Screen name="FindPlant" component={FindPlant}/>
+        </Tab.Navigator>  
+      </NavigationContainer>   
     </NativeBaseProvider>
   );
 }

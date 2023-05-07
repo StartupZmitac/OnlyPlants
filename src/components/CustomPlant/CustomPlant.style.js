@@ -1,4 +1,3 @@
-import { Center } from 'native-base';
 import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   mainBody: {
