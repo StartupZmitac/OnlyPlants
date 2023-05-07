@@ -1,13 +1,15 @@
 
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, Button, Platform } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Platform } from 'react-native';
 import * as SQLite from 'expo-sqlite';
 import { useState, useEffect } from 'react';
 import * as FileSystem from 'expo-file-system';
 import CustomPlant from './src/components/CustomPlant/CustomPlant.js'
-import React from 'react'
+import * as React from 'react';
 import FindPlant from './src/components/FindPlant/FindPlant';
-
+import LoadingScreen from './src/components/LoadingScreen/LoadingScreen.js';
+import {Box, Button} from "native-base"
+import { NativeBaseConfigProvider } from 'native-base';
 
 // expo add expo-sqlite
 // expo add expo-file-system
@@ -40,25 +42,6 @@ import FindPlant from './src/components/FindPlant/FindPlant';
 
 export default function App() {
   return (
-    <View style = {styles.container}>
-      <CustomPlant />
-    </View>
-
+      <LoadingScreen />
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'stretch',
-    justifyContent: 'space-between',
-    margin: 8
-  }
-});

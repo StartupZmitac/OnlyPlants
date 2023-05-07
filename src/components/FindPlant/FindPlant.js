@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { Text, Button, View, ActivityIndicator, TextInput} from 'react-native';
+import { Text, View, ActivityIndicator, TextInput} from 'react-native';
 import styles from './FindPlant.style.js'
+import { NativeBaseProvider, Box, Button, Heading, Input, Row } from 'native-base';
 
 // @flow
 const FindPlant = () => {
@@ -53,19 +54,31 @@ const FindPlant = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        onChangeText={text => setQuery(text)}
-        placeholder="insert plant name"
-      />
-      <Button
-        onPress={handleCall}
-        title="Look up"
-        color="#841584"
-      />
-      {getContent()}
-      <StatusBar style="auto" />
-    </View>
+    <NativeBaseProvider>
+      <Box style={{width: 450}}>
+        <Box style={styles.titleBox}>
+          <Heading mt={3} fontSize="4xl" style={{marginTop: '20%', color: '#F7F6DC'}}>Adding new plant...</Heading>
+        </Box>
+        <Box style={styles.mainBody}>
+          <Input 
+              variant="rounded"
+              placeholder="Search..."
+              onChangeText={text => setQuery(text)}
+              placeholderTextColor="#F7F6DC"
+              defaultValue={""}
+              fontSize={'20'} 
+              width={'80%'}
+              style={styles.inputField}
+          />
+          <Box style={styles.choiceBox}>
+            {getContent()}
+          </Box>
+          <Row style={{alignItems: 'center', padding: '5%'}}>
+          <Button size="lg" onPress={handleCall} style={{backgroundColor: '#FFC090', color: "#F7F6DC"}}>Find</Button>
+          </Row>
+        </Box>
+      </Box>
+    </NativeBaseProvider>
   );
 }
 

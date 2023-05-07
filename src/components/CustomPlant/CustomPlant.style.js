@@ -1,3 +1,4 @@
+import { Center } from 'native-base';
 import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   mainBody: {
@@ -5,8 +6,7 @@ export default StyleSheet.create({
     height: '80%',
     width: '100%',
     alignItems: 'center',
-    paddingTop: '10%',
-    
+    paddingTop: '10%'
   },
   choiceBox: {
     backgroundColor: '#F7F6DC',
@@ -14,15 +14,12 @@ export default StyleSheet.create({
     width: '80%',
     alignItems: 'center',
     borderRadius: 50,
-    padding: '5%',
-    fontSize: 20,
+    padding: '5%'
   },
   inputField:{
     backgroundColor: '#FFC090',
-    color: "#F7F6DC",
-    width: '30%',
+    width: '60%',
     height: '100%',
-    
   },
   titleBox: {
     backgroundColor: '#7FB77E',
