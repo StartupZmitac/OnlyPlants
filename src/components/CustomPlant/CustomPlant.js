@@ -106,10 +106,7 @@ const CustomPlant = () => {
   
   return (
     <NativeBaseProvider>
-      <Box style={{width: 450}}>
-        <Box style={styles.titleBox}>
-          <Heading mt={3} fontSize="4xl" style={{marginTop: '20%', color: '#F7F6DC'}}>Adding custom plant...</Heading>
-        </Box>
+      <Box>
         <Box style={styles.mainBody}>
           <Box style={styles.choiceBox}>
             <Column space={4} alignItems="center">
