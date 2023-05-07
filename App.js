@@ -41,7 +41,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 */
 
 const Stack = createNativeStackNavigator();
-
+//Tutaj generalnie troche zrobiłem bałagan, bo stack navigator będzie potrzebny do czegoś innego - narazie chcemy tab navigator
 export default function App() {
   return (
     <NativeBaseProvider>

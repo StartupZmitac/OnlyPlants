@@ -58,6 +58,7 @@ const FindPlant = () => {
       <Box>
         <Box style={styles.mainBody}>
           <Input 
+              bold
               variant="rounded"
               placeholder="Search..."
               onChangeText={text => setQuery(text)}
