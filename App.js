@@ -46,7 +46,7 @@ export default function App() {
   return (
     <NativeBaseProvider>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="AddPlant">
+      <Stack.Navigator initialRouteName="AddCustomPlant">
         <Stack.Screen 
         name="AddCustomPlant" 
         component={CustomPlant} 
