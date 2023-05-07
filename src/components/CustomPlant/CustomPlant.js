@@ -176,7 +176,7 @@ const CustomPlant = () => {
           <Row style={{alignItems: 'center', padding: '10%'}}>
           <Button size="lg" onPress={addPlant} style={{backgroundColor: '#FFC090', color: "#F7F6DC", marginRight: '10%'}}>Add Plant</Button>
           <Button size="lg" onPress={exportDb} style={styles.button}> Export </Button>
-          <Button size="lg" onPress={drop_everything} style={styles.button}/> Drop </Button>
+          <Button size="lg" onPress={drop_everything} style={styles.button}> Drop </Button>
           </Row>
         </Box>
       </Box>
