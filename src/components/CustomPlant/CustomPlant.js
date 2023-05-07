@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {TextInput, View, Text, Button} from 'react-native';
+import {TextInput, View, Text} from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import * as SQLite from 'expo-sqlite';
 import styles from './CustomPlant.style.js'
