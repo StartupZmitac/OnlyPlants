@@ -13,6 +13,7 @@ import { NativeBaseConfigProvider } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Mainpage from './src/components/Mainpage/Mainpage.js';
 
 // expo add expo-sqlite
 // expo add expo-file-system
@@ -50,7 +51,7 @@ export default function App() {
         <Tab.Navigator>
           <Tab.Screen name="Add custom plant..." component={CustomPlant}/>
           <Tab.Screen name="Add plant..." component={FindPlant}/>
-          <Tab.Screen name="Loading Screen" component={LoadingScreen}/>
+          <Tab.Screen name="Aktualny dzień" component={Mainpage}/>
         </Tab.Navigator>  
       </NavigationContainer>   
     </NativeBaseProvider>
