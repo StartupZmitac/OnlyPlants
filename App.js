@@ -42,6 +42,6 @@ import { NativeBaseConfigProvider } from 'native-base';
 
 export default function App() {
   return (
-      <LoadingScreen />
+      <CustomPlant />
   );
 }
