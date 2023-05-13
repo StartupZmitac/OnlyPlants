@@ -2,10 +2,9 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   mainBody: {
     backgroundColor: '#B1D7B4',
-    height: '80%',
-    width: '100%',
+    height: '100%',
     alignItems: 'center',
-    paddingTop: '10%',
+    paddingTop: '7.5%',
     
   },
   choiceBox: {
@@ -16,13 +15,13 @@ export default StyleSheet.create({
     borderRadius: 50,
     padding: '5%',
     fontSize: 20,
+    top: '2.5%'
   },
   inputField:{
     backgroundColor: '#FFC090',
     color: "#F7F6DC",
     width: '30%',
     height: '100%',
-    
   },
   titleBox: {
     backgroundColor: '#7FB77E',

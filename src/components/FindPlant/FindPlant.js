@@ -55,12 +55,10 @@ const FindPlant = () => {
 
   return (
     <NativeBaseProvider>
-      <Box style={{width: 450}}>
-        <Box style={styles.titleBox}>
-          <Heading mt={3} fontSize="4xl" style={{marginTop: '20%', color: '#F7F6DC'}}>Adding new plant...</Heading>
-        </Box>
+      <Box>
         <Box style={styles.mainBody}>
           <Input 
+              bold
               variant="rounded"
               placeholder="Search..."
               onChangeText={text => setQuery(text)}
@@ -75,6 +73,7 @@ const FindPlant = () => {
           </Box>
           <Row style={{alignItems: 'center', padding: '5%'}}>
           <Button size="lg" onPress={handleCall} style={{backgroundColor: '#FFC090', color: "#F7F6DC"}}>Find</Button>
+          
           </Row>
         </Box>
       </Box>
