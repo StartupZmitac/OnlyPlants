@@ -3,26 +3,50 @@ import React, {useState, useEffect} from 'react';
 import * as FileSystem from 'expo-file-system';
 const db = SQLite.openDatabase('onlyplants.db')
 
-const createWatering = async (
+export const createTables = async (
   ) => {
     return new Promise((resolve, reject) => {
-    db.transaction(
-      tx => {
-        tx.executeSql(
-          "CREATE TABLE IF NOT EXISTS watering( watering_id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR NOT NULL UNIQUE, interval INTEGER NOT NULL);",
-          (t, res) => {
+      db._db.exec(
+        [{ sql: 'PRAGMA foreign_keys = ON;', args: [] }],
+        false,
+        () => console.log('Foreign keys turned on'),
+      );
+
+      db.transaction(
+        tx => {
+          tx.executeSql("CREATE TABLE IF NOT EXISTS watering( watering_id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR NOT NULL UNIQUE, interval INTEGER NOT NULL);", ()  => {
+          }, (t, res) => {
             console.log(res)
-          }
-        );
-      },
-      (t, error) => { console.log("db error"); console.log(error); resolve() },
-      (t, success) => { resolve(success)}
-    )
+          })
+          tx.executeSql("CREATE TABLE IF NOT EXISTS location( location_id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR NOT NULL UNIQUE, location VARCHAR NOT NULL UNIQUE);", ()  => {
+          }, (t, res) => {
+            console.log(res);
+          })
+          tx.executeSql("CREATE TABLE IF NOT EXISTS groups( group_id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR NOT NULL UNIQUE, first_name VARCHAR, location_id INTEGER, CONSTRAINT fk_location FOREIGN KEY (location_id) REFERENCES location(location_id));", ()  => {
+          }, (t, res) => {
+            console.log(res);
+          })
+          tx.executeSql("CREATE TABLE IF NOT EXISTS user_info (id INTEGER PRIMARY KEY, pet INTEGER NOT NULL, username TEXT NOT NULL UNIQUE);", ()  => {
+          }, (t, res) => {
+            console.log(res);
+          })
+          tx.executeSql("CREATE TABLE IF NOT EXISTS plants ( id INTEGER PRIMARY KEY, name TEXT NOT NULL UNIQUE, sunlight INTEGER NOT NULL, cycle INTEGER NOT NULL, edible INTEGER NOT NULL, poisonous INTEGER NOT NULL, indoor INTEGER NOT NULL, custom INTEGER NOT NULL, watering INTEGER NOT NULL, FOREIGN KEY (watering) REFERENCES watering(watering_id));", ()  => {
+          }, (t, res) => {
+            console.log(res);
+          })
+          tx.executeSql("CREATE TABLE IF NOT EXISTS planted(id INTEGER PRIMARY KEY, date_planted TEXT NOT NULL, date_watered TEXT NOT NULL, date_notified TEXT NOT NULL, interval INTEGER NOT NULL, custom_name TEXT NOT NULL, inside INTEGER NOT NULL, plant_id INTEGER NOT NULL, group_id INTEGER NOT NULL, location_id INTEGER NOT NULL, FOREIGN KEY (plant_id) REFERENCES plants(id), FOREIGN KEY (group_id) REFERENCES groups(id), FOREIGN KEY (location_id) REFERENCES location(id));", ()  => {
+          }, (t, res) => {
+            console.log(res);
+          })
+        },
+        (t, error) => { console.log("db error"); console.log(error); resolve() },
+        (t, success) => { resolve(success)}
+      )
     })
 };
 
 //insert
-const addPlant = (name, sunlight, cycle, edible, poisonous, indoor, interval, successFunc) => {
+export const addPlant = (name, sunlight, cycle, edible, poisonous, indoor, interval, successFunc) => {
   db.transaction(tx => {
     tx.executeSql('INSERT INTO plants (name, sunlight, cycle, edible, poisonous, indoor, custom, watering) values (?,?,?,?,?,?,?,?);', [name, sunlight, cycle, edible, poisonous, indoor, true, interval],
       (txObj, success) => {successFunc()},
@@ -31,7 +55,7 @@ const addPlant = (name, sunlight, cycle, edible, poisonous, indoor, interval, su
   })
 }
 
-const addPlantAPI = (name, sunlight, cycle, edible, poisonous, indoor, interval, successFunc) => {
+export const addPlantAPI = (name, sunlight, cycle, edible, poisonous, indoor, interval, successFunc) => {
   db.transaction(tx => {
     tx.executeSql('INSERT INTO plants (name, sunlight, cycle, edible, poisonous, indoor, custom, watering) values (?,?,?,?,?,?,?,?);', [name, sunlight, cycle, edible, poisonous, indoor, false, interval],
       (txObj, success) => {successFunc()},
@@ -40,7 +64,7 @@ const addPlantAPI = (name, sunlight, cycle, edible, poisonous, indoor, interval,
   })
 }
 
-const addWatering = (name, interval, successFunc) => {
+export const addWatering = (name, interval, successFunc) => {
   db.transaction(tx => {
     tx.executeSql('INSERT INTO watering (name, interval) values (?,?);', [name, interval],
       (txObj, success) => {successFunc()},
@@ -49,7 +73,7 @@ const addWatering = (name, interval, successFunc) => {
   })
 }
 
-const addLocation = (name, location, successFunc) => {
+export const addLocation = (name, location, successFunc) => {
   db.transaction(tx => {
     tx.executeSql('INSERT INTO location (name, location) values (?,?);', [name, location],
       (txObj, success) => {successFunc()},
@@ -58,7 +82,7 @@ const addLocation = (name, location, successFunc) => {
   })
 }
 
-const addGroups = (name, first_name, location_id, successFunc) => {
+export const addGroups = (name, first_name, location_id, successFunc) => {
   db.transaction(tx => {
     tx.executeSql('INSERT INTO groups (name, first_name, location_id) values (?,?,?);', [name, first_name, location_id],
       (txObj, success) => {successFunc()},
@@ -67,7 +91,7 @@ const addGroups = (name, first_name, location_id, successFunc) => {
   })
 }
 
-const addUserInfo = (pet, username, successFunc) => {
+export const addUserInfo = (pet, username, successFunc) => {
   db.transaction(tx => {
     tx.executeSql('INSERT INTO user_info (pet, username) values (?,?);', [pet, username],
       (txObj, success) => {successFunc()},
@@ -76,7 +100,7 @@ const addUserInfo = (pet, username, successFunc) => {
   })
 }
 
-const addPlanted = (date_planted, date_watered, date_notified, interval, custom_name, inside, plant_id, group_id, location_id, successFunc) => {
+export const addPlanted = (date_planted, date_watered, date_notified, interval, custom_name, inside, plant_id, group_id, location_id, successFunc) => {
   db.transaction(tx => {
     tx.executeSql('INSERT INTO planted (date_planted, date_watered, date_notified, interval, custom_name, inside, plant_id, group_id, location_id) values (?,?,?,?,?,?,?,?,?);', [date_planted, date_watered, date_notified, interval, custom_name, inside, plant_id, group_id, location_id],
       (txObj, success) => {successFunc()},
@@ -86,7 +110,7 @@ const addPlanted = (date_planted, date_watered, date_notified, interval, custom_
 }
 
 //delete
-const deletePlant = (plant_id, successFunc) => {
+export const deletePlant = (plant_id, successFunc) => {
   db.transaction(tx => {
     tx.executeSql('DELETE FROM plants WHERE id=?', [plant_id],
     (txObj, success) => {successFunc()},
@@ -95,7 +119,7 @@ const deletePlant = (plant_id, successFunc) => {
   })
 }
 
-const deleteWatering = (watering_id, successFunc) => {
+export const deleteWatering = (watering_id, successFunc) => {
   db.transaction(tx => {
     tx.executeSql('DELETE FROM watering WHERE watering_id=?', [watering_id],
     (txObj, success) => {successFunc()},
@@ -104,7 +128,7 @@ const deleteWatering = (watering_id, successFunc) => {
   })
 }
 
-const deleteLocation = (location_id, successFunc) => {
+export const deleteLocation = (location_id, successFunc) => {
   db.transaction(tx => {
     tx.executeSql('DELETE FROM location WHERE location_id=?', [location_id],
     (txObj, success) => {successFunc()},
@@ -113,7 +137,7 @@ const deleteLocation = (location_id, successFunc) => {
   })
 }
 
-const deleteGroups = (group_id, successFunc) => {
+export const deleteGroups = (group_id, successFunc) => {
   db.transaction(tx => {
     tx.executeSql('DELETE FROM location WHERE group_id=?', [group_id],
     (txObj, success) => {successFunc()},
@@ -122,7 +146,7 @@ const deleteGroups = (group_id, successFunc) => {
   })
 }
 
-const deleteUserInfo = (id, successFunc) => {
+export const deleteUserInfo = (id, successFunc) => {
   db.transaction(tx => {
     tx.executeSql('DELETE FROM user_info WHERE id=?', [id],
     (txObj, success) => {successFunc()},
@@ -131,7 +155,7 @@ const deleteUserInfo = (id, successFunc) => {
   })
 }
 
-const deletePlanted = (id, successFunc) => {
+export const deletePlanted = (id, successFunc) => {
   db.transaction(tx => {
     tx.executeSql('DELETE FROM planted WHERE id=?', [id],
     (txObj, success) => {successFunc()},
@@ -141,7 +165,7 @@ const deletePlanted = (id, successFunc) => {
 }
 
 //select
-const selectAllPlants = (getAllPlants) => {
+export const selectAllPlants = (getAllPlants) => {
   db.transaction(tx => {
     tx.executeSql('SELECT * FROM plants', [],
     (_, {rows: {_array}}) => {
@@ -153,7 +177,7 @@ const selectAllPlants = (getAllPlants) => {
   );
 }
 
-const selectAllWatering = (getAllWatering) => {
+export const selectAllWatering = (getAllWatering) => {
   db.transaction(tx => {
     tx.executeSql('SELECT * FROM watering', [],
     (_, {rows: {_array}}) => {
@@ -165,7 +189,7 @@ const selectAllWatering = (getAllWatering) => {
   );
 }
 
-const selectAllLocation = (getAllLocation) => {
+export const selectAllLocation = (getAllLocation) => {
   db.transaction(tx => {
     tx.executeSql('SELECT * FROM location', [],
     (_, {rows: {_array}}) => {
@@ -177,7 +201,7 @@ const selectAllLocation = (getAllLocation) => {
   );
 }
 
-const selectAllGroups = (getAllGroups) => {
+export const selectAllGroups = (getAllGroups) => {
   db.transaction(tx => {
     tx.executeSql('SELECT * FROM groups', [],
     (_, {rows: {_array}}) => {
@@ -189,7 +213,7 @@ const selectAllGroups = (getAllGroups) => {
   );
 }
 
-const selectUserInfo = (getAllUserInfo) => {
+export const selectUserInfo = (getAllUserInfo) => {
   db.transaction(tx => {
     tx.executeSql('SELECT * FROM user_info', [],
     (_, {rows: {_array}}) => {
@@ -201,7 +225,7 @@ const selectUserInfo = (getAllUserInfo) => {
   );
 }
 
-const selectPlanted = (getAllPlanted) => {
+export const selectPlanted = (getAllPlanted) => {
   db.transaction(tx => {
     tx.executeSql('SELECT * FROM planted', [],
     (_, {rows: {_array}}) => {
@@ -213,8 +237,8 @@ const selectPlanted = (getAllPlanted) => {
   );
 }
 
-
-const dropEverything = () => {
+//others
+export const dropEverything = () => {
   db.transaction(tx => {
     tx.executeSql("DROP TABLE IF EXISTS watering;")
     tx.executeSql("DROP TABLE IF EXISTS location;")
@@ -228,7 +252,7 @@ const dropEverything = () => {
     )
 }
 
-const exportDb = async () => {
+export const exportDb = async () => {
   if (Platform.OS === "android") {
     const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
     if (permissions.granted) {
@@ -250,18 +274,4 @@ const exportDb = async () => {
   } else {
     await Sharing.shareAsync(FileSystem.documentDirectory + 'SQLite/onlyplants.db');
   }
-}
-
-export const database = {
-  createWatering,
-  dropEverything,
-  exportDb,
-  addGroups,
-  addLocation,
-  addPlant,
-  addPlantAPI,
-  addUserInfo,
-  addWatering,
-  deleteWatering,
-  selectAllWatering
 }
