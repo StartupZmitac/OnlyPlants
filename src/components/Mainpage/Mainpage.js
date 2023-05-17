@@ -1,17 +1,13 @@
-import styles from './Mainpage.style.js'
-import { useEffect, useState } from 'react';
-import { Text, View, ActivityIndicator, TextInput} from 'react-native';
-import { NativeBaseProvider, Box, Button, Heading, Input, Row } from 'native-base';
+import React, { useRef, useEffect } from "react";
+import {Animated, Easing} from 'react-native'
+import { NativeBaseProvider, Text, View, Input, Box, Row, Button, Heading, Column, CheckBox } from "native-base";
+import styles from './MainPage.style.js'
 
-const Mainpage = () => {
+const MainPage = () => {
     return (
-        //Pomiędzy tagami NativeBaseProvider piszesz cały kod który jest wyświetlany.
-        <NativeBaseProvider>
-        <Box>
-        <Box style={styles.mainBody}>
-          <Box style={styles.checkBox}>
-          <CheckBox checked={true} color="green"/>
-            <Column space={4} alignItems="center">
+        <NativeBaseProvider >
+           <Box style={styles.mainBody}>
+           <Column space={4} alignItems="center">
             <Input 
               variant="rounded"
               placeholder="Flower 1"
@@ -22,11 +18,8 @@ const Mainpage = () => {
             />
             </Column>
             </Box>
-      </Box>
-      </Box>
         </NativeBaseProvider>
-      );
-
+    );
 }
 
-export default Mainpage
+export default MainPage;
