@@ -13,7 +13,10 @@ import { NativeBaseConfigProvider } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { AntDesign } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import setUpDb from './src/hooks/SetUpDb.js';
+import styles from './App.style.js'
 
 // expo add expo-sqlite
 // expo add expo-file-system
@@ -55,11 +58,45 @@ export default function App() {
   return (
     <NativeBaseProvider>
       <NavigationContainer>
-        <Tab.Navigator>
-          <Tab.Screen name="Add custom plant..." component={CustomPlant}/>
-          <Tab.Screen name="Add plant..." component={FindPlant}/>
-        </Tab.Navigator>  
-      </NavigationContainer>   
+      <Tab.Navigator
+        screenOptions={{
+          tabBarShowLabel: false,
+          tabBarStyle: styles.navigation,
+          headerStyle: styles.header,
+          headerTitleStyle: {
+            color: "#F7F6DC",
+          }
+        }}
+      >
+        <Tab.Screen
+          name="My profile..."
+          component={CustomPlant}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <AntDesign name="profile" size={30} color="#FFC090" />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Add plant..."
+          component={FindPlant}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <AntDesign name="pluscircle" size={40} color="#FFC090" />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Add custom plant..."
+          component={CustomPlant}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <Feather name="settings" size={30} color="#FFC090" />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    </NavigationContainer>   
     </NativeBaseProvider>
   );
   }
