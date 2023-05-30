@@ -7,6 +7,7 @@ import * as FileSystem from 'expo-file-system';
 import CustomPlant from './src/components/CustomPlant/CustomPlant.js'
 import * as React from 'react';
 import FindPlant from './src/components/FindPlant/FindPlant';
+import MyProfile from './src/components/MyProfile/MyProfile.js';
 import {Box, Button, NativeBaseProvider} from "native-base"
 import LoadingScreen from './src/components/LoadingScreen/LoadingScreen.js';
 import { NativeBaseConfigProvider } from 'native-base';
@@ -57,7 +58,7 @@ export default function App() {
       <NavigationContainer>
         <Tab.Navigator>
           <Tab.Screen name="Add custom plant..." component={CustomPlant}/>
-          <Tab.Screen name="Add plant..." component={FindPlant}/>
+          <Tab.Screen name="Add plant..." component={MyProfile}/>
         </Tab.Navigator>  
       </NavigationContainer>   
     </NativeBaseProvider>
