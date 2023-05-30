@@ -15,6 +15,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import setUpDb from './src/hooks/SetUpDb.js';
+import { addPlant } from './src/database/PlantsDb.js';
 
 // expo add expo-sqlite
 // expo add expo-file-system
@@ -58,7 +59,8 @@ export default function App() {
       <NavigationContainer>
         <Tab.Navigator>
           <Tab.Screen name="Add custom plant..." component={CustomPlant}/>
-          <Tab.Screen name="Add plant..." component={MyProfile}/>
+          <Tab.Screen name="Add plant..." component={FindPlant}/>
+          <Tab.Screen name="My profile" component={MyProfile}/>
         </Tab.Navigator>  
       </NavigationContainer>   
     </NativeBaseProvider>

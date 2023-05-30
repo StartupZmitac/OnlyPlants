@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import styles from './MyProfile.style.js'
-import {Box, Button, NativeBaseProvider, Heading, Input, Column, Row, Image, View} from "native-base"
+import {Box, Button, NativeBaseProvider, Column, Image} from "native-base"
+
 
 const MyProfile = () =>{
 
@@ -10,7 +11,8 @@ const MyProfile = () =>{
                 <Box style={styles.mainBody}>
                     <Box style={styles.choiceBox}>
                         <Box style={styles.photoBox}>
-                        <Image source = {{uri:'https://www.ismip.aei.polsl.pl/images/zdjecia/darekc.jpg'}}
+                        <Image source = {{uri:'https://www.ismip.aei.polsl.pl/images/zdjecia/darekc.jpg'}} 
+                            alt="My Profile Image"
                             style = {styles.profileImage}
                         />
                         </Box>
