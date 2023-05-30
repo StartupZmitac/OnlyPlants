@@ -14,7 +14,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     borderRadius: 50,
     padding: '5%',
-    paddingTop: '10%'
+    paddingTop: '15%'
   },
   inputField:{
     backgroundColor: '#FFC090',
@@ -38,6 +38,14 @@ export default StyleSheet.create({
     width: Dimensions.get('window').width * 0.5,
     height: Dimensions.get('window').width * 0.5,
     borderRadius: Math.round((Dimensions.get('window').height + Dimensions.get('window').width) / 2),
-    alignItems: 'center'
-  }
+  },
+  container: {
+    paddingTop: '1%',
+  },
+  profileImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: Math.round((Dimensions.get('window').height + Dimensions.get('window').width) / 2),
+    overflow: "hidden",
+  },
   });
