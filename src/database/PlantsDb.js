@@ -18,7 +18,7 @@ export const createTables = async (
           }, (t, res) => {
             console.log(res)
           })
-          tx.executeSql("CREATE TABLE IF NOT EXISTS location( location_id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR NOT NULL UNIQUE, location VARCHAR NOT NULL UNIQUE);", ()  => {
+          tx.executeSql("CREATE TABLE IF NOT EXISTS location( location_id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR NOT NULL UNIQUE, location VARCHAR UNIQUE);", ()  => {
           }, (t, res) => {
             console.log(res);
           })
@@ -26,15 +26,15 @@ export const createTables = async (
           }, (t, res) => {
             console.log(res);
           })
-          tx.executeSql("CREATE TABLE IF NOT EXISTS user_info (id INTEGER PRIMARY KEY, pet INTEGER NOT NULL, username TEXT NOT NULL UNIQUE);", ()  => {
+          tx.executeSql("CREATE TABLE IF NOT EXISTS user_info (id INTEGER PRIMARY KEY, pet INTEGER DEFAULT 0 NOT NULL, username TEXT NOT NULL UNIQUE);", ()  => {
           }, (t, res) => {
             console.log(res);
           })
-          tx.executeSql("CREATE TABLE IF NOT EXISTS plants ( id INTEGER PRIMARY KEY, name TEXT NOT NULL UNIQUE, sunlight INTEGER NOT NULL, cycle INTEGER NOT NULL, edible INTEGER NOT NULL, poisonous INTEGER NOT NULL, indoor INTEGER NOT NULL, custom INTEGER NOT NULL, watering INTEGER NOT NULL, FOREIGN KEY (watering) REFERENCES watering(watering_id));", ()  => {
+          tx.executeSql("CREATE TABLE IF NOT EXISTS plants ( id INTEGER PRIMARY KEY, name TEXT NOT NULL UNIQUE, sunlight INTEGER, cycle INTEGER, edible INTEGER, poisonous INTEGER, custom INTEGER NOT NULL, watering INTEGER NOT NULL, FOREIGN KEY (watering) REFERENCES watering(watering_id));", ()  => {
           }, (t, res) => {
             console.log(res);
           })
-          tx.executeSql("CREATE TABLE IF NOT EXISTS planted(id INTEGER PRIMARY KEY, date_planted TEXT NOT NULL, date_watered TEXT NOT NULL, date_notified TEXT NOT NULL, interval INTEGER NOT NULL, custom_name TEXT NOT NULL, inside INTEGER NOT NULL, plant_id INTEGER NOT NULL, group_id INTEGER NOT NULL, location_id INTEGER NOT NULL, FOREIGN KEY (plant_id) REFERENCES plants(id), FOREIGN KEY (group_id) REFERENCES groups(id), FOREIGN KEY (location_id) REFERENCES location(id));", ()  => {
+          tx.executeSql("CREATE TABLE IF NOT EXISTS planted(id INTEGER PRIMARY KEY, date_planted TEXT NOT NULL, date_watered TEXT NOT NULL, date_notified TEXT, interval INTEGER NOT NULL, custom_name TEXT, inside INTEGER NOT NULL, plant_id INTEGER NOT NULL, group_id INTEGER NOT NULL, location_id INTEGER NOT NULL, FOREIGN KEY (plant_id) REFERENCES plants(id), FOREIGN KEY (group_id) REFERENCES groups(id), FOREIGN KEY (location_id) REFERENCES location(id));", ()  => {
           }, (t, res) => {
             console.log(res);
           })
@@ -48,16 +48,16 @@ export const createTables = async (
 //insert
 export const addPlant = (name, sunlight, cycle, edible, poisonous, indoor, interval, successFunc) => {
   db.transaction(tx => {
-    tx.executeSql('INSERT INTO plants (name, sunlight, cycle, edible, poisonous, indoor, custom, watering) values (?,?,?,?,?,?,?,?);', [name, sunlight, cycle, edible, poisonous, indoor, true, interval],
+    tx.executeSql('INSERT INTO plants (name, sunlight, cycle, edible, poisonous, indoor, custom, watering) values (?,?,?,?,?,?,?);', [name, sunlight, cycle, edible, poisonous, true, interval],
       (txObj, success) => {successFunc()},
       (txObj, error) => {console.log(error);}
     );
   })
 }
 
-export const addPlantAPI = (name, sunlight, cycle, edible, poisonous, indoor, interval, successFunc) => {
+export const addPlantAPI = (name, sunlight, cycle, edible, poisonous, interval, successFunc) => {
   db.transaction(tx => {
-    tx.executeSql('INSERT INTO plants (name, sunlight, cycle, edible, poisonous, indoor, custom, watering) values (?,?,?,?,?,?,?,?);', [name, sunlight, cycle, edible, poisonous, indoor, false, 4],
+    tx.executeSql('INSERT INTO plants (name, sunlight, cycle, edible, poisonous, custom, watering) values (?,?,?,?,?,?,?);', [name, sunlight, cycle, edible, poisonous, false, 1],
       (txObj, success) => {successFunc()},
       (txObj, error) => {console.log(error);}
     );
@@ -238,8 +238,20 @@ export const selectPlanted = (getAllPlanted) => {
 }
 
 //others
+export const initWatering = () => {
+  addWatering('Frequent', 3, ()=>{});
+  addWatering('Average', 6, ()=>{});
+  addWatering('Minimum', 9, ()=>{});
+}
+
 export const dropEverything = () => {
   db.transaction(tx => {
+    //tx.executeSql("DELETE FROM planted;")
+    tx.executeSql("DELETE FROM plants;")
+    //tx.executeSql("DELETE FROM location;")
+    //tx.executeSql("DELETE FROM watering;")
+    //tx.executeSql("DELETE FROM groups;")
+    //tx.executeSql("DELETE FROM user_info;")
     tx.executeSql("DROP TABLE IF EXISTS watering;")
     tx.executeSql("DROP TABLE IF EXISTS location;")
     tx.executeSql("DROP TABLE IF EXISTS user_info;")

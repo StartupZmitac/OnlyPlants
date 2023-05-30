@@ -2,7 +2,7 @@
 // @refresh reset
 import React, {useEffect} from 'react';
 
-import { addWatering, createTables } from '../database/PlantsDb';
+import { addWatering, createTables, dropEverything, initWatering } from '../database/PlantsDb';
 
 export default function setUpDb() {
   const [isDBLoadingComplete, setDBLoadingComplete] = React.useState(false);
@@ -10,8 +10,9 @@ export default function setUpDb() {
   useEffect(() => {
     async function loadDataAsync() {
       try {
+        //dropEverything()
         createTables();
-        addWatering('Frequent', 1, ()=>{})
+        initWatering();
         sleep(1500).then(()=>setDBLoadingComplete(true))
       } catch (e) {
         console.warn(e);

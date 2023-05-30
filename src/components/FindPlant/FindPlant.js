@@ -48,11 +48,11 @@ const FindPlant = () => {
 
   const addPlantDB = () => {
     console.log('ur mom is gay');
-    addPlantAPI(name, sunlight, cycle, 'test', 'test', 'test', 0, plantAdded);
+    addPlantAPI(name, sunlight, cycle, 'test', 'test', 0, plantAdded);
   }
 
   const plantAdded = () => {
-
+    
   }
 
   const getContent = () => {
