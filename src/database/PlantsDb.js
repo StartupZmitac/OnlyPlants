@@ -57,7 +57,7 @@ export const addPlant = (name, sunlight, cycle, edible, poisonous, indoor, inter
 
 export const addPlantAPI = (name, sunlight, cycle, edible, poisonous, indoor, interval, successFunc) => {
   db.transaction(tx => {
-    tx.executeSql('INSERT INTO plants (name, sunlight, cycle, edible, poisonous, indoor, custom, watering) values (?,?,?,?,?,?,?,?);', [name, sunlight, cycle, edible, poisonous, indoor, false, interval],
+    tx.executeSql('INSERT INTO plants (name, sunlight, cycle, edible, poisonous, indoor, custom, watering) values (?,?,?,?,?,?,?,?);', [name, sunlight, cycle, edible, poisonous, indoor, false, 4],
       (txObj, success) => {successFunc()},
       (txObj, error) => {console.log(error);}
     );

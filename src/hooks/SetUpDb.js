@@ -2,7 +2,7 @@
 // @refresh reset
 import React, {useEffect} from 'react';
 
-import { createTables } from '../database/PlantsDb';
+import { addWatering, createTables } from '../database/PlantsDb';
 
 export default function setUpDb() {
   const [isDBLoadingComplete, setDBLoadingComplete] = React.useState(false);
@@ -11,6 +11,7 @@ export default function setUpDb() {
     async function loadDataAsync() {
       try {
         createTables();
+        addWatering('Frequent', 1, ()=>{})
         sleep(1500).then(()=>setDBLoadingComplete(true))
       } catch (e) {
         console.warn(e);
