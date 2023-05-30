@@ -29,7 +29,7 @@ const MainPage = () => {
                         {checkboxes.map((checkbox) => (
                             <Box style={{ 
                                 flexDirection: "row",
-                                 alignItems: "center"
+                                 alignItems: "center",
                                 }}>
                                 <Checkbox
                                     value={checkbox.checked}
