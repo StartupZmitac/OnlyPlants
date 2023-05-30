@@ -31,7 +31,9 @@ export default StyleSheet.create({
       },
       checkboxContainer: {
         flexDirection: 'center',
+        alignItems: 'center',
         marginBottom: 20,
+        padding: '5%'
         
       },
       
