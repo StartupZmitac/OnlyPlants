@@ -28,12 +28,13 @@ const MainPage = () => {
                     <Box style={styles.checkboxContainer}>
                         {checkboxes.map((checkbox) => (
                             <Box style={{ 
-                                flexDirection: 'row',
-                                 alignItems: 'center' 
+                                flexDirection: "row",
+                                 alignItems: "center"
                                 }}>
                                 <Checkbox
                                     value={checkbox.checked}
                                     onValueChange={() => handleCheckboxChange(checkbox.id)}
+                                    aria-label="test"
                                 />
                                 <Box style={styles.label}>{checkbox.name}</Box>
                             </Box>

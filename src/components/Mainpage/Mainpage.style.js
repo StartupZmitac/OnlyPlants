@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     mainBody: {
         backgroundColor: '#B1D7B4',
-        alignItems: 'row',
+        alignItems: 'center',
         paddingTop: '20%',
         height: '100%'
       },
@@ -30,7 +30,7 @@ export default StyleSheet.create({
         margin: 8,
       },
       checkboxContainer: {
-        flexDirection: 'center',
+        flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 20,
         padding: '5%'
