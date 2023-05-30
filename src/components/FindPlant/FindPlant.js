@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Text, View, ActivityIndicator, TextInput} from 'react-native';
 import styles from './FindPlant.style.js'
 import { NativeBaseProvider, Box, Button, Heading, Input, Row } from 'native-base';
-import { addPlantAPI, database } from '../../database/PlantsDb.js'
+import { addPlantAPI, selectAllWatering } from '../../database/PlantsDb.js'
 
 // @flow
 const FindPlant = () => {
@@ -11,17 +11,16 @@ const FindPlant = () => {
   let [error, setError] = useState();
   let [response, setResponse] = useState();
   let [query, setQuery] = useState('');
-
-  const [name, setName] = useState('');
-  const [interval, setInterval] = useState('');
-  const [sunlight, setSunlight] = useState('');
-  const [cycle, setCycle] = useState('');
-  const [edible, setEdible] = useState('');
-  const [poisonous, setPoisonous] = useState('');
-  const [indoor, setIndoor] = useState('');
+  let [wateringOptions, setWateringOptions] = useState([]);
+  let [name, setName] = useState('');
+  let [interval, setInterval] = useState('');
+  let [sunlight, setSunlight] = useState('');
+  let [cycle, setCycle] = useState('');
+  let [edible, setEdible] = useState('');
+  let [poisonous, setPoisonous] = useState('');
 
   useEffect(() => {
-    
+    selectAllWatering(setWateringOptions)
   }, []);
 
   const handleCall = () => {
@@ -32,11 +31,16 @@ const FindPlant = () => {
         (result) => {
           console.log('callin')
           console.log(query);
-          console.log(result);
+          //console.log(result);
           setIsLoading(false);
-          setName(result.data[0].common_name);
+          setName(result.data[0].common_name); //protect from undefined
           setCycle(result.data[0].cycle);
           setSunlight(result.data[0].sunlight.join());
+          setEdible(null); //what happens if i put .edible?
+          setPoisonous(null);
+          //watering
+          console.log(wateringOptions.find(({ name }) => name === result.data[0].watering).watering_id);
+          setInterval(wateringOptions.find(({ name }) => name === result.data[0].watering).watering_id)
           setResponse(result);
         },
         (error) => {
@@ -47,12 +51,10 @@ const FindPlant = () => {
   }
 
   const addPlantDB = () => {
-    console.log('ur mom is gay');
-    addPlantAPI(name, sunlight, cycle, 'test', 'test', 0, plantAdded);
+    addPlantAPI(name, sunlight, cycle, edible, poisonous, interval, plantAdded);
   }
 
   const plantAdded = () => {
-    
   }
 
   const getContent = () => {

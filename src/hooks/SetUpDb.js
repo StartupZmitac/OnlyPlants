@@ -10,7 +10,6 @@ export default function setUpDb() {
   useEffect(() => {
     async function loadDataAsync() {
       try {
-        //dropEverything()
         createTables();
         initWatering();
         sleep(1500).then(()=>setDBLoadingComplete(true))
