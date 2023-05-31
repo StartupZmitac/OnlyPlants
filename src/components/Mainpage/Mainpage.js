@@ -40,6 +40,7 @@ const MainPage = () => {
                                     aria-label="test"
                                 />
                                 <Box style={{margin: 8}}><Text style={styles.label} bold>{checkbox.name}</Text></Box>
+                            
                             </Box>
                         ))}
                     </Box>
