@@ -181,10 +181,11 @@ export const selectAllWatering = (getAllWatering) => {
   db.transaction(tx => {
     tx.executeSql('SELECT * FROM watering', [],
     (_, {rows: {_array}}) => {
+      //_array.forEach((entry)=>{console.log(entry)})
       getAllWatering(_array)
     });
   },
-  (t, error) => { console.log("db error load watering"); console.log(error) },
+  (_t, error) => { console.log("db error load watering"); console.log(error) },
   (_t, _success) => { console.log("loaded watering")}
   );
 }
@@ -267,7 +268,9 @@ export const dropEverything = () => {
 export const exportDb = async () => {
   if (Platform.OS === "android") {
     const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
+    console.log(permissions);
     if (permissions.granted) {
+      
       const base64 = await FileSystem.readAsStringAsync(
         FileSystem.documentDirectory + 'SQLite/onlyplants.db',
         {
