@@ -23,11 +23,10 @@ export default StyleSheet.create({
         backgroundColor: '#7FB77E',
         alignItems: 'center'
       },
-      checkbox: {
-        alignItem: 'center',
-      },
       label: {
-        margin: 8,
+        color: '#FFFFFF',
+        fontSize: 20,
+        
       },
       checkboxContainer: {
         display: 'flex',
@@ -35,9 +34,47 @@ export default StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
         marginBottom: 20,
-        padding: '5%',
-        
-        
+        padding: '5%', 
       },
+
+
       
+      clear: {
+        clear: 'both',
+      },
+      checkBox: {
+        display: 'block',
+        cursor: 'pointer',
+        width: 30,
+        height: 30,
+        borderWidth: 3,
+        borderColor: 'rgba(255, 255, 255, 0)',
+        borderRadius: 10,
+        position: 'relative',
+        overflow: 'hidden',
+        boxShadow: '0px 0px 0px 2px #fff',
+      },
+      checkBoxDiv: {
+        width: 60,
+        height: 60,
+        backgroundColor: '#fff',
+        top: -52,
+        left: -52,
+        position: 'absolute',
+        transform: [{ rotateZ: '45deg' }],
+        zIndex: 100,
+      },
+      checkedCheckBoxDiv: {
+        left: -10,
+        top: -10,
+      },
+      checkBoxInput: {
+        position: 'absolute',
+        left: 50,
+        visibility: 'hidden',
+      },
+      transition: {
+        transitionDuration: '300ms',
+        transitionTimingFunction: 'ease',
+      },
   });

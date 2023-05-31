@@ -39,7 +39,7 @@ const MainPage = () => {
                                     onValueChange={() => handleCheckboxChange(checkbox.id)}
                                     aria-label="test"
                                 />
-                                <Box style={styles.label}>{checkbox.name}</Box>
+                                <Box style={{margin: 8}}><Text style={styles.label} bold>{checkbox.name}</Text></Box>
                             </Box>
                         ))}
                     </Box>
