@@ -16,15 +16,6 @@ export default StyleSheet.create({
     padding: '5%',
     paddingTop: '15%'
   },
-  inputField:{
-    backgroundColor: '#FFC090',
-    width: '60%',
-    height: '100%',
-  },
-  titleBox: {
-    backgroundColor: '#7FB77E',
-    alignItems: 'center'
-  },
   button: {
     backgroundColor: '#FFC090',
     color: "#F7F6DC",
@@ -38,9 +29,6 @@ export default StyleSheet.create({
     width: Dimensions.get('window').width * 0.5,
     height: Dimensions.get('window').width * 0.5,
     borderRadius: Math.round((Dimensions.get('window').height + Dimensions.get('window').width) / 2),
-  },
-  container: {
-    paddingTop: '1%',
   },
   profileImage: {
     width: '100%',

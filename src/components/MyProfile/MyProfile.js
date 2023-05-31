@@ -11,7 +11,7 @@ const MyProfile = () =>{
                 <Box style={styles.mainBody}>
                     <Box style={styles.choiceBox}>
                         <Box style={styles.photoBox}>
-                        <Image source = {{uri:'https://www.ismip.aei.polsl.pl/images/zdjecia/darekc.jpg'}} 
+                        <Image source = {{uri:'https://media.npr.org/assets/img/2021/11/10/white-tailed-deer-1-ac07593f0b38e66ffac9178fb0c787ca75baea3d.jpg'}}
                             alt="My Profile Image"
                             style = {styles.profileImage}
                         />
