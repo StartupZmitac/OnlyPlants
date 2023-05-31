@@ -12,7 +12,6 @@ const CustomPlant = () => {
   const [cycle, setCycle] = useState('');
   const [edible, setEdible] = useState('');
   const [poisonous, setPoisonous] = useState('');
-  const [indoor, setIndoor] = useState('');
   const [wateringOptions, setWateringOptions] = useState([]);
   var options;
   
@@ -43,7 +42,7 @@ const CustomPlant = () => {
   function addToDatabase()
   {
     var date = new Date();
-    addPlant(name, sunlight, cycle, edible, poisonous, indoor, interval, ()=>{console.log("plant added to plants")});
+    addPlant(name, sunlight, cycle, edible, poisonous, interval, ()=>{console.log("plant added to plants")});
   }
 
   return (

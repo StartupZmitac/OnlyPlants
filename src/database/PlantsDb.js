@@ -46,9 +46,9 @@ export const createTables = async (
 };
 
 //insert
-export const addPlant = (name, sunlight, cycle, edible, poisonous, indoor, interval, successFunc) => {
+export const addPlant = (name, sunlight, cycle, edible, poisonous, interval, successFunc) => {
   db.transaction(tx => {
-    tx.executeSql('INSERT INTO plants (name, sunlight, cycle, edible, poisonous, indoor, custom, watering) values (?,?,?,?,?,?,?);', [name, sunlight, cycle, edible, poisonous, true, interval],
+    tx.executeSql('INSERT INTO plants (name, sunlight, cycle, edible, poisonous, custom, watering) values (?,?,?,?,?,?,?);', [name, sunlight, cycle, edible, poisonous, true, interval],
       (txObj, success) => {successFunc()},
       (txObj, error) => {console.log(error);}
     );
