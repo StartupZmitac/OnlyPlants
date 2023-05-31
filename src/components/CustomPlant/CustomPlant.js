@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {TouchableWithoutFeedback, Keyboard} from 'react-native';
-import {Box, Button, NativeBaseProvider, Heading, Input, Column, Row, Select} from "native-base"
+import {Box, Button, NativeBaseProvider, Heading, Input, Column, Row, Select, extendTheme} from "native-base"
 import { Entypo } from '@expo/vector-icons'; 
 import styles from './CustomPlant.style.js'
 import { addPlant, addPlanted, exportDb, selectAllWatering,} from '../../database/PlantsDb.js'
@@ -15,6 +15,7 @@ const CustomPlant = () => {
   const [indoor, setIndoor] = useState('');
   const [wateringOptions, setWateringOptions] = useState([]);
   var options;
+  
   async function exportDatabase() {
     try {
       await exportDb()
