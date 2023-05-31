@@ -22,28 +22,6 @@ import MainPage from './src/components/MainPage/MainPage.js';
 // expo add expo-sharing
 // expo add expo-dev-client
 
-/*
-  For testing expo-document-picker on iOS we need a standalone app 
-  which is why we install expo-dev-client
-  
-  If you don't have eas installed then install using the following command:
-  npm install -g eas-cli
-  eas login
-  eas build:configure
-  Build for local development on iOS or Android:
-  eas build -p ios --profile development --local
-  OR
-  eas build -p android --profile development --local
-  May need to install the following to build locally (which allows debugging)
-  npm install -g yarn
-  brew install fastlane
-  After building install on your device:
-  For iOS (simulator): https://docs.expo.dev/build-reference/simulators/
-  For Android: https://docs.expo.dev/build-reference/apk/
-  Run on installed app:
-  expo start --dev-client
-*/
-//Tutaj generalnie troche zrobiłem bałagan, bo stack navigator będzie potrzebny do czegoś innego - narazie chcemy tab navigator
 const Tab = createBottomTabNavigator();
 export default function App() {
   return (

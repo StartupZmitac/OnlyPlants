@@ -35,7 +35,8 @@ export default StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
         marginBottom: 20,
-        padding: '5%'
+        padding: '5%',
+        
         
       },
       

@@ -14,16 +14,19 @@ const MainPage = () => {
   
   
       const handleCheckboxChange = (id) => {
-          const updatedCheckboxes = checkboxes.map((checkbox) => {
-            if (checkbox.id === id)
-              return { ...checkbox, checked: !checkbox.checked };
-          });
-          setCheckboxes(updatedCheckboxes);
-    };
+  setCheckboxes((prevState) => {
+    const updatedCheckboxes = prevState.map((checkbox) => {
+      if (checkbox.id === id) {
+        return { ...checkbox, checked: !checkbox.checked };
+      }
+      return checkbox;
+    });
+    return updatedCheckboxes;
+  });
+};
 
     return (
         <NativeBaseProvider>
-            <Box>
                 <Box style={styles.mainBody}>
                     <Box style={styles.checkboxContainer}>
                         {checkboxes.map((checkbox) => (
@@ -41,7 +44,6 @@ const MainPage = () => {
                         ))}
                     </Box>
                 </Box>
-            </Box>   
         </NativeBaseProvider>
     );
                         
