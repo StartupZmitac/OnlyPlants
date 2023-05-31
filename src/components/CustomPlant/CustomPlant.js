@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {TouchableWithoutFeedback, Keyboard} from 'react-native';
-import {Box, Button, NativeBaseProvider, Heading, Input, Column, Row, Select} from "native-base"
+import {Box, Button, NativeBaseProvider, Heading, Input, Column, Row, Select, extendTheme} from "native-base"
 import { Entypo } from '@expo/vector-icons'; 
 import styles from './CustomPlant.style.js'
-import { database } from '../../database/PlantsDb.js'
+import { database, exportDb } from '../../database/PlantsDb.js'
 
 const CustomPlant = () => {
   const [name, setName] = useState('');
@@ -14,9 +14,9 @@ const CustomPlant = () => {
   const [poisonous, setPoisonous] = useState('');
   const [indoor, setIndoor] = useState('');
 
-  async function exportDb() {
+  async function exportDatabase() {
     try {
-      await database.exportDb()
+      await exportDb()
       console.log('exported')
     } catch (e) {
       console.warn(e);
@@ -141,7 +141,7 @@ const CustomPlant = () => {
             </Box>
             <Row style={{alignItems: 'center', padding: '10%'}}>
             <Button size="lg" style={{backgroundColor: '#FFC090', color: "#F7F6DC"}}>Add Plant</Button>
-           
+            <Button size="lg" onPress={exportDatabase} style={{backgroundColor: '#FFC090', color: "#F7F6DC"}}>export</Button>
             </Row>
           </Box>
         </Box>
