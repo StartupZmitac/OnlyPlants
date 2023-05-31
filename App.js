@@ -13,7 +13,7 @@ import { NativeBaseConfigProvider } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MainPage from './src/components/MainPage/MainPage.js';
+import MainPage from './src/components/Mainpage/Mainpage.js';
 
 
 // expo add expo-sqlite

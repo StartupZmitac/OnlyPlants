@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import {Animated, Easing} from 'react-native'
 import { NativeBaseProvider, Text, View, Input, Box, Row, Button, Heading, Column, Checkbox } from "native-base";
-import styles from './MainPage.style.js'
+import styles from './Mainpage.style.js'
 
 
 const MainPage = () => {
@@ -30,7 +30,7 @@ const MainPage = () => {
                 <Box style={styles.mainBody}>
                     <Box style={styles.checkboxContainer}>
                         {checkboxes.map((checkbox) => (
-                            <Box style={{ 
+                            <Box key={checkbox.id} style={{ 
                                 flexDirection: "row",
                                  alignItems: "center",
                                 }}>
