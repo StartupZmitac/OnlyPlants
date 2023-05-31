@@ -145,22 +145,6 @@ const CustomPlant = () => {
                   <Select.Item label="Poisonous" value="1" />
                   <Select.Item label="Not poisonous" value="0" />
               </Select>
-              <Select selectedValue={indoor}
-                minWidth="290"
-                accessibilityLabel="Is the plant indoor?"
-                placeholder="Is the plant indoor?"
-                placeholderTextColor="#F7F6DC"
-                backgroundColor="#FFC090"
-                variant="rounded"
-                color="#F7F6DC"
-                fontSize={'20'}
-                dropdownIcon={<Entypo name="chevron-small-down" size={24} color="#F7F6DC"/>}
-                _selectedItem={{
-                bg: "#FFC090"
-                }} mt={1} onValueChange={itemValue => setIndoor(itemValue)}>
-                  <Select.Item label="Indoor" value="1" />
-                  <Select.Item label="Outdoor" value="0" />
-              </Select>
               </Column>
             </Box>
             <Row style={{alignItems: 'center', padding: '10%'}}>
