@@ -1,8 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
 import {Animated, Easing} from 'react-native'
-import { NativeBaseProvider, Text, View, Input, Box, Row, Button, Heading, Column, Checkbox } from "native-base";
+import { NativeBaseProvider, Text, Icon, Input, Box, Row, Button, Heading, Column, Checkbox } from "native-base";
 import styles from './Mainpage.style.js'
-
+import { Entypo } from '@expo/vector-icons'; 
 
 const MainPage = () => {
     const [checkboxes, setCheckboxes] = useState([
@@ -36,8 +36,12 @@ const MainPage = () => {
                                 }}>
                                 <Checkbox
                                     value={checkbox.checked}
+                                    colorScheme="green"
+                                    size="lg"
+                                    icon={<Icon as= {<Entypo name="drop"/>}/>}
                                     onValueChange={() => handleCheckboxChange(checkbox.id)}
                                     aria-label="test"
+                                    
                                 />
                                 <Box style={{margin: 8}}><Text style={styles.label} bold>{checkbox.name}</Text></Box>
                             
