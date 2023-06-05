@@ -29,19 +29,22 @@ const FindPlant = () => {
       .then(res => res.json())  
       .then(
         (result) => {
-          console.log('callin')
-          console.log(query);
-          //console.log(result);
           setIsLoading(false);
-          setName(result.data[0].common_name); //protect from undefined
-          setCycle(result.data[0].cycle);
-          setSunlight(result.data[0].sunlight.join());
-          setEdible(null); //what happens if i put .edible?
-          setPoisonous(null);
-          //watering
-          console.log(wateringOptions.find(({ name }) => name === result.data[0].watering).watering_id);
-          setInterval(wateringOptions.find(({ name }) => name === result.data[0].watering).watering_id)
+
+          //setting chosen plant - do this only after user picks
+
+          // setName(result.data[0].common_name); //protect from undefined
+          // setCycle(result.data[0].cycle);
+          // setSunlight(result.data[0].sunlight.join());
+          // setEdible(null); 
+          // setPoisonous(null);
+          // //watering
+          // setInterval(wateringOptions.find(({ name }) => name === result.data[0].watering).watering_id)
+
+          //
           setResponse(result);
+          console.log(response)
+
         },
         (error) => {
           setIsLoading(false);
@@ -50,7 +53,21 @@ const FindPlant = () => {
       )
   }
 
+  const parseResponse = (response) => {
+    records = []
+    for(const key in response.data){
+      record = response.data[key]
+      console.log(key, response.data[key])
+      if(record.cycle.indexOf("I'm sorry")==-1){
+        records.push(response.data[key])
+      }
+    }
+    console.log(records)
+    return records
+  }
+
   const addPlantDB = () => {
+    //TODO: first check if this plant is already in db, then proceed
     addPlantAPI(name, sunlight, cycle, edible, poisonous, interval, plantAdded);
   }
 
@@ -67,14 +84,17 @@ const FindPlant = () => {
     }
 
     if(typeof(response)!== 'undefined'){
-      //shows plant details and a button to add plant - this adds it to plants
       //navigate to plant plant component to actually plant it
-
       responseJson = JSON.stringify(response)
       if(responseJson.includes("Surpassed API Rate Limit")){
         seconds = responseJson.slice(65,70)
         return <Text>{`Too many API calls :( Retry in ${seconds} seconds`}</Text>;
       }
+      if(response.total == 0){
+        return <Text>{'No results'}</Text>;
+      }
+      else{
+      records = parseResponse(response)
       return (
               <NativeBaseProvider>
                 <Box>
@@ -85,6 +105,7 @@ const FindPlant = () => {
                 </Box>
               </NativeBaseProvider>
       );
+      }
     }
   };
 
