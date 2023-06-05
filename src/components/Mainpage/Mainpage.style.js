@@ -25,7 +25,7 @@ export default StyleSheet.create({
       },
       label: {
         color: '#FFFFFF',
-        fontSize: 20,
+        fontSize: 21.5,
         
       },
       checkboxContainer: {
@@ -33,7 +33,6 @@ export default StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        marginBottom: 20,
-        padding: '5%', 
+        padding: '5%',
       },
   });

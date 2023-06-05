@@ -33,6 +33,7 @@ const MainPage = () => {
                             <Box key={checkbox.id} style={{ 
                                 flexDirection: "row",
                                  alignItems: "center",
+                                 paddingBottom: '3%',
                                 }}>
                                 <Checkbox
                                     value={checkbox.checked}
