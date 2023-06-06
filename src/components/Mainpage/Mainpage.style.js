@@ -1,5 +1,9 @@
 import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
+    title: {
+    color: '#FFFFFF',
+    fontSize: 20, 
+    },
     mainBody: {
         backgroundColor: '#B1D7B4',
         alignItems: 'center',
@@ -39,7 +43,7 @@ export default StyleSheet.create({
       },
       label: {
         color: '#FFFFFF',
-        fontSize: 21.5, 
+        fontSize: 20, 
       },
       inputField:{
         backgroundColor: '#FFC090',
