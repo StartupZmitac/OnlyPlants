@@ -28,26 +28,24 @@ const MainPage = () => {
     return (
         <NativeBaseProvider>
                 <Box style={styles.mainBody}>
+                    <Box style={styles.choiceBox}>
                     <Box style={styles.checkboxContainer}>
                         {checkboxes.map((checkbox) => (
                             <Box key={checkbox.id} style={{ 
                                 flexDirection: "row",
                                  alignItems: "center",
-                                 paddingBottom: '3%',
+                                 paddingBottom: '5%',
                                 }}>
-                                <Checkbox
-                                    value={checkbox.checked}
-                                    colorScheme="green"
-                                    size="lg"
-                                    icon={<Icon as= {<Entypo name="drop"/>}/>}
-                                    onValueChange={() => handleCheckboxChange(checkbox.id)}
-                                    aria-label="test"
-                                    
-                                />
-                                <Box style={{margin: 8}}><Text style={styles.label} bold>{checkbox.name}</Text></Box>
+                                <Box style={styles.plantButton}>
+                                    <Icon color="#FFFFFF" size={6} as= {<Entypo name="drop"/>}/>
+                                </Box>
+                                <Button style={styles.inputField}>
+                                <Text style={styles.label}>{checkbox.name}</Text>
+                                </Button>
                             
                             </Box>
                         ))}
+                    </Box>
                     </Box>
                 </Box>
         </NativeBaseProvider>
