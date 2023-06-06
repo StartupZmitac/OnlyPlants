@@ -2,10 +2,11 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { Text, View, ActivityIndicator, TextInput} from 'react-native';
 import styles from './FindPlant.style.js'
-import { NativeBaseProvider, Box, Button, Heading, Input, Row } from 'native-base';
+import { NativeBaseProvider, Box, Button, Heading, Input, Row, ScrollView, Center, VStack} from 'native-base';
 import { addPlantAPI, selectAllWatering } from '../../database/PlantsDb.js'
 
 // @flow
+
 const FindPlant = () => {
   let [isLoading, setIsLoading] = useState(true);
   let [error, setError] = useState();
@@ -31,17 +32,6 @@ const FindPlant = () => {
         (result) => {
           setIsLoading(false);
 
-          //setting chosen plant - do this only after user picks
-
-          // setName(result.data[0].common_name); //protect from undefined
-          // setCycle(result.data[0].cycle);
-          // setSunlight(result.data[0].sunlight.join());
-          // setEdible(null); 
-          // setPoisonous(null);
-          // //watering
-          // setInterval(wateringOptions.find(({ name }) => name === result.data[0].watering).watering_id)
-
-          //
           setResponse(result);
           console.log(response)
 
@@ -72,6 +62,18 @@ const FindPlant = () => {
   }
 
   const plantAdded = () => {
+    //setting chosen plant - do this only after user picks
+
+    setName(result.data[0].common_name); //protect from undefined
+    setCycle(result.data[0].cycle);
+    setSunlight(result.data[0].sunlight.join());
+    setEdible(null); 
+    setPoisonous(null);
+
+    //watering
+    setInterval(wateringOptions.find(({ name }) => name === result.data[0].watering).watering_id)
+    console.log(name, cycle, sunlight, watering)
+
   }
 
   const getContent = () => {
@@ -98,10 +100,24 @@ const FindPlant = () => {
       return (
               <NativeBaseProvider>
                 <Box>
-                  <Text>{name}</Text>
-                  <Row style={{alignItems: 'center', padding: '5%'}}>
+                <ScrollView w={["200", "300"]} h="80">
+                  <Center mb="4">
+                    <Heading fontSize="xl" style={{color: "#0b3b0c"}}>Results:</Heading>
+                  </Center>
+                  <VStack flex="1">
+                    {records.map((item, index) => {
+                      return (<View key={index}>
+                                <Button mt="3" size="lg" style={{backgroundColor: '#FFC090', color: "#F7F6DC"}}>{item.scientific_name}</Button>
+                              </View>)
+                  })}
+                  </VStack>
+                </ScrollView>
+                <Center  mb="4">
+                <Row style={{alignItems: 'center', padding: '5%'}}>
                     <Button size="lg" onPress={addPlantDB} style={{backgroundColor: '#FFC090', color: "#F7F6DC"}}>Add</Button>
                   </Row>
+                  </Center>
+                  
                 </Box>
               </NativeBaseProvider>
       );
@@ -124,12 +140,11 @@ const FindPlant = () => {
               width={'80%'}
               style={styles.inputField}
           />
+          <Button mt="3" size="lg" onPress={handleCall} style={{backgroundColor: '#FFC090', color: "#F7F6DC"}}>Find</Button>
           <Box style={styles.choiceBox}>
             {getContent()}
           </Box>
           <Row style={{alignItems: 'center', padding: '5%'}}>
-          <Button size="lg" onPress={handleCall} style={{backgroundColor: '#FFC090', color: "#F7F6DC"}}>Find</Button>
-          
           </Row>
         </Box>
       </Box>

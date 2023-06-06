@@ -157,18 +157,4 @@ const CustomPlant = () => {
     </NativeBaseProvider>
   );
 };
-/*
-  <Button size="lg" style={styles.button}> Export </Button>
-  <Button size="lg" style={styles.button}> Drop </Button>
-  <Input 
-                variant="rounded"
-                placeholder="Watering interval (in days)"
-                onChangeText={newInterval => setInterval(newInterval)}
-                placeholderTextColor="#F7F6DC"
-                defaultValue={""}
-                fontSize={'20'} 
-                inputMode='numeric'
-                style={styles.inputField}
-              />
-*/
 export default CustomPlant;
