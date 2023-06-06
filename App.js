@@ -12,6 +12,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import setUpDb from './src/hooks/SetUpDb.js';
 import styles from './App.style.js'
+import PlantPlant from './src/components/PlantPlant/PlantPlant';
 
 const Tab = createBottomTabNavigator();
 export default function App() {
@@ -55,7 +56,7 @@ export default function App() {
         />
         <Tab.Screen
           name="Add custom plant..."
-          component={CustomPlant}
+          component={PlantPlant}
           options={{
             tabBarIcon: ({ focused }) => (
               <Feather name="settings" size={30} color="#FFC090" />

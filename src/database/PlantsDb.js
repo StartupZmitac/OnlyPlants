@@ -34,7 +34,7 @@ export const createTables = async (
           }, (t, res) => {
             console.log(res);
           })
-          tx.executeSql("CREATE TABLE IF NOT EXISTS planted(id INTEGER PRIMARY KEY, date_planted TEXT NOT NULL, date_watered TEXT NOT NULL, date_notified TEXT, interval INTEGER NOT NULL, custom_name TEXT, inside INTEGER NOT NULL, plant_id INTEGER NOT NULL, group_id INTEGER NOT NULL, location_id INTEGER NOT NULL, FOREIGN KEY (plant_id) REFERENCES plants(id), FOREIGN KEY (group_id) REFERENCES groups(id), FOREIGN KEY (location_id) REFERENCES location(id));", ()  => {
+          tx.executeSql("CREATE TABLE IF NOT EXISTS planted(id INTEGER PRIMARY KEY, date_planted TEXT NOT NULL, date_watered TEXT NOT NULL, date_notified TEXT, interval INTEGER NOT NULL, custom_name TEXT, inside INTEGER NOT NULL, plant_id INTEGER NOT NULL, group_id INTEGER, location_id INTEGER, FOREIGN KEY (plant_id, group_id, location_id) REFERENCES (plants(id), groups(id), location(id)));", ()  => {
           }, (t, res) => {
             console.log(res);
           })
@@ -177,6 +177,19 @@ export const selectAllPlants = (getAllPlants) => {
   );
 }
 
+export const selectPlant = (id, getPlant) => {
+  db.transaction(tx => {
+    tx.executeSql('SELECT * FROM plants WHERE id=?', [id],
+    (_, {rows: {_array}}) => {
+      //console.log(_array)
+      getPlant(_array)
+    });
+  },
+  (_t, error) => { console.log("db error load plants"); console.log(error) },
+  (_t, _success) => { console.log("loaded plant")}
+  );
+}
+
 export const selectAllWatering = (getAllWatering) => {
   db.transaction(tx => {
     tx.executeSql('SELECT * FROM watering', [],
@@ -187,6 +200,19 @@ export const selectAllWatering = (getAllWatering) => {
   },
   (_t, error) => { console.log("db error load watering"); console.log(error) },
   (_t, _success) => { console.log("loaded watering")}
+  );
+}
+
+export const selectWatering = (id, getWatering) => {
+  db.transaction(tx => {
+    tx.executeSql('SELECT * FROM watering WHERE watering_id=?', [id],
+    (_, {rows: {_array}}) => {
+      //console.log(id)
+      getWatering(_array)
+    });
+  },
+  (_t, error) => { console.log("db error load watering"); console.log(error) },
+  (_t, _success) => { console.log("loaded watering (singular)")}
   );
 }
 

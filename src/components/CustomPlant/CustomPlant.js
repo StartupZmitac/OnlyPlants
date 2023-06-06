@@ -13,7 +13,6 @@ const CustomPlant = () => {
   const [edible, setEdible] = useState('');
   const [poisonous, setPoisonous] = useState('');
   const [wateringOptions, setWateringOptions] = useState([]);
-  var options;
   
   async function exportDatabase() {
     try {
@@ -41,7 +40,6 @@ const CustomPlant = () => {
 
   function addToDatabase()
   {
-    var date = new Date();
     addPlant(name, sunlight, cycle, edible, poisonous, interval, ()=>{console.log("plant added to plants")});
   }
 
@@ -63,7 +61,7 @@ const CustomPlant = () => {
                 style={styles.inputField}
               />
               <Select selectedValue={interval}
-                minWidth="290"
+                width='100%'
                 accessibilityLabel="Watering frequency"
                 placeholder="Watering frequency"
                 placeholderTextColor="#F7F6DC"
@@ -78,7 +76,7 @@ const CustomPlant = () => {
                   {wateringList()}
               </Select>
               <Select selectedValue={sunlight}
-                minWidth="290"
+                width='100%'
                 accessibilityLabel="Insolation"
                 placeholder="Insolation"
                 placeholderTextColor="#F7F6DC"
@@ -96,7 +94,7 @@ const CustomPlant = () => {
                   <Select.Item label="Fully in sun" value="3" />
               </Select>
               <Select selectedValue={cycle}
-                minWidth="290"
+                width='100%'
                 accessibilityLabel="Plant cycle"
                 placeholder="Plant cycle"
                 placeholderTextColor="#F7F6DC"
@@ -114,7 +112,7 @@ const CustomPlant = () => {
                   <Select.Item label="Biannual" value="3" />
               </Select>
               <Select selectedValue={edible}
-                minWidth="290"
+                width='100%'
                 accessibilityLabel="Is the plant edible?"
                 placeholder="Is the plant edible?"
                 placeholderTextColor="#F7F6DC"
@@ -130,7 +128,7 @@ const CustomPlant = () => {
                   <Select.Item label="Inedible" value="0" />
               </Select>
               <Select selectedValue={poisonous}
-                minWidth="290"
+                width='100%'
                 accessibilityLabel="Is the plant poisonous?"
                 placeholder="Is the plant poisonous?"
                 placeholderTextColor="#F7F6DC"
