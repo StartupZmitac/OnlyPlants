@@ -12,8 +12,20 @@ import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import setUpDb from './src/hooks/SetUpDb.js';
 import styles from './App.style.js'
+import MyPlantsManagement from './src/components/MyPlantsManagement/MyPlantsManagement.js';
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+export function MyProfileNavigation() {
+  return (
+          <Stack.Navigator>
+              <Stack.Screen name="MyProfile" component={MyProfile} />
+              <Stack.Screen name="MyPlantsManagements" component={MyPlantsManagement} />
+          </Stack.Navigator>
+        )
+}
+
 export default function App() {
 
   const isDBLoadingComplete = setUpDb();
@@ -37,7 +49,7 @@ export default function App() {
       >
         <Tab.Screen
           name="My profile..."
-          component={MyProfile}
+          component={MyProfileNavigation}
           options={{
             tabBarIcon: ({ focused }) => (
               <AntDesign name="profile" size={30} color="#FFC090" />
@@ -63,7 +75,7 @@ export default function App() {
           }}
         />
       </Tab.Navigator>
-    </NavigationContainer>   
+    </NavigationContainer>  
     </NativeBaseProvider>
   );
   }
