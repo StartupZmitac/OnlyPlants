@@ -3,7 +3,7 @@ import {TouchableWithoutFeedback, Keyboard} from 'react-native';
 import {Box, Button, NativeBaseProvider, Heading, Input, Column, Row, Select, extendTheme} from "native-base"
 import { Entypo } from '@expo/vector-icons'; 
 import styles from './CustomPlant.style.js'
-import { addPlant, addPlanted, exportDb, selectAllWatering,} from '../../database/PlantsDb.js'
+import { addPlant, addPlanted, dropEverything, exportDb, selectAllWatering,} from '../../database/PlantsDb.js'
 
 const CustomPlant = () => {
   const [name, setName] = useState('');
@@ -25,6 +25,7 @@ const CustomPlant = () => {
   
   useEffect(() => {
     selectAllWatering(setWateringOptions)
+    //dropEverything();
   }, []);
   
   function wateringList() {

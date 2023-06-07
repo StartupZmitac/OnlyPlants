@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {TouchableWithoutFeedback, Keyboard} from 'react-native';
 import {Box, Button, NativeBaseProvider, Heading, Input, Column, Row, Select, extendTheme, Text} from "native-base"
-import { addPlanted, exportDb, selectAllWatering, selectAllPlants, selectAllGroups, selectAllLocation, selectWatering, selectPlant} from '../../database/PlantsDb.js'
+import { addPlanted, exportDb, selectAllWatering, selectAllPlants, selectAllGroups, selectAllLocation, selectWatering, selectPlant, dropEverything, addGroups, addLocation, deleteDb} from '../../database/PlantsDb.js'
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { Entypo } from '@expo/vector-icons'; 
 import styles from './PlantPlant.style.js'
@@ -25,8 +25,9 @@ const PlantPlant = () => {
     const [show, setShow] = useState(false);
     const [datePlantedString, setDatePlantedString] = useState('');
     const [dateWateredString, setDateWateredString] = useState('');
-    const [plant, setPlant] = useState('');
-    const [water, setWater] = useState('');
+    const [plant, setPlant] = useState([]);
+    const [water, setWater] = useState([]);
+    
     async function exportDatabase() {
         try {
           await exportDb();
@@ -35,22 +36,30 @@ const PlantPlant = () => {
           console.warn(e);
         }
       }
+    
+      function addFakeNulls() {
+        addLocation("No location", "NULL", ()=>{console.log("null location added")});
+        addGroups("No group", "NULL", 1 , ()=>{console.log("null group added")});
+      }
       
       useEffect(() => {
+        addFakeNulls();
         selectAllWatering(setWateringOptions);
         selectAllPlants(setPlantList);
         selectAllGroups(setGroupList);
         selectAllLocation(setLocationList);
+        //dropEverything();
+        //deleteDb();
       }, []);
 
       function getInterval() {
         selectPlant(plantId, setPlant);
         tempPlant = JSON.stringify(plant);
         parsedPlant = JSON.parse(tempPlant);
-        selectWatering(parsedPlant[0].watering, setWater);
+        selectWatering(parsedPlant.at(0).watering, setWater);
         tempWater = JSON.stringify(water);
         parsedWater = JSON.parse(tempWater);
-        setInterval(parsedWater[0].interval);
+        setInterval(parsedWater.at(0).interval);
       }
 
       function plantsToPlantList() {
@@ -88,6 +97,19 @@ const PlantPlant = () => {
 
       function addToDatabase() {
         getInterval();
+        if (!groupId || groupId == '')
+        {
+          setGroupId('1');
+        }
+        if (!locationId ||locationId == '')
+        {
+          setLocationId('1');
+        }
+        if (!customName || customName == '')
+        {
+          setCustomName('NULL');
+        }
+        console.log(datePlanted, dateWatered, dateNotified, interval, customName, inside, plantId, groupId, locationId);
         addPlanted(datePlanted, dateWatered, dateNotified, interval, customName, inside, plantId, groupId, locationId, ()=>{console.log("planted")});
       }
 
