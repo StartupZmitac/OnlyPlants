@@ -4,4 +4,10 @@ export default StyleSheet.create({
     backgroundColor: '#7FB77E',
     alignItems: 'center'
   },
+  navigation: {
+    backgroundColor: '#F7F6DC' 
+  },
+  header: {
+    backgroundColor: "#7FB77E",
+  }
   });
