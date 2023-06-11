@@ -6,7 +6,7 @@ import { Entypo } from '@expo/vector-icons';
 
 const MainPage = () => {
     const toast = useToast();
-    const [checkboxes, setCheckboxes] = useState([
+    const [checkboxes] = useState([
         { id: 1, name: 'Flower 1', checked: false },
         { id: 2, name: 'Flower 2', checked: false },
         { id: 3, name: 'Flower 3', checked: false },
@@ -14,20 +14,10 @@ const MainPage = () => {
     ]);
 
 
-    const handleCheckboxChange = (id) => {
-        setCheckboxes((prevState) => {
-            const updatedCheckboxes = prevState.map((checkbox) => {
-                if (checkbox.id === id) {
-                    return { ...checkbox, checked: !checkbox.checked };
-                }
-                return checkbox;
-            });
-            return updatedCheckboxes;
-        });
-    };
-    const waterPlant = (name) => {
+    const waterPlant = (checkbox) => {
+        checkbox.checked = true;
         toast.show({
-            description: `Deleted plant called: ${name}`
+            description: `Deleted plant called: ${checkbox.name}`
         });
     }
     return (
@@ -36,7 +26,7 @@ const MainPage = () => {
                 <Box style={styles.choiceBox}>
                     <Box style={styles.checkboxContainer}>
                         {checkboxes.map((checkbox) => (
-                            <Box key={checkbox.id} style={{
+                             checkbox.checked === false && (<Box key={checkbox.id} style={{
                                 flexDirection: "row",
                                 alignItems: "center",
                                 paddingBottom: '5%',
@@ -44,17 +34,16 @@ const MainPage = () => {
                                 <Box style={styles.plantButton}>
                                     <Icon color="#FFFFFF" size={6} as={<Entypo name="drop" />} />
                                 </Box>
-                                <Button onPress={() => waterPlant(checkbox.name)} style={styles.inputField}>
+                                <Button onPress={() => waterPlant(checkbox)} style={styles.inputField}>
                                     <Text bold style={styles.label}>{checkbox.name}</Text>
                                 </Button>
                             </Box>
-                        ))}
+                        )))}
                     </Box>
                 </Box>
             </Box>
         </NativeBaseProvider>
     );
-
 }
 
 export default MainPage;
