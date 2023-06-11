@@ -8,12 +8,14 @@ import { NativeBaseConfigProvider } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import MainPage from './src/components/Mainpage/Mainpage.js';
 import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import setUpDb from './src/hooks/SetUpDb.js';
 import styles from './App.style.js'
 
 const Tab = createBottomTabNavigator();
+
 export default function App() {
 
   const isDBLoadingComplete = setUpDb();
