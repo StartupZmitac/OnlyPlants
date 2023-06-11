@@ -28,6 +28,7 @@ export default function App() {
     <NativeBaseProvider>
       <NavigationContainer>
       <Tab.Navigator
+        initialRouteName='Main page...'
         screenOptions={{
           tabBarShowLabel: false,
           tabBarStyle: styles.navigation,
@@ -35,26 +36,28 @@ export default function App() {
           headerTitleStyle: {
             color: "#F7F6DC",
           }
+          
         }}
       >
-        <Tab.Screen
-          name="My profile..."
-          component={MyProfile}
-          options={{
-            tabBarIcon: ({ focused }) => (
-              <AntDesign name="profile" size={30} color="#FFC090" />
-            ),
-          }}
-        />
         <Tab.Screen
           name="Add plant..."
           component={FindPlant}
           options={{
             tabBarIcon: ({ focused }) => (
-              <AntDesign name="pluscircle" size={40} color="#FFC090" />
+              <AntDesign name="pluscircleo" size={30} color="#FFC090" />
             ),
           }}
         />
+        <Tab.Screen
+          name="Main page..."
+          component={MainPage}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <AntDesign name="home" size={40} color="#FFC090" />
+            ),
+          }}
+        />
+
         <Tab.Screen
           name="Add custom plant..."
           component={CustomPlant}
