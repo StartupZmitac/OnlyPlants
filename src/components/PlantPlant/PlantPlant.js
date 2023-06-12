@@ -27,6 +27,8 @@ const PlantPlant = () => {
     const [dateWateredString, setDateWateredString] = useState('');
     const [plant, setPlant] = useState([]);
     const [water, setWater] = useState([]);
+    const [plantedPressed, setPlantedPressed] = useState('');
+    const [wateredPressed, setWateredPressed] = useState('');
     
     async function exportDatabase() {
         try {
@@ -97,15 +99,15 @@ const PlantPlant = () => {
 
       function addToDatabase() {
         getInterval();
-        if (!groupId || groupId == '')
+        if (!groupId || groupId === '')
         {
           setGroupId('1');
         }
-        if (!locationId ||locationId == '')
+        if (!locationId || locationId === '')
         {
           setLocationId('1');
         }
-        if (!customName || customName == '')
+        if (!customName || customName === '')
         {
           setCustomName('NULL');
         }
@@ -116,35 +118,53 @@ const PlantPlant = () => {
       const onChange = (event, selectedDate) => {
         const currentDate = selectedDate;
         setShow(false);
-        setDate(currentDate);
-        console.log(date.toString());
+        console.log(wateredPressed);
+        if (wateredPressed === true)
+        {
+          setDateWatered(currentDate.valueOf());
+          setDateWateredString(dateWatered.getDate() + "/" + dateWatered.getMonth() + "/" + dateWatered.getFullYear());
+          setDateNotified(dateWatered.valueOf());
+          console.log(dateWatered.toString());
+        }
+        if (plantedPressed === true)
+        {
+          setDatePlanted(currentDate.valueOf());
+          setDatePlantedString(datePlanted.getDate() + "/" + datePlanted.getMonth() + "/" + datePlanted.getFullYear());
+          console.log(datePlanted.toString());
+        }
+        //setDate(currentDate);
+        
       };
 
       //Adnroid only
-      const showMode = (currentMode) => {
+      const showDatepicker = () => {
         DateTimePickerAndroid.open({
           value: date,
           onChange,
-          mode: currentMode,
+          mode: "date",
           is24Hour: true,
         });
       };
 
-      const showDatepicker = () => {
-        showMode('date');
-      };
-
       const showDatepickerPlanted = () => {
+        setPlantedPressed(true);
+        
         showDatepicker();
+        /*
         setDatePlanted(date.valueOf());
         setDatePlantedString(date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear());
+        */
+        setPlantedPressed(false);
       }
 
       const showDatepickerWatered = () => {
+        console.log(wateredPressed);
         showDatepicker();
+        /*
         setDateWatered(date.valueOf());
         setDateWateredString(date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear());
         setDateNotified(date.valueOf());
+        */
       }
       
       return (
@@ -190,7 +210,7 @@ const PlantPlant = () => {
                         height='11%'
                         width='100%'
                         borderRadius='50'
-                        onPress={showDatepickerWatered} style={styles.button}>
+                        onPress={()=>{setWateredPressed("aaaaa"); showDatepickerWatered(); setWateredPressed("test");}} style={styles.button}>
                         <Text color="#F7F6DC" fontSize={'18'} > Day watered: {dateWateredString} </Text>
                         </Button>
                 <Select selectedValue={inside}
