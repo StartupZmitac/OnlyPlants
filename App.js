@@ -13,7 +13,9 @@ import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import setUpDb from './src/hooks/SetUpDb.js';
 import styles from './App.style.js'
+import PlantPlant from './src/components/PlantPlant/PlantPlant';
 import MyPlantsManagement from './src/components/MyPlantsManagement/MyPlantsManagement.js';
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -73,7 +75,7 @@ export default function App() {
 
         <Tab.Screen
           name="Add custom plant..."
-          component={CustomPlant}
+          component={PlantPlant}
           options={{
             tabBarIcon: ({ focused }) => (
               <Feather name="settings" size={30} color="#FFC090" />

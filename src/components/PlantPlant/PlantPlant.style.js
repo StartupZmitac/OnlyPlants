@@ -8,7 +8,7 @@ export default StyleSheet.create({
   },
   choiceBox: {
     backgroundColor: '#F7F6DC',
-    height: '70%',
+    height: '85%',
     width: '80%',
     alignItems: 'center',
     borderRadius: 50,
@@ -25,6 +25,9 @@ export default StyleSheet.create({
   },
   button: {
     backgroundColor: '#FFC090',
-    color: "#F7F6DC"
+    color: "#F7F6DC",
   },
+  plantColumn:{
+    width: '100%',
+  }
   });

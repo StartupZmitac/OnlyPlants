@@ -34,7 +34,7 @@ export const createTables = async (
           }, (t, res) => {
             console.log(res);
           })
-          tx.executeSql("CREATE TABLE IF NOT EXISTS planted(id INTEGER PRIMARY KEY, date_planted TEXT NOT NULL, date_watered TEXT NOT NULL, date_notified TEXT, interval INTEGER NOT NULL, custom_name TEXT, inside INTEGER NOT NULL, plant_id INTEGER NOT NULL, group_id INTEGER NOT NULL, location_id INTEGER NOT NULL, FOREIGN KEY (plant_id) REFERENCES plants(id), FOREIGN KEY (group_id) REFERENCES groups(id), FOREIGN KEY (location_id) REFERENCES location(id));", ()  => {
+          tx.executeSql("CREATE TABLE IF NOT EXISTS planted(id INTEGER PRIMARY KEY, date_planted TEXT NOT NULL, date_watered TEXT NOT NULL, date_notified TEXT, interval INTEGER NOT NULL, custom_name TEXT, inside INTEGER NOT NULL, plant_id_fk INTEGER NOT NULL, group_id_fk INTEGER, location_id_fk INTEGER, FOREIGN KEY (plant_id_fk) REFERENCES plants(id), FOREIGN KEY (group_id_fk) REFERENCES groups(group_id), FOREIGN KEY (location_id_fk) REFERENCES location(location_id));", ()  => {
           }, (t, res) => {
             console.log(res);
           })
@@ -102,7 +102,7 @@ export const addUserInfo = (pet, username, successFunc) => {
 
 export const addPlanted = (date_planted, date_watered, date_notified, interval, custom_name, inside, plant_id, group_id, location_id, successFunc) => {
   db.transaction(tx => {
-    tx.executeSql('INSERT INTO planted (date_planted, date_watered, date_notified, interval, custom_name, inside, plant_id, group_id, location_id) values (?,?,?,?,?,?,?,?,?);', [date_planted, date_watered, date_notified, interval, custom_name, inside, plant_id, group_id, location_id],
+    tx.executeSql('INSERT INTO planted (date_planted, date_watered, date_notified, interval, custom_name, inside, plant_id_fk, group_id_fk, location_id_fk) values (?,?,?,?,?,?,?,?,?);', [date_planted, date_watered, date_notified, interval, custom_name, inside, plant_id, group_id, location_id],
       (txObj, success) => {successFunc()},
       (txObj, error) => {console.log(error);}
     );
@@ -177,6 +177,19 @@ export const selectAllPlants = (getAllPlants) => {
   );
 }
 
+export const selectPlant = (id, getPlant) => {
+  db.transaction(tx => {
+    tx.executeSql('SELECT * FROM plants WHERE id=?', [id],
+    (_, {rows: {_array}}) => {
+      //console.log(_array)
+      getPlant(_array)
+    });
+  },
+  (_t, error) => { console.log("db error load plants"); console.log(error) },
+  (_t, _success) => { console.log("loaded plant")}
+  );
+}
+
 export const selectAllWatering = (getAllWatering) => {
   db.transaction(tx => {
     tx.executeSql('SELECT * FROM watering', [],
@@ -187,6 +200,19 @@ export const selectAllWatering = (getAllWatering) => {
   },
   (_t, error) => { console.log("db error load watering"); console.log(error) },
   (_t, _success) => { console.log("loaded watering")}
+  );
+}
+
+export const selectWatering = (id, getWatering) => {
+  db.transaction(tx => {
+    tx.executeSql('SELECT * FROM watering WHERE watering_id=?', [id],
+    (_, {rows: {_array}}) => {
+      //console.log(id)
+      getWatering(_array)
+    });
+  },
+  (_t, error) => { console.log("db error load watering"); console.log(error) },
+  (_t, _success) => { console.log("loaded watering (singular)")}
   );
 }
 
@@ -238,6 +264,18 @@ export const selectPlanted = (getAllPlanted) => {
   );
 }
 
+export const selectInterval = (plantId, getInterval) => {
+  db.transaction(tx => {
+    tx.executeSql('SELECT interval FROM plants JOIN watering ON plants.watering = watering.watering_id where plants.id = ?', [plantId],
+    (_, {rows: {_array}}) => {
+      getInterval(_array)
+    });
+  },
+  (t, error) => { console.log("db error select interval from plant"); console.log(error) },
+  (_t, _success) => { console.log("loaded select interval from plant")}
+  );
+}
+
 //others
 export const initWatering = () => {
   addWatering('Frequent', 3, ()=>{});
@@ -248,21 +286,28 @@ export const initWatering = () => {
 export const dropEverything = () => {
   db.transaction(tx => {
     //tx.executeSql("DELETE FROM planted;")
-    tx.executeSql("DELETE FROM plants;")
-    //tx.executeSql("DELETE FROM location;")
+    //tx.executeSql("DELETE FROM plants;")
+    tx.executeSql("DELETE FROM groups")
+    //tx.executeSql("DELETE FROM location")
     //tx.executeSql("DELETE FROM watering;")
-    //tx.executeSql("DELETE FROM groups;")
+    
     //tx.executeSql("DELETE FROM user_info;")
-    tx.executeSql("DROP TABLE IF EXISTS watering;")
-    tx.executeSql("DROP TABLE IF EXISTS location;")
-    tx.executeSql("DROP TABLE IF EXISTS user_info;")
-    tx.executeSql("DROP TABLE IF EXISTS plants;")
-    tx.executeSql("DROP TABLE IF EXISTS planted;")
-    tx.executeSql("DROP TABLE IF EXISTS groups;")
+    //tx.executeSql("DROP TABLE IF EXISTS watering;")
+    
+    //tx.executeSql("DROP TABLE IF EXISTS user_info;")
+    //tx.executeSql("DROP TABLE IF EXISTS plants;")
+    //tx.executeSql("DROP TABLE IF EXISTS planted;")
+    //tx.executeSql("DROP TABLE IF EXISTS groups;")
+    //tx.executeSql("DROP TABLE IF EXISTS location;")
       },
       (t, error) => { console.log("db error dropping tables"); console.log(error) },
       (_t, _success) => { console.log("dropped tables")}
     )
+}
+
+export const deleteDb = () => {
+  db.closeAsync();
+  db.deleteAsync();
 }
 
 export const exportDb = async () => {
