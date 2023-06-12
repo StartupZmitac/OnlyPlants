@@ -25,6 +25,9 @@ export default StyleSheet.create({
   },
   button: {
     backgroundColor: '#FFC090',
-    color: "#F7F6DC"
+    color: "#F7F6DC",
   },
+  plantColumn:{
+    width: '100%',
+  }
   });
