@@ -8,13 +8,28 @@ import { NativeBaseConfigProvider } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import MainPage from './src/components/Mainpage/Mainpage.js';
 import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import setUpDb from './src/hooks/SetUpDb.js';
 import styles from './App.style.js'
 import PlantPlant from './src/components/PlantPlant/PlantPlant';
+import MyPlantsManagement from './src/components/MyPlantsManagement/MyPlantsManagement.js';
+
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+export function MyProfileNavigation() {
+  return (
+          <Stack.Navigator>
+              <Stack.Screen name="MyProfile" component={MyProfile} options={{ headerShown: false }}/>
+              <Stack.Screen name="MyPlantsManagements" component={MyPlantsManagement} headerName = "My Plants Management" options={{ headerShown: false }} />
+          </Stack.Navigator>
+        )
+}
+
+
 export default function App() {
 
   const isDBLoadingComplete = setUpDb();
@@ -27,6 +42,7 @@ export default function App() {
     <NativeBaseProvider>
       <NavigationContainer>
       <Tab.Navigator
+        initialRouteName='Main page...'
         screenOptions={{
           tabBarShowLabel: false,
           tabBarStyle: styles.navigation,
@@ -34,26 +50,29 @@ export default function App() {
           headerTitleStyle: {
             color: "#F7F6DC",
           }
+          
         }}
       >
         <Tab.Screen
           name="My profile..."
-          component={MyProfile}
+          component={MyProfileNavigation}
+          headerName = 'My profile1'
           options={{
             tabBarIcon: ({ focused }) => (
-              <AntDesign name="profile" size={30} color="#FFC090" />
+              <AntDesign name="pluscircleo" size={30} color="#FFC090" />
             ),
           }}
         />
         <Tab.Screen
-          name="Add plant..."
-          component={FindPlant}
+          name="Main page..."
+          component={MainPage}
           options={{
             tabBarIcon: ({ focused }) => (
-              <AntDesign name="pluscircle" size={40} color="#FFC090" />
+              <AntDesign name="home" size={40} color="#FFC090" />
             ),
           }}
         />
+
         <Tab.Screen
           name="Add custom plant..."
           component={PlantPlant}
@@ -64,7 +83,7 @@ export default function App() {
           }}
         />
       </Tab.Navigator>
-    </NavigationContainer>   
+    </NavigationContainer>  
     </NativeBaseProvider>
   );
   }
