@@ -20,8 +20,8 @@ const Stack = createNativeStackNavigator();
 export function MyProfileNavigation() {
   return (
           <Stack.Navigator>
-              <Stack.Screen name="MyProfile" component={MyProfile} />
-              <Stack.Screen name="MyPlantsManagements" component={MyPlantsManagement} />
+              <Stack.Screen name="MyProfile" component={MyProfile} options={{ headerShown: false }}/>
+              <Stack.Screen name="MyPlantsManagements" component={MyPlantsManagement} headerName = "My Plants Management" options={{ headerShown: false }} />
           </Stack.Navigator>
         )
 }
@@ -50,6 +50,7 @@ export default function App() {
         <Tab.Screen
           name="My profile..."
           component={MyProfileNavigation}
+          headerName = 'My profile1'
           options={{
             tabBarIcon: ({ focused }) => (
               <AntDesign name="profile" size={30} color="#FFC090" />

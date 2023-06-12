@@ -20,7 +20,7 @@ const MyProfile = ( { navigation } ) =>{
                         />
                         </Box>
                         <Column space={5} alignItems="flex-end" position="absolute" bottom="5%">
-                        <Button size="lg" onPress={() => navigation.navigate('MyPlantsManagements')} style={styles.button}> My plants </Button>
+                        <Button size="lg" onPress={() => {navigation.navigate('MyPlantsManagements')} } style={styles.button}> My plants </Button>
                         <Button size="lg" style={styles.button}> Group plants </Button>
                         <Button size="lg" style={styles.button}> Pets </Button>
                         <Button size="lg" onPress={dropEverything} style={styles.button}> Drop Database </Button>
