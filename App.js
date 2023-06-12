@@ -29,6 +29,15 @@ export function MyProfileNavigation() {
         )
 }
 
+export function AddPlantNavigation() {
+  return (
+          <Stack.Navigator>
+              <Stack.Screen name="FindPlant" component={FindPlant} options={{ headerShown: false }}/>
+              <Stack.Screen name="PlantPlant" component={PlantPlant} options={{ headerShown: false }} />
+              <Stack.Screen name="CustomPlant" component={CustomPlant} options={{ headerShown: false }} />
+          </Stack.Navigator>
+        )
+}
 
 export default function App() {
 
@@ -54,9 +63,9 @@ export default function App() {
         }}
       >
         <Tab.Screen
-          name="My profile..."
-          component={MyProfileNavigation}
-          headerName = 'My profile1'
+          name="Add plant..."
+          component={AddPlantNavigation}
+          headerName = 'Add plant...'
           options={{
             tabBarIcon: ({ focused }) => (
               <AntDesign name="pluscircleo" size={30} color="#FFC090" />
@@ -74,8 +83,8 @@ export default function App() {
         />
 
         <Tab.Screen
-          name="Add custom plant..."
-          component={PlantPlant}
+          name="My profile..."
+          component={MyProfileNavigation}
           options={{
             tabBarIcon: ({ focused }) => (
               <Feather name="settings" size={30} color="#FFC090" />
