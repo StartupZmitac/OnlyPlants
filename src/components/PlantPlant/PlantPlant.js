@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {TouchableWithoutFeedback, Keyboard} from 'react-native';
 import {Box, Button, NativeBaseProvider, Heading, Input, Column, Row, Select, extendTheme, Text} from "native-base"
 import { addPlanted, exportDb, selectAllWatering, selectAllPlants, selectAllGroups, selectAllLocation, selectWatering, selectPlant, dropEverything, addGroups, addLocation, deleteDb} from '../../database/PlantsDb.js'
-import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Entypo } from '@expo/vector-icons'; 
 import styles from './PlantPlant.style.js'
 
@@ -20,15 +20,13 @@ const PlantPlant = () => {
     const [plantList, setPlantList] = useState([]);
     const [groupList, setGroupList] = useState([]);
     const [locationList, setLocationList] = useState([]);
-    const [date, setDate] = useState(new Date());
-    const [mode, setMode] = useState('date');
-    const [show, setShow] = useState(false);
     const [datePlantedString, setDatePlantedString] = useState('');
     const [dateWateredString, setDateWateredString] = useState('');
     const [plant, setPlant] = useState([]);
     const [water, setWater] = useState([]);
-    const [plantedPressed, setPlantedPressed] = useState('');
-    const [wateredPressed, setWateredPressed] = useState('');
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [plantedDatePressed, setPlantedDatePressed] = useState(false);
+    const [wateredDatePressed, setWateredDatePressed] = useState(false);
     
     async function exportDatabase() {
         try {
@@ -115,58 +113,42 @@ const PlantPlant = () => {
         addPlanted(datePlanted, dateWatered, dateNotified, interval, customName, inside, plantId, groupId, locationId, ()=>{console.log("planted")});
       }
 
-      const onChange = (event, selectedDate) => {
-        const currentDate = selectedDate;
-        setShow(false);
-        console.log(wateredPressed);
-        if (wateredPressed === true)
-        {
-          setDateWatered(currentDate.valueOf());
-          setDateWateredString(dateWatered.getDate() + "/" + dateWatered.getMonth() + "/" + dateWatered.getFullYear());
-          setDateNotified(dateWatered.valueOf());
-          console.log(dateWatered.toString());
-        }
-        if (plantedPressed === true)
-        {
-          setDatePlanted(currentDate.valueOf());
-          setDatePlantedString(datePlanted.getDate() + "/" + datePlanted.getMonth() + "/" + datePlanted.getFullYear());
-          console.log(datePlanted.toString());
-        }
-        //setDate(currentDate);
-        
+      const showDatePickerPlanted = () => {
+        setPlantedDatePressed(true);
+        setDatePickerVisibility(true);
       };
 
-      //Adnroid only
-      const showDatepicker = () => {
-        DateTimePickerAndroid.open({
-          value: date,
-          onChange,
-          mode: "date",
-          is24Hour: true,
-        });
+      const showDatePickerWatered = () => {
+        setWateredDatePressed(true);
+        setDatePickerVisibility(true);
+      };
+    
+      const hideDatePicker = () => {
+        setDatePickerVisibility(false);
+      };
+    
+      const handleConfirm = (date) => {
+        //console.warn("called by plated button:", plantedDatePressed);
+        hideDatePicker();
+        if (plantedDatePressed === true)
+        {
+          setDatePlanted(date);
+          //console.warn("A date has been picked: ", date);
+          var month = date.getMonth() + 1;
+          setDatePlantedString(date.getDate() + "/" + month + "/" + date.getFullYear());
+          setPlantedDatePressed(false);
+        }
+        if (wateredDatePressed === true)
+        {
+          setDateWatered(date);
+          setDateNotified(date);
+          //console.warn("A date has been picked: ", date);
+          var month = date.getMonth() + 1;
+          setDateWateredString(date.getDate() + "/" + month + "/" + date.getFullYear());
+          setWateredDatePressed(false);
+        }
       };
 
-      const showDatepickerPlanted = () => {
-        setPlantedPressed(true);
-        
-        showDatepicker();
-        /*
-        setDatePlanted(date.valueOf());
-        setDatePlantedString(date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear());
-        */
-        setPlantedPressed(false);
-      }
-
-      const showDatepickerWatered = () => {
-        console.log(wateredPressed);
-        showDatepicker();
-        /*
-        setDateWatered(date.valueOf());
-        setDateWateredString(date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear());
-        setDateNotified(date.valueOf());
-        */
-      }
-      
       return (
         <NativeBaseProvider>
         <TouchableWithoutFeedback onPress = {() => {Keyboard.dismiss();}}>
@@ -203,16 +185,28 @@ const PlantPlant = () => {
                         height='11%' 
                         width='100%'
                         borderRadius='50'
-                        onPress={showDatepickerPlanted} style={styles.button}> 
+                        onPress={showDatePickerPlanted} style={styles.button}> 
                         <Text color="#F7F6DC" fontSize={'18'} > Day planted: {datePlantedString} </Text> 
-                        </Button>
+                </Button>
+                <DateTimePickerModal
+                  isVisible={isDatePickerVisible}
+                  mode="date"
+                  onConfirm={handleConfirm}
+                  onCancel={hideDatePicker}
+                />
                 <Button size="lg"
                         height='11%'
                         width='100%'
                         borderRadius='50'
-                        onPress={()=>{setWateredPressed("aaaaa"); showDatepickerWatered(); setWateredPressed("test");}} style={styles.button}>
+                        onPress={showDatePickerWatered} style={styles.button}>
                         <Text color="#F7F6DC" fontSize={'18'} > Day watered: {dateWateredString} </Text>
                         </Button>
+                <DateTimePickerModal
+                  isVisible={isDatePickerVisible}
+                  mode="date"
+                  onConfirm={handleConfirm}
+                  onCancel={hideDatePicker}
+                />
                 <Select selectedValue={inside}
                   width='100%'
                   accessibilityLabel="Planted indoor?"

@@ -8,7 +8,7 @@ export default StyleSheet.create({
   },
   choiceBox: {
     backgroundColor: '#F7F6DC',
-    height: '80%',
+    height: '85%',
     width: '80%',
     alignItems: 'center',
     borderRadius: 50,
