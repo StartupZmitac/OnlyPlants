@@ -19,9 +19,10 @@ const FindPlant = () => {
   let [cycle, setCycle] = useState('');
   let [edible, setEdible] = useState('');
   let [poisonous, setPoisonous] = useState('');
+  let [index, setIndex] = useState();
 
   useEffect(() => {
-    selectAllWatering(setWateringOptions)
+    //selectAllWatering(setWateringOptions)
   }, []);
 
   const handleCall = () => {
@@ -49,7 +50,13 @@ const FindPlant = () => {
       record = response.data[key]
       console.log(key, response.data[key])
       if(record.cycle.indexOf("I'm sorry")==-1){
-        records.push(response.data[key])
+        records.push(
+          {
+            data: response.data[key],
+            index: key
+          }
+
+        )
       }
     }
     console.log(records)
@@ -58,21 +65,21 @@ const FindPlant = () => {
 
   const addPlantDB = () => {
     //TODO: first check if this plant is already in db, then proceed
-    addPlantAPI(name, sunlight, cycle, edible, poisonous, interval, plantAdded);
+    addPlantAPI(name, sunlight, cycle, edible, poisonous, 3, ()=>{});
   }
 
-  const plantAdded = () => {
+  const plantAdded = (index) => {
     //setting chosen plant - do this only after user picks
 
-    setName(result.data[0].common_name); //protect from undefined
-    setCycle(result.data[0].cycle);
-    setSunlight(result.data[0].sunlight.join());
+    setName(response.data[index].scientific_name[0]); //protect from undefined
+    setCycle(response.data[index].cycle);
+    setSunlight(response.data[index].sunlight.join());
     setEdible(null); 
     setPoisonous(null);
 
-    //watering
-    setInterval(wateringOptions.find(({ name }) => name === result.data[0].watering).watering_id)
-    console.log(name, cycle, sunlight, watering)
+    //watering - todo 
+    //setInterval(wateringOptions.find(({ name }) => name === response.data[index].watering).watering_id)
+    console.log(name, cycle, sunlight, interval)
 
   }
 
@@ -105,9 +112,9 @@ const FindPlant = () => {
                     <Heading fontSize="xl" style={{color: "#0b3b0c"}}>Results:</Heading>
                   </Center>
                   <VStack flex="1">
-                    {records.map((item, index) => {
-                      return (<View key={index}>
-                                <Button mt="3" size="lg" style={{backgroundColor: '#FFC090', color: "#F7F6DC"}}>{item.scientific_name}</Button>
+                    {records.map((item) => {
+                      return (<View>
+                                <Button mt="3" size="lg" onPress={()=>{plantAdded(item.index)}} style={{backgroundColor: '#FFC090', color: "#F7F6DC"}}>{item.data.scientific_name}</Button>
                               </View>)
                   })}
                   </VStack>
