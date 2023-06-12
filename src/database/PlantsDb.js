@@ -264,6 +264,18 @@ export const selectPlanted = (getAllPlanted) => {
   );
 }
 
+export const selectInterval = (plantId, getInterval) => {
+  db.transaction(tx => {
+    tx.executeSql('SELECT interval FROM plants JOIN watering ON plants.watering = watering.watering_id where plants.id = ?', [plantId],
+    (_, {rows: {_array}}) => {
+      getInterval(_array)
+    });
+  },
+  (t, error) => { console.log("db error select interval from plant"); console.log(error) },
+  (_t, _success) => { console.log("loaded select interval from plant")}
+  );
+}
+
 //others
 export const initWatering = () => {
   addWatering('Frequent', 3, ()=>{});

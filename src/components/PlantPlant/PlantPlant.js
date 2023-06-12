@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {TouchableWithoutFeedback, Keyboard} from 'react-native';
 import {Box, Button, NativeBaseProvider, Heading, Input, Column, Row, Select, extendTheme, Text} from "native-base"
-import { addPlanted, exportDb, selectAllWatering, selectAllPlants, selectAllGroups, selectAllLocation, selectWatering, selectPlant, dropEverything, addGroups, addLocation, deleteDb} from '../../database/PlantsDb.js'
+import { addPlanted, exportDb, selectAllWatering, selectAllPlants, selectAllGroups, selectAllLocation, selectInterval, selectPlant, dropEverything, addGroups, addLocation, deleteDb} from '../../database/PlantsDb.js'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Entypo } from '@expo/vector-icons'; 
 import styles from './PlantPlant.style.js'
@@ -53,13 +53,8 @@ const PlantPlant = () => {
       }, []);
 
       function getInterval() {
-        selectPlant(plantId, setPlant);
-        tempPlant = JSON.stringify(plant);
-        parsedPlant = JSON.parse(tempPlant);
-        selectWatering(parsedPlant.at(0).watering, setWater);
-        tempWater = JSON.stringify(water);
-        parsedWater = JSON.parse(tempWater);
-        setInterval(parsedWater.at(0).interval);
+        selectInterval(plantId, setInterval)
+        console.log(interval)
       }
 
       function plantsToPlantList() {
