@@ -8,6 +8,7 @@ import { NativeBaseConfigProvider } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import MainPage from './src/components/Mainpage/Mainpage.js';
 import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import setUpDb from './src/hooks/SetUpDb.js';
@@ -26,6 +27,7 @@ export function MyProfileNavigation() {
         )
 }
 
+
 export default function App() {
 
   const isDBLoadingComplete = setUpDb();
@@ -38,6 +40,7 @@ export default function App() {
     <NativeBaseProvider>
       <NavigationContainer>
       <Tab.Navigator
+        initialRouteName='Main page...'
         screenOptions={{
           tabBarShowLabel: false,
           tabBarStyle: styles.navigation,
@@ -45,6 +48,7 @@ export default function App() {
           headerTitleStyle: {
             color: "#F7F6DC",
           }
+          
         }}
       >
         <Tab.Screen
@@ -53,19 +57,20 @@ export default function App() {
           headerName = 'My profile1'
           options={{
             tabBarIcon: ({ focused }) => (
-              <AntDesign name="profile" size={30} color="#FFC090" />
+              <AntDesign name="pluscircleo" size={30} color="#FFC090" />
             ),
           }}
         />
         <Tab.Screen
-          name="Add plant..."
-          component={FindPlant}
+          name="Main page..."
+          component={MainPage}
           options={{
             tabBarIcon: ({ focused }) => (
-              <AntDesign name="pluscircle" size={40} color="#FFC090" />
+              <AntDesign name="home" size={40} color="#FFC090" />
             ),
           }}
         />
+
         <Tab.Screen
           name="Add custom plant..."
           component={CustomPlant}
