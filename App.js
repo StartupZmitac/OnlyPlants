@@ -13,8 +13,20 @@ import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import setUpDb from './src/hooks/SetUpDb.js';
 import styles from './App.style.js'
+import MyPlantsManagement from './src/components/MyPlantsManagement/MyPlantsManagement.js';
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+export function MyProfileNavigation() {
+  return (
+          <Stack.Navigator>
+              <Stack.Screen name="MyProfile" component={MyProfile} options={{ headerShown: false }}/>
+              <Stack.Screen name="MyPlantsManagements" component={MyPlantsManagement} headerName = "My Plants Management" options={{ headerShown: false }} />
+          </Stack.Navigator>
+        )
+}
+
 
 export default function App() {
 
@@ -40,8 +52,9 @@ export default function App() {
         }}
       >
         <Tab.Screen
-          name="Add plant..."
-          component={FindPlant}
+          name="My profile..."
+          component={MyProfileNavigation}
+          headerName = 'My profile1'
           options={{
             tabBarIcon: ({ focused }) => (
               <AntDesign name="pluscircleo" size={30} color="#FFC090" />
@@ -68,7 +81,7 @@ export default function App() {
           }}
         />
       </Tab.Navigator>
-    </NavigationContainer>   
+    </NavigationContainer>  
     </NativeBaseProvider>
   );
   }
