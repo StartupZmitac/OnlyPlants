@@ -41,7 +41,7 @@ const MainPage = () => {
     const waterPlant = (checkbox) => {
         checkbox.checked = true;
         toast.show({
-            description: `Deleted plant called: ${checkbox.name}`
+            description: `Watered plant called: ${checkbox.name}`
         });
     }
 
