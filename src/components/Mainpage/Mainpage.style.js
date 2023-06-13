@@ -21,6 +21,13 @@ export default StyleSheet.create({
         alignItems: 'flex-start',
         padding: '5%',
       },
+      dayHeader:{
+        backgroundColor: '#FFC090',
+        bottom: '3%',
+        alignItems: 'center',
+        borderRadius: 50,
+        width: '50%',
+      },
       choiceBox: {
         display: 'flex',
         backgroundColor: '#F7F6DC',

@@ -16,6 +16,12 @@ const MainPage = () => {
         { id: 7, name: 'Flower 1 (15.06)', checked: false, day: 15, month: 6, year: 2023 },
         { id: 8, name: 'Flower 2 (15.06)', checked: false, day: 15, month: 6, year: 2023 },
     ]);
+    
+
+    const getDayName = () => {
+        var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        return days[new Date().getDay()];
+    }
 
 
     const waterPlant = (checkbox) => {
@@ -30,6 +36,9 @@ const MainPage = () => {
     return (
         <NativeBaseProvider>
             <Box style={styles.mainBody}>
+                <Box style={styles.dayHeader}>
+                    <Text bold fontSize="3xl" style={{ color: '#ffffff' }}>{getDayName()}</Text>
+                </Box>
                 <Box style={styles.choiceBox}>
                     <Box style={styles.checkboxContainer}>
                         {checkboxes.map((checkbox) => (
