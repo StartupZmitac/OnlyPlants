@@ -9,7 +9,6 @@ const MainPage = () => {
     const clickRight = () => {
         setCounter((prevCounter) => {
           const newCounter = prevCounter + 1;
-          console.warn(newCounter);
           return newCounter;
         });
       };
@@ -17,7 +16,6 @@ const MainPage = () => {
       const clickLeft = () => {
         setCounter((prevCounter) => {
           const newCounter = prevCounter - 1;
-          console.warn(newCounter);
           return newCounter;
         });
       };
