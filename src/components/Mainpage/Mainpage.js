@@ -6,16 +6,6 @@ import { Entypo } from '@expo/vector-icons';
 
 const MainPage = () => {
     
-    const getCurrentDate=()=>{
- 
-        var date = new Date().getDate();
-        var month = new Date().getMonth() + 1;
-        var year = new Date().getFullYear();
-        console.warn(date + '-' + month + '-' + year);
-        //Alert.alert(date + '-' + month + '-' + year);
-        // You can turn it in to your desired format
-        return date;// + '-' + month + '-' + year;//format: d-m-y;
-  }
     const [checkboxes] = useState([
         { id: 1, name: 'Flower 1 (13.06)', checked: false, day: 13, month: 6, year: 2023 },
         { id: 2, name: 'Flower 2 (13.06)', checked: false, day: 13, month: 6, year: 2023 },
@@ -36,7 +26,6 @@ const MainPage = () => {
     }
 
     const toast = useToast();
-    const currentDate = getCurrentDate();
 
     return (
         <NativeBaseProvider>
