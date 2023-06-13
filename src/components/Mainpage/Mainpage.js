@@ -5,7 +5,23 @@ import styles from './Mainpage.style.js'
 import { Entypo } from '@expo/vector-icons';
 
 const MainPage = () => {
-    
+    const [counter, setCounter] = useState(0);
+    const clickRight = () => {
+        setCounter((prevCounter) => {
+          const newCounter = prevCounter + 1;
+          console.warn(newCounter);
+          return newCounter;
+        });
+      };
+      
+      const clickLeft = () => {
+        setCounter((prevCounter) => {
+          const newCounter = prevCounter - 1;
+          console.warn(newCounter);
+          return newCounter;
+        });
+      };
+
     const [checkboxes] = useState([
         { id: 1, name: 'Flower 1 (13.06)', checked: false, day: 13, month: 6, year: 2023 },
         { id: 2, name: 'Flower 2 (13.06)', checked: false, day: 13, month: 6, year: 2023 },
@@ -16,11 +32,11 @@ const MainPage = () => {
         { id: 7, name: 'Flower 1 (15.06)', checked: false, day: 15, month: 6, year: 2023 },
         { id: 8, name: 'Flower 2 (15.06)', checked: false, day: 15, month: 6, year: 2023 },
     ]);
-    
+
 
     const getDayName = () => {
         var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        return days[new Date().getDay()];
+        return days[new Date().getDay()+counter];
     }
 
 
@@ -36,17 +52,26 @@ const MainPage = () => {
     return (
         <NativeBaseProvider>
             <Box style={styles.mainBody}>
-                <Box style={styles.dayHeader}>
-                    <Text bold fontSize="3xl" style={{ color: '#ffffff' }}>{getDayName()}</Text>
-                </Box>
+                <Row>
+                    <Button style={{bottom: '25%', marginRight: '5%'}} onPress={clickLeft}>
+                        L
+                    </Button>
+                    <Box style={styles.dayHeader}>
+                        <Text bold fontSize="3xl" style={{ color: '#ffffff' }}>{getDayName()}</Text>
+                    </Box>
+                    <Button style={{bottom: '25%', marginLeft: '5%'}} onPress={clickRight}>
+                        R
+                    </Button>
+                </Row>
+
                 <Box style={styles.choiceBox}>
                     <Box style={styles.checkboxContainer}>
                         {checkboxes.map((checkbox) => (
-                             checkbox.checked === false && 
-                             checkbox.day === new Date().getDate() &&
-                             checkbox.month === new Date().getMonth()+1 &&
-                             checkbox.year === new Date().getFullYear() && 
-                             (<Box key={checkbox.id} style={{
+                            checkbox.checked === false &&
+                            checkbox.day === new Date().getDate()+counter &&
+                            checkbox.month === new Date().getMonth() + 1 &&
+                            checkbox.year === new Date().getFullYear() &&
+                            (<Box key={checkbox.id} style={{
                                 flexDirection: "row",
                                 alignItems: "center",
                                 paddingBottom: '5%',
@@ -58,7 +83,7 @@ const MainPage = () => {
                                     <Text bold style={styles.label}>{checkbox.name}</Text>
                                 </Button>
                             </Box>
-                        )))}
+                            )))}
                     </Box>
                 </Box>
             </Box>
