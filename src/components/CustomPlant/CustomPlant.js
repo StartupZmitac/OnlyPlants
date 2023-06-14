@@ -148,7 +148,6 @@ const CustomPlant = () => {
             </Box>
             <Row style={{alignItems: 'center', padding: '10%'}}>
             <Button size="lg" onPress={addToDatabase} style={styles.button}>Add Plant</Button>
-            <Button size="lg" onPress={exportDatabase} style={styles.button}> Export </Button>
             </Row>
           </Box>
         </Box>

@@ -124,7 +124,7 @@ const FindPlant = ( { navigation } ) => {
                 <Center  mb="4">
                 <Row style={{alignItems: 'center', padding: '5%'}}>
                     <Button size="lg" onPress={() => {navigation.navigate('CustomPlant')}} style={{backgroundColor: '#FFC090', color: "#F7F6DC"}}>Custom</Button>
-                    <Button size="lg" onPress={() => {navigation.navigate('PlantPlant'), addPlantDB}}  style={{backgroundColor: '#FFC090', color: "#F7F6DC"}}>Add</Button>
+                    <Button size="lg" onPress={() => {navigation.navigate('PlantPlant'); addPlantDB()}}  style={{backgroundColor: '#FFC090', color: "#F7F6DC"}}>Add</Button>
                   </Row>
                   </Center>
                   
