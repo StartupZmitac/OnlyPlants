@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Box, Button, NativeBaseProvider, Heading, Input, Column, Row, Select, extendTheme, Text } from "native-base"
 import { addPlanted, exportDb, selectAllWatering, selectAllPlants, selectAllGroups, selectAllLocation, selectInterval, selectPlant, dropEverything, addGroups, addLocation, deleteDb } from '../../database/PlantsDb.js'
@@ -10,24 +10,27 @@ const PlantPlant = () => {
   const [datePlanted, setDatePlanted] = useState('');
   const [dateWatered, setDateWatered] = useState('');
   const [dateNotified, setDateNotified] = useState('');
-  const [interval, setInterval] = useState('');
+  //const [interval, setInterval] = useState('');
+  const interval = useRef(null);
   const [customName, setCustomName] = useState('');
   const [inside, setInside] = useState('');
   const [plantId, setPlantId] = useState('');
   const [groupId, setGroupId] = useState('');
   const [locationId, setLocationId] = useState('');
-  const [wateringOptions, setWateringOptions] = useState([]);
   const [plantList, setPlantList] = useState([]);
   const [groupList, setGroupList] = useState([]);
   const [locationList, setLocationList] = useState([]);
   const [datePlantedString, setDatePlantedString] = useState('');
   const [dateWateredString, setDateWateredString] = useState('');
-  const [plant, setPlant] = useState([]);
-  const [water, setWater] = useState([]);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [plantedDatePressed, setPlantedDatePressed] = useState(false);
   const [wateredDatePressed, setWateredDatePressed] = useState(false);
-  const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
+
+  function setInterval (val) {
+    interval.current = val;
+    console.log("val to set: ", val);
+    console.log("interval: ", interval.current);
+  }
 
   async function exportDatabase() {
     try {
@@ -45,7 +48,6 @@ const PlantPlant = () => {
 
   useEffect(() => {
     addFakeNulls();
-    selectAllWatering(setWateringOptions);
     selectAllPlants(setPlantList);
     selectAllGroups(setGroupList);
     selectAllLocation(setLocationList);
@@ -54,18 +56,15 @@ const PlantPlant = () => {
   }, []);
 
   function getInterval() {
-    selectInterval(plantId, setInterval);
-    forceUpdate();
-    temp = parseInterval(interval);
+    selectInterval(itemValue, setInterval);
+    parseInterval(interval.current);
     setInterval(temp);
-    return temp
   }
 
-  function parseInterval(interval) {
-    temp = JSON.stringify(interval.at(0));
+  function parseInterval(inter) {
+    console.log("parsing");
+    temp = JSON.stringify(inter.at(0));
     parsed = JSON.parse(temp);
-    console.log(parsed.interval);
-    return parsed.interval;
   }
 
   function plantsToPlantList() {
@@ -99,9 +98,9 @@ const PlantPlant = () => {
   }
 
   function addToDatabase() {
-    const localInterval = getInterval();
-    console.log(datePlanted, dateWatered, dateNotified, localInterval, customName, inside, plantId, groupId, locationId);
-    addPlanted(datePlanted, dateWatered, dateNotified, localInterval, customName, inside, plantId, groupId, locationId, () => { console.log("planted") });
+    getInterval();
+    console.log(datePlanted, dateWatered, dateNotified, interval.current, customName, inside, plantId, groupId, locationId);
+    addPlanted(datePlanted, dateWatered, dateNotified, interval.current, customName, inside, plantId, groupId, locationId, () => { console.log("planted") });
   }
 
   const showDatePickerPlanted = () => {
