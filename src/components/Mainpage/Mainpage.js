@@ -21,14 +21,14 @@ const MainPage = () => {
       };
 
     const [checkboxes] = useState([
-        { id: 1, name: 'Flower 1 (13.06)', checked: false, day: 13, month: 6, year: 2023 },
-        { id: 2, name: 'Flower 2 (13.06)', checked: false, day: 13, month: 6, year: 2023 },
-        { id: 3, name: 'Flower 3 (13.06)', checked: false, day: 13, month: 6, year: 2023 },
-        { id: 4, name: 'Flower 4 (13.06)', checked: false, day: 13, month: 6, year: 2023 },
-        { id: 5, name: 'Flower 1 (14.06)', checked: false, day: 14, month: 6, year: 2023 },
-        { id: 6, name: 'Flower 2 (14.06)', checked: false, day: 14, month: 6, year: 2023 },
-        { id: 7, name: 'Flower 1 (15.06)', checked: false, day: 15, month: 6, year: 2023 },
-        { id: 8, name: 'Flower 2 (15.06)', checked: false, day: 15, month: 6, year: 2023 },
+        { id: 1, name: 'Flower 1 (26.06)', checked: false, day: 26, month: 6, year: 2023 },
+        { id: 2, name: 'Flower 2 (26.06)', checked: false, day: 26, month: 6, year: 2023 },
+        { id: 3, name: 'Flower 3 (26.06)', checked: false, day: 26, month: 6, year: 2023 },
+        { id: 4, name: 'Flower 4 (26.06)', checked: false, day: 26, month: 6, year: 2023 },
+        { id: 5, name: 'Flower 1 (27.06)', checked: false, day: 27, month: 6, year: 2023 },
+        { id: 6, name: 'Flower 2 (27.06)', checked: false, day: 27, month: 6, year: 2023 },
+        { id: 7, name: 'Flower 1 (28.06)', checked: false, day: 28, month: 6, year: 2023 },
+        { id: 8, name: 'Flower 2 (28.06)', checked: false, day: 28, month: 6, year: 2023 },
     ]);
 
 
