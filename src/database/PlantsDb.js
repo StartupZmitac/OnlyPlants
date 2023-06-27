@@ -34,7 +34,7 @@ export const createTables = async (
           }, (t, res) => {
             console.log(res);
           })
-          tx.executeSql("CREATE TABLE IF NOT EXISTS planted(id INTEGER PRIMARY KEY, date_planted TEXT NOT NULL, date_watered TEXT NOT NULL, date_notified TEXT, interval INTEGER NOT NULL, custom_name TEXT, inside INTEGER NOT NULL, plant_id_fk INTEGER NOT NULL, group_id_fk INTEGER, location_id_fk INTEGER, FOREIGN KEY (plant_id_fk) REFERENCES plants(id), FOREIGN KEY (group_id_fk) REFERENCES groups(group_id), FOREIGN KEY (location_id_fk) REFERENCES location(location_id));", ()  => {
+          tx.executeSql("CREATE TABLE IF NOT EXISTS planted (id INTEGER PRIMARY KEY, date_planted TEXT NOT NULL, date_watered TEXT NOT NULL, date_notified TEXT, interval INTEGER NOT NULL, custom_name TEXT, inside INTEGER NOT NULL, plant_id_fk INTEGER NOT NULL, group_id_fk INTEGER, location_id_fk INTEGER, FOREIGN KEY (plant_id_fk) REFERENCES plants(id), FOREIGN KEY (group_id_fk) REFERENCES groups(group_id), FOREIGN KEY (location_id_fk) REFERENCES location(location_id));", ()  => {
           }, (t, res) => {
             console.log(res);
           })
@@ -102,10 +102,14 @@ export const addUserInfo = (pet, username, successFunc) => {
 
 export const addPlanted = (date_planted, date_watered, date_notified, interval, custom_name, inside, plant_id, group_id, location_id, successFunc) => {
   db.transaction(tx => {
-    tx.executeSql('INSERT INTO planted (date_planted, date_watered, date_notified, interval, custom_name, inside, plant_id_fk, group_id_fk, location_id_fk) values (?,?,?,?,?,?,?,?,?);', [date_planted, date_watered, date_notified, interval, custom_name, inside, plant_id, group_id, location_id],
-      (txObj, success) => {successFunc()},
-      (txObj, error) => {console.log(error);}
-    );
+    // tx.executeSql('INSERT INTO planted (date_planted, date_watered, date_notified, interval, custom_name, inside, plant_id_fk, group_id_fk, location_id_fk) values (?,?,?,?,?,?,?,?,?);', [date_planted, date_watered, date_notified, interval, custom_name, inside, plant_id, 'NULL', 'NULL'],
+    //   (txObj, success) => {successFunc()},
+    //   (txObj, error) => {console.log(error);}
+    // );
+    tx.executeSql("INSERT INTO planted (date_planted, date_watered, date_notified, interval, custom_name, inside, plant_id_fk, group_id_fk, location_id_fk) values ('x','x','x',0,'LALALA',0,1,NULL,NULL);", [],
+    (txObj, success) => {successFunc()},
+    (txObj, error) => {console.log(error);}
+  );
   })
 }
 
@@ -288,7 +292,7 @@ export const dropEverything = () => {
   db.transaction(tx => {
     //tx.executeSql("DELETE FROM planted;")
     //tx.executeSql("DELETE FROM plants;")
-    tx.executeSql("DELETE FROM groups")
+    //tx.executeSql("DELETE FROM groups")
     //tx.executeSql("DELETE FROM location")
     //tx.executeSql("DELETE FROM watering;")
     
@@ -304,6 +308,7 @@ export const dropEverything = () => {
       (t, error) => { console.log("db error dropping tables"); console.log(error) },
       (_t, _success) => { console.log("dropped tables")}
     )
+  
 }
 
 export const deleteDb = () => {
