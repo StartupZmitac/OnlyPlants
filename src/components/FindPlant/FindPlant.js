@@ -4,10 +4,12 @@ import { Text, View, ActivityIndicator, TextInput} from 'react-native';
 import styles from './FindPlant.style.js'
 import { NativeBaseProvider, Box, Button, Heading, Input, Row, ScrollView, Center, VStack} from 'native-base';
 import { addPlantAPI, selectAllWatering } from '../../database/PlantsDb.js'
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // @flow
 
-const FindPlant = () => {
+const FindPlant = ( { navigation } ) => {
   let [isLoading, setIsLoading] = useState(true);
   let [error, setError] = useState();
   let [response, setResponse] = useState();
@@ -121,7 +123,8 @@ const FindPlant = () => {
                 </ScrollView>
                 <Center  mb="4">
                 <Row style={{alignItems: 'center', padding: '5%'}}>
-                    <Button size="lg" onPress={addPlantDB} style={{backgroundColor: '#FFC090', color: "#F7F6DC"}}>Add</Button>
+                    <Button size="lg" onPress={() => {navigation.navigate('CustomPlant')}} style={{backgroundColor: '#FFC090', color: "#F7F6DC"}}>Custom</Button>
+                    <Button size="lg" onPress={() => {navigation.navigate('PlantPlant'); addPlantDB()}}  style={{backgroundColor: '#FFC090', color: "#F7F6DC"}}>Add</Button>
                   </Row>
                   </Center>
                   

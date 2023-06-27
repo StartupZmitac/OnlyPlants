@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Box, Button, NativeBaseProvider, Heading, Input, Column, Row, Select, extendTheme, Text } from "native-base"
 import { addPlanted, exportDb, selectAllWatering, selectAllPlants, selectAllGroups, selectAllLocation, selectInterval, selectPlant, dropEverything, addGroups, addLocation, deleteDb } from '../../database/PlantsDb.js'
@@ -10,23 +10,27 @@ const PlantPlant = () => {
   const [datePlanted, setDatePlanted] = useState('');
   const [dateWatered, setDateWatered] = useState('');
   const [dateNotified, setDateNotified] = useState('');
-  const [interval, setInterval] = useState('');
+  //const [interval, setInterval] = useState('');
+  const interval = useRef(null);
   const [customName, setCustomName] = useState('');
   const [inside, setInside] = useState('');
   const [plantId, setPlantId] = useState('');
   const [groupId, setGroupId] = useState('');
   const [locationId, setLocationId] = useState('');
-  const [wateringOptions, setWateringOptions] = useState([]);
   const [plantList, setPlantList] = useState([]);
   const [groupList, setGroupList] = useState([]);
   const [locationList, setLocationList] = useState([]);
   const [datePlantedString, setDatePlantedString] = useState('');
   const [dateWateredString, setDateWateredString] = useState('');
-  const [plant, setPlant] = useState([]);
-  const [water, setWater] = useState([]);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [plantedDatePressed, setPlantedDatePressed] = useState(false);
   const [wateredDatePressed, setWateredDatePressed] = useState(false);
+
+  function setInterval (val) {
+    interval.current = val;
+    console.log("val to set: ", val);
+    console.log("interval: ", interval.current);
+  }
 
   async function exportDatabase() {
     try {
@@ -44,7 +48,6 @@ const PlantPlant = () => {
 
   useEffect(() => {
     addFakeNulls();
-    selectAllWatering(setWateringOptions);
     selectAllPlants(setPlantList);
     selectAllGroups(setGroupList);
     selectAllLocation(setLocationList);
@@ -52,9 +55,27 @@ const PlantPlant = () => {
     //deleteDb();
   }, []);
 
-  function getInterval() {
-    selectInterval(plantId, setInterval)
-    console.log(interval)
+  function parseAndAddToDb(_interval) {
+    console.log("parsing");
+    temp = JSON.stringify(_interval.at(0));
+    console.log("temp: ", temp)
+    parsed = JSON.parse(temp);
+    console.log("parsed: ", parsed.interval);
+    plantName = customName;
+    if (plantName.length === 0)
+    {
+      console.log("no name");
+      for (let i = 0; i < plantList.length; i++) {
+        tempPlant = JSON.stringify(plantList.at(i));
+        parsedPlant = JSON.parse(tempPlant);
+        if (parsedPlant.id === plantId)
+        {
+          plantName = parsedPlant.name;
+        }
+      }
+    }
+    console.log(datePlanted, dateWatered, dateNotified, parsed.interval, plantName, inside, plantId, groupId, locationId);
+    addPlanted(datePlanted, dateWatered, dateNotified, parsed.interval, plantName, inside, plantId, groupId, locationId, () => { console.log("planted") });
   }
 
   function plantsToPlantList() {
@@ -72,7 +93,7 @@ const PlantPlant = () => {
     for (let i = 0; i < groupList.length; i++) {
       temp = JSON.stringify(groupList.at(i));
       parsed = JSON.parse(temp);
-      options.push(<Select.Item label={parsed.name} value={parsed.id} key={parsed.id}></Select.Item>);
+      options.push(<Select.Item label={parsed.name} value={parsed.group_id} key={parsed.group_id}></Select.Item>);
     }
     return (options);
   }
@@ -82,24 +103,13 @@ const PlantPlant = () => {
     for (let i = 0; i < locationList.length; i++) {
       temp = JSON.stringify(locationList.at(i));
       parsed = JSON.parse(temp);
-      options.push(<Select.Item label={parsed.name} value={parsed.id} key={parsed.id}></Select.Item>);
+      options.push(<Select.Item label={parsed.name} value={parsed.location_id} key={parsed.location_id}></Select.Item>);
     }
     return (options);
   }
 
   function addToDatabase() {
-    getInterval();
-    if (!groupId || groupId === '') {
-      setGroupId('1');
-    }
-    if (!locationId || locationId === '') {
-      setLocationId('1');
-    }
-    if (!customName || customName === '') {
-      setCustomName('NULL');
-    }
-    console.log(datePlanted, dateWatered, dateNotified, interval, customName, inside, plantId, groupId, locationId);
-    addPlanted(datePlanted, dateWatered, dateNotified, interval, customName, inside, plantId, groupId, locationId, () => { console.log("planted") });
+    selectInterval(plantId, parseAndAddToDb);
   }
 
   const showDatePickerPlanted = () => {
@@ -156,7 +166,7 @@ const PlantPlant = () => {
                   dropdownIcon={<Entypo name="chevron-small-down" size={24} color="#F7F6DC" />}
                   _selectedItem={{
                     bg: "#FFC090"
-                  }} mt={1} onValueChange={itemValue => setPlantId(itemValue)}>
+                  }} mt={1} onValueChange={(itemValue) => {setPlantId(itemValue)}}>
                   {plantsToPlantList()}
                 </Select>
                 <Input
@@ -176,7 +186,7 @@ const PlantPlant = () => {
                     marginBottom='6%'
                     justifyContent={'flex-start'}
                     onPress={showDatePickerPlanted}>
-                    <Text color="#F7F6DC" fontSize={'18'}> Day planted: </Text>
+                    <Text color="#F7F6DC" fontSize={'18'}> Day planted: {datePlantedString}</Text>
                   </Button>
 
                 <DateTimePickerModal
@@ -213,7 +223,7 @@ const PlantPlant = () => {
                   dropdownIcon={<Entypo name="chevron-small-down" size={24} color="#F7F6DC" />}
                   _selectedItem={{
                     bg: "#FFC090"
-                  }} mt={1} onValueChange={itemValue => setInside(itemValue)}>
+                  }} mt={1} onValueChange={itemValue => {setInside(itemValue)}}>
                   <Select.Item label="Outdoor" value="0" />
                   <Select.Item label="Indoor" value="1" />
                 </Select>
@@ -252,7 +262,6 @@ const PlantPlant = () => {
             </Box>
             <Row style={{ alignItems: 'center', padding: '10%' }}>
               <Button size="lg" onPress={addToDatabase} style={styles.button}>Plant the plant</Button>
-              <Button size="lg" onPress={exportDatabase} style={styles.button}> Export </Button>
             </Row>
           </Box>
         </Box>
