@@ -61,6 +61,8 @@ const PlantPlant = () => {
     console.log("temp: ", temp)
     parsed = JSON.parse(temp);
     console.log("parsed: ", parsed.interval);
+
+    
     plantName = customName;
     if (plantName.length === 0)
     {
