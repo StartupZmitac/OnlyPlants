@@ -256,6 +256,7 @@ export const selectPlanted = (getAllPlanted) => {
   db.transaction(tx => {
     tx.executeSql('SELECT * FROM planted', [],
     (_, {rows: {_array}}) => {
+      //console.log(_array);
       getAllPlanted(_array)
     });
   },
