@@ -55,16 +55,27 @@ const PlantPlant = () => {
     //deleteDb();
   }, []);
 
-  function getInterval() {
-    selectInterval(itemValue, setInterval);
-    parseInterval(interval.current);
-    setInterval(temp);
-  }
-
-  function parseInterval(inter) {
+  function parseAndAddToDb(_interval) {
     console.log("parsing");
-    temp = JSON.stringify(inter.at(0));
+    temp = JSON.stringify(_interval.at(0));
+    console.log("temp: ", temp)
     parsed = JSON.parse(temp);
+    console.log("parsed: ", parsed.interval);
+    plantName = customName;
+    if (plantName.length === 0)
+    {
+      console.log("no name");
+      for (let i = 0; i < plantList.length; i++) {
+        tempPlant = JSON.stringify(plantList.at(i));
+        parsedPlant = JSON.parse(tempPlant);
+        if (parsedPlant.id === plantId)
+        {
+          plantName = parsedPlant.name;
+        }
+      }
+    }
+    console.log(datePlanted, dateWatered, dateNotified, parsed.interval, plantName, inside, plantId, groupId, locationId);
+    addPlanted(datePlanted, dateWatered, dateNotified, parsed.interval, plantName, inside, plantId, groupId, locationId, () => { console.log("planted") });
   }
 
   function plantsToPlantList() {
@@ -98,9 +109,7 @@ const PlantPlant = () => {
   }
 
   function addToDatabase() {
-    getInterval();
-    console.log(datePlanted, dateWatered, dateNotified, interval.current, customName, inside, plantId, groupId, locationId);
-    addPlanted(datePlanted, dateWatered, dateNotified, interval.current, customName, inside, plantId, groupId, locationId, () => { console.log("planted") });
+    selectInterval(plantId, parseAndAddToDb);
   }
 
   const showDatePickerPlanted = () => {
