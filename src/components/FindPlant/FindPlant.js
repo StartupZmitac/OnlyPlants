@@ -4,10 +4,12 @@ import { Text, View, ActivityIndicator, TextInput} from 'react-native';
 import styles from './FindPlant.style.js'
 import { NativeBaseProvider, Box, Button, Heading, Input, Row, ScrollView, Center, VStack} from 'native-base';
 import { addPlantAPI, selectAllWatering } from '../../database/PlantsDb.js'
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // @flow
 
-const FindPlant = () => {
+const FindPlant = ( { navigation } ) => {
   let [isLoading, setIsLoading] = useState(true);
   let [error, setError] = useState();
   let [response, setResponse] = useState();
@@ -107,7 +109,7 @@ const FindPlant = () => {
       return (
               <NativeBaseProvider>
                 <Box>
-                <ScrollView w={["200", "300"]} h="80">
+                <ScrollView w={["200", "200"]} h="80">
                   <Center mb="4">
                     <Heading fontSize="xl" style={{color: "#0b3b0c"}}>Results:</Heading>
                   </Center>
@@ -121,11 +123,13 @@ const FindPlant = () => {
                 </ScrollView>
                 <Center  mb="4">
                 <Row style={{alignItems: 'center', padding: '5%'}}>
-                    <Button size="lg" onPress={addPlantDB} style={{backgroundColor: '#FFC090', color: "#F7F6DC"}}>Add</Button>
+
+                    <Button size="lg" onPress={() => {navigation.navigate('PlantPlant'); addPlantDB()}}  style={{backgroundColor: '#FFC090', color: "#F7F6DC"}}>Add</Button>
                   </Row>
                   </Center>
                   
                 </Box>
+                
               </NativeBaseProvider>
       );
       }
@@ -147,12 +151,14 @@ const FindPlant = () => {
               width={'80%'}
               style={styles.inputField}
           />
-          <Button mt="3" size="lg" onPress={handleCall} style={{backgroundColor: '#FFC090', color: "#F7F6DC"}}>Find</Button>
+          <Row style={{alignItems: 'center', padding: '5%'}}>
+          <Button size="lg" onPress={handleCall} style={{backgroundColor: '#FFC090', color: "#F7F6DC"}}>Find</Button>
+          <Button size="lg" onPress={() => {navigation.navigate('CustomPlant')}} style={{backgroundColor: '#FFC090', color: "#F7F6DC", marginLeft: 50}}>Custom</Button>
+          </Row>
           <Box style={styles.choiceBox}>
             {getContent()}
           </Box>
-          <Row style={{alignItems: 'center', padding: '5%'}}>
-          </Row>
+          
         </Box>
       </Box>
     </NativeBaseProvider>

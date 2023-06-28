@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Animated, Easing } from 'react-native'
 import { NativeBaseProvider, Text, Icon, useToast, Box, Row, Button, Heading, Column, Checkbox } from "native-base";
+import { selectPlanted } from '../../database/PlantsDb.js'
 import styles from './Mainpage.style.js'
 import { AntDesign, Entypo } from '@expo/vector-icons';
 
@@ -30,7 +31,23 @@ const MainPage = () => {
         { id: 7, name: 'Flower 1 (30.06)', checked: false, day: 30, month: 6, year: 2023 },
         { id: 8, name: 'Flower 2 (30.06)', checked: false, day: 30, month: 6, year: 2023 },
     ]);
+    const [plantsList, setPlantList] = useState([]); 
 
+    function setAndParsePlantList(resultSet){
+        var options = []
+        for (let i = 0; i < resultSet.length; i++) {
+            temp = JSON.stringify(resultSet.at(i));
+            parsed = JSON.parse(temp);
+            //if (parsed.date_watered)
+            options.push({id: parsed.id, name: parsed.custom_name, checked: false});
+            console.log("row: ", options[i]);
+        }
+        setPlantList(options);
+    }
+
+    useEffect(() => {
+        selectPlanted(setAndParsePlantList);
+      }, []);
 
     const getDayName = () => {
         const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -41,6 +58,7 @@ const MainPage = () => {
 
 
     const waterPlant = (checkbox) => {
+        console.log("here");
         checkbox.checked = true;
         toast.show({
             description: `Watered plant called: ${checkbox.name}`
