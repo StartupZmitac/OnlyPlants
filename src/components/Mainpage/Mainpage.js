@@ -5,7 +5,8 @@ import { selectPlanted } from '../../database/PlantsDb.js'
 import styles from './Mainpage.style.js'
 import { AntDesign, Entypo } from '@expo/vector-icons';
 
-const MainPage = () => {
+const MainPage = () => 
+    const toast = useToast();
     const [counter, setCounter] = useState(0);
     const clickRight = () => {
         setCounter((prevCounter) => {

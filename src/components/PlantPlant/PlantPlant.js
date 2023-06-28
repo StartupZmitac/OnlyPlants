@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Box, Button, NativeBaseProvider, Heading, Input, Column, Row, Select, extendTheme, Text } from "native-base"
-import { addPlanted, exportDb, selectAllWatering, selectAllPlants, selectAllGroups, selectAllLocation, selectInterval, selectPlant, dropEverything, addGroups, addLocation, deleteDb } from '../../database/PlantsDb.js'
+import { addPlanted, exportDb, selectAllWatering, selectAllPlants, selectAllGroups, selectAllLocation, selectInterval, selectPlanted, dropEverything, addGroups, addLocation, deleteDb } from '../../database/PlantsDb.js'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Entypo } from '@expo/vector-icons';
 import styles from './PlantPlant.style.js'
@@ -61,7 +61,6 @@ const PlantPlant = () => {
     console.log("temp: ", temp)
     parsed = JSON.parse(temp);
     console.log("parsed: ", parsed.interval);
-
     
     plantName = customName;
     if (plantName.length === 0)
@@ -77,7 +76,7 @@ const PlantPlant = () => {
       }
     }
     console.log(datePlanted, dateWatered, dateNotified, parsed.interval, plantName, inside, plantId, groupId, locationId);
-    addPlanted(datePlanted, dateWatered, dateNotified, parsed.interval, plantName, inside, plantId, groupId, locationId, () => { console.log("planted") });
+    addPlanted(datePlanted.valueOf(), dateWatered.valueOf(), dateNotified.valueOf(), parsed.interval, plantName, inside, plantId, groupId, locationId, () => { console.log("planted") });
   }
 
   function plantsToPlantList() {
