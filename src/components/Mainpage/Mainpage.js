@@ -21,16 +21,6 @@ const MainPage = () => {
         });
       };
 
-    const [checkboxes] = useState([
-        { id: 1, name: 'Flower 1 (28.06)', checked: false, day: 28, month: 6, year: 2023 },
-        { id: 2, name: 'Flower 2 (28.06)', checked: false, day: 28, month: 6, year: 2023 },
-        { id: 3, name: 'Flower 3 (28.06)', checked: false, day: 28, month: 6, year: 2023 },
-        { id: 4, name: 'Flower 4 (28.06)', checked: false, day: 28, month: 6, year: 2023 },
-        { id: 5, name: 'Flower 1 (29.06)', checked: false, day: 29, month: 6, year: 2023 },
-        { id: 6, name: 'Flower 2 (29.06)', checked: false, day: 29, month: 6, year: 2023 },
-        { id: 7, name: 'Flower 1 (30.06)', checked: false, day: 30, month: 6, year: 2023 },
-        { id: 8, name: 'Flower 2 (30.06)', checked: false, day: 30, month: 6, year: 2023 },
-    ]);
     const [plantsList, setPlantList] = useState([]); 
 
     function setAndParsePlantList(resultSet){
@@ -38,8 +28,11 @@ const MainPage = () => {
         for (let i = 0; i < resultSet.length; i++) {
             temp = JSON.stringify(resultSet.at(i));
             parsed = JSON.parse(temp);
-            //if (parsed.date_watered)
-            options.push({id: parsed.id, name: parsed.custom_name, checked: false});
+            console.log(parsed)
+            date_watered = new Date(parsed.date_watered)
+            date_watered.setDate(date_watered.getDate()+parsed.interval)
+            console.log(date_watered)
+            options.push({id: parsed.id, name: parsed.custom_name, checked: false, day: date_watered.getDate(), month: date_watered.getMonth()+1, year: date_watered.getFullYear()});
             console.log("row: ", options[i]);
         }
         setPlantList(options);
@@ -56,7 +49,6 @@ const MainPage = () => {
         return days[index];
     }
 
-
     const waterPlant = (checkbox) => {
         console.log("here");
         checkbox.checked = true;
@@ -64,7 +56,17 @@ const MainPage = () => {
             description: `Watered plant called: ${checkbox.name}`
         });
     }
+    const checkDate = (date) => {
+        now = new Date()
+        now.setDate(now.getDate()+counter)
+        if (date.day === now.getDate()&&
+        date.month === now.getMonth()+1&&
+        date.year === now.getFullYear()){
+            return true;
+        }
+        return false;
 
+    }
     const toast = useToast();
 
     return (
@@ -81,14 +83,11 @@ const MainPage = () => {
                         <AntDesign name="rightcircleo" size={24} color="#FFFFFF" />
                     </Button>
                 </Row>
-
                 <Box style={styles.choiceBox}>
                     <Box style={styles.checkboxContainer}>
-                        {checkboxes.map((checkbox) => (
+                        {plantsList.map((checkbox) => (
                             checkbox.checked === false &&
-                            checkbox.day === new Date().getDate()+counter &&
-                            checkbox.month === new Date().getMonth() + 1 &&
-                            checkbox.year === new Date().getFullYear() &&
+                            checkDate(checkbox) &&
                             (<Box key={checkbox.id} style={{
                                 flexDirection: "row",
                                 alignItems: "center",
