@@ -27,6 +27,7 @@ Notifications.setNotificationHandler({
 
   export async function cancelPushNotification(name){
     await Notifications.cancelScheduledNotificationAsync(name);
+    await Notifications.cancelAllScheduledNotificationsAsync();
   }
   
   async function registerForPushNotificationsAsync() {
