@@ -76,7 +76,7 @@ const PlantPlant = () => {
       }
     }
     console.log(datePlanted, dateWatered, dateNotified, parsed.interval, plantName, inside, plantId, groupId, locationId);
-    addPlanted(datePlanted, dateWatered, dateNotified, parsed.interval, plantName, inside, plantId, groupId, locationId, () => { console.log("planted") });
+    addPlanted(datePlanted.valueOf(), dateWatered.valueOf(), dateNotified.valueOf(), parsed.interval, plantName, inside, plantId, groupId, locationId, () => { console.log("planted") });
   }
 
   function plantsToPlantList() {

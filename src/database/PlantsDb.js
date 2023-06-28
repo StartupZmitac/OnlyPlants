@@ -102,11 +102,7 @@ export const addUserInfo = (pet, username, successFunc) => {
 
 export const addPlanted = (date_planted, date_watered, date_notified, interval, custom_name, inside, plant_id, group_id, location_id, successFunc) => {
   db.transaction(tx => {
-    // tx.executeSql('INSERT INTO planted (date_planted, date_watered, date_notified, interval, custom_name, inside, plant_id_fk, group_id_fk, location_id_fk) values (?,?,?,?,?,?,?,?,?);', [date_planted, date_watered, date_notified, interval, custom_name, inside, plant_id, 'NULL', 'NULL'],
-    //   (txObj, success) => {successFunc()},
-    //   (txObj, error) => {console.log(error);}
-    // );
-    tx.executeSql("INSERT INTO planted (date_planted, date_watered, date_notified, interval, custom_name, inside, plant_id_fk, group_id_fk, location_id_fk) values ('x','x','x',0,'LALALA',0,1,NULL,NULL);", [],
+    tx.executeSql("INSERT INTO planted (date_planted, date_watered, date_notified, interval, custom_name, inside, plant_id_fk, group_id_fk, location_id_fk) values (?,?,?,?,?,?,?,NULL,NULL);", [date_planted, date_watered, date_notified, interval, custom_name, inside, plant_id],
     (txObj, success) => {successFunc()},
     (txObj, error) => {console.log(error);}
   );

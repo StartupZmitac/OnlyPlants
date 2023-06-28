@@ -7,12 +7,6 @@ import { Entypo } from '@expo/vector-icons';
 
 const MainPage = () => {
     const toast = useToast();
-    const [checkboxes] = useState([
-        { id: 1, name: 'Flower 1', checked: false },
-        { id: 2, name: 'Flower 2', checked: false },
-        { id: 3, name: 'Flower 3', checked: false },
-        { id: 4, name: 'Flower 4', checked: false },
-    ]);
     const [plantsList, setPlantList] = useState([]); 
 
     function setAndParsePlantList(resultSet){
