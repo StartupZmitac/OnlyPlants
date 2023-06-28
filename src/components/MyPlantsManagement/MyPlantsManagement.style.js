@@ -23,6 +23,13 @@ export default StyleSheet.create({
     width: '100%',
     alignItems: 'center'
   },
+  infoBox: {
+    backgroundColor: '#FFC090',
+    color: 'white',
+    borderRadius: 50,
+    padding: '5%',
+    alignItems: 'center',
+  },
   photoBox: {
     backgroundColor: '#B1D7B4',
     width: Dimensions.get('window').width * 0.5,
@@ -35,4 +42,5 @@ export default StyleSheet.create({
     borderRadius: Math.round((Dimensions.get('window').height + Dimensions.get('window').width) / 2),
     overflow: "hidden",
   },
+
   });
