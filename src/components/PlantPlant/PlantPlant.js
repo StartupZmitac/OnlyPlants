@@ -5,6 +5,7 @@ import { addPlanted, exportDb, selectAllWatering, selectAllPlants, selectAllGrou
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Entypo } from '@expo/vector-icons';
 import styles from './PlantPlant.style.js'
+import { schedulePushNotification } from '../../notifications/Notifications.js';
 
 const PlantPlant = () => {
   const [datePlanted, setDatePlanted] = useState('');
@@ -77,6 +78,7 @@ const PlantPlant = () => {
     }
     console.log(datePlanted, dateWatered, dateNotified, parsed.interval, plantName, inside, plantId, groupId, locationId);
     addPlanted(datePlanted.valueOf(), dateWatered.valueOf(), dateNotified.valueOf(), parsed.interval, plantName, inside, plantId, groupId, locationId, () => { console.log("planted") });
+    schedulePushNotification(plantName, parsed.interval);
   }
 
   function plantsToPlantList() {
