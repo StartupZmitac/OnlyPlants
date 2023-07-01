@@ -280,8 +280,8 @@ export const selectInterval = (plantId, getInterval) => {
 //others
 export const initWatering = () => {
   addWatering('Frequent', 1, ()=>{});
-  addWatering('Average', 6, ()=>{});
-  addWatering('Minimum', 9, ()=>{});
+  addWatering('Average', 2, ()=>{});
+  addWatering('Minimum', 3, ()=>{});
 }
 
 export const dropEverything = () => {

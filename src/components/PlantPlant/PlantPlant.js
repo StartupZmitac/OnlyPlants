@@ -77,7 +77,7 @@ const PlantPlant = () => {
       }
     }
     console.log(datePlanted, dateWatered, dateNotified, parsed.interval, plantName, inside, plantId, groupId, locationId);
-    addPlanted(datePlanted.valueOf(), dateWatered.valueOf(), dateNotified.valueOf(), parsed.interval, plantName, inside, plantId, groupId, locationId, () => { console.log("planted") });
+    addPlanted(datePlanted.toString(), dateWatered.toString(), dateNotified.toString(), parsed.interval, plantName, inside, plantId, groupId, locationId, () => { console.log("planted") });
     schedulePushNotification(plantName, parsed.interval);
   }
 
