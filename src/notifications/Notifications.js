@@ -1,6 +1,8 @@
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 
+var obj = {};
+
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
       shouldShowAlert: true,
@@ -13,7 +15,7 @@ Notifications.setNotificationHandler({
 
     var notiName = name;
     name = null;
-    name = await Notifications.scheduleNotificationAsync({
+    obj[notiName] = await Notifications.scheduleNotificationAsync({
       content: {
         title: 'Hej! '+ notiName + ' cos chce Ci powiedziec!🪴',
         body: 'Podalej mnie bo umrem',
@@ -26,8 +28,8 @@ Notifications.setNotificationHandler({
   }
 
   export async function cancelPushNotification(name){
-    await Notifications.cancelScheduledNotificationAsync(name);
-    await Notifications.cancelAllScheduledNotificationsAsync();
+    await Notifications.cancelScheduledNotificationAsync(obj[name]);
+    //await Notifications.cancelAllScheduledNotificationsAsync();
   }
   
   async function registerForPushNotificationsAsync() {

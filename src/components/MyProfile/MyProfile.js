@@ -23,7 +23,7 @@ const MyProfile = ( { navigation } ) =>{
                         <Column space={5} alignItems="flex-end" position="absolute" bottom="5%">
                         <Button size="lg" onPress={() => {navigation.navigate('MyPlantsManagements')} } style={styles.button}> My plants </Button>
                         <Button size="lg" style={styles.button}> Group plants </Button>
-                        <Button size="lg" onPress={() => {cancelPushNotification("Testowo2");}} style={styles.button}> Pets </Button>
+                        <Button size="lg" onPress={() => {cancelPushNotification("test");}} style={styles.button}> Pets </Button>
                         <Button size="lg" onPress={deleteDb} style={styles.button}> Drop Database </Button>
                         <Button size="lg" onPress={exportDb} style={styles.button}> Export Database </Button>
                         </Column>
