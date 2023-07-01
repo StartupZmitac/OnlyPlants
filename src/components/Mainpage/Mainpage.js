@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Animated, Easing } from 'react-native'
-import { NativeBaseProvider, Text, Icon, useToast, Box, Row, Button, Heading, Column, Checkbox } from "native-base";
+import { NativeBaseProvider, Text, Icon, useToast, Box, Row, Button, Heading, Column, Checkbox, ScrollView, Center, VStack } from "native-base";
 import { selectPlanted, updateDateWatered } from '../../database/PlantsDb.js'
 import styles from './Mainpage.style.js'
 import { AntDesign, Entypo } from '@expo/vector-icons';
@@ -88,8 +88,10 @@ const MainPage = () => {
                     </Button>
                 </Row>
                 <Box style={styles.choiceBox}>
-                    <Box style={styles.checkboxContainer}>
-                        {plantsList.map((checkbox) => (
+                    
+                    <ScrollView w={["200", "200"]} h="80">
+                    <VStack flex="1">
+                    {plantsList.map((checkbox) => (
                             checkbox.checked === false &&
                             checkDate(checkbox) &&
                             (<Box key={checkbox.id} style={{
@@ -105,7 +107,8 @@ const MainPage = () => {
                                 </Button>
                             </Box>
                             )))}
-                    </Box>
+                    </VStack>
+                    </ScrollView>
                 </Box>
             </Box>
         </NativeBaseProvider>
