@@ -3,8 +3,11 @@ import { RefreshControl } from 'react-native';
 import styles from './MyPlantsManagement.style.js'
 import { Box, Button, NativeBaseProvider, Modal, Text, Row, Blur, Heading, View, ScrollView, Center, VStack, Column, Image, useToast } from "native-base"
 import { selectPlanted, deletePlanted } from '../../database/PlantsDb.js'
+import { useNavigation } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-const MyPlantsManagement = () => {
+const MyPlantsManagement = ({navigation}) => {
     const [selectedPlant, setSelectedPlant] = useState('');
     /*
     const [plants] = useState([
@@ -25,7 +28,7 @@ const MyPlantsManagement = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [refreshing, setRefreshing] = React.useState(false);
     const toast = useToast();
-    
+
     const onRefresh = React.useCallback(() => {
       setRefreshing(true);
       selectPlanted(setAndParsePlantList);
@@ -56,18 +59,6 @@ const MyPlantsManagement = () => {
             console.log("row: ", options[i]);
         }
         setPlants(options);
-    }
-
-    function manageGroups()
-    {
-        //todo: implement function
-        console.log("groups managed")
-    }
-
-    function changeName()
-    {
-        //todo: implement function
-        console.log("changed name")
     }
 
     function deletePlant(plant)
@@ -111,11 +102,8 @@ const MyPlantsManagement = () => {
                             </Column>
                         </Box>
                         <Column style={{ paddingTop: '20%' }}>
-                            <Button size="lg" style={{ ...styles.button, marginBottom: '10%' }} onPress={changeName}>
-                                Change name
-                            </Button>
-                            <Button size="lg" style={{ ...styles.button, marginBottom: '10%' }} onPress={manageGroups}>
-                                Manage groups
+                            <Button size="lg" style={{ ...styles.button, marginBottom: '10%' }} onPress={() => navigation.navigate('ModifyPlant', {id: selectedPlant.key})}>
+                                Modify plant data
                             </Button>
                             <Button size="lg" style={styles.button} onPress={() => deletePlant(selectedPlant)}>
                                 Remove plant
