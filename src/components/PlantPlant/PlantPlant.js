@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { Box, Button, NativeBaseProvider, Heading, Input, Column, Row, Select, extendTheme, Text } from "native-base"
+import { Box, Button, NativeBaseProvider, Heading, Input, Column, Row, Select, extendTheme, Text, useToast } from "native-base"
 import { addPlanted, exportDb, selectAllWatering, selectAllPlants, selectAllGroups, selectAllLocation, selectInterval, selectPlanted, dropEverything, addGroups, addLocation, deleteDb } from '../../database/PlantsDb.js'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Entypo } from '@expo/vector-icons';
@@ -55,6 +55,8 @@ const PlantPlant = () => {
     //deleteDb();
   }, []);
 
+  const toast = useToast();
+
   function parseAndAddToDb(_interval) {
     console.log("parsing");
     temp = JSON.stringify(_interval.at(0));
@@ -75,6 +77,9 @@ const PlantPlant = () => {
         }
       }
     }
+    toast.show({
+      description: `Plant planted: ${plantName}`
+    });
     console.log(datePlanted, dateWatered, dateNotified, parsed.interval, plantName, inside, plantId, groupId, locationId);
     addPlanted(datePlanted.toString(), dateWatered.toString(), dateNotified.toString(), parsed.interval, plantName, inside, plantId, groupId, locationId, () => { console.log("planted") });
   }
