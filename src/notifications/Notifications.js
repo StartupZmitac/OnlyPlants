@@ -32,8 +32,14 @@ Notifications.setNotificationHandler({
     //await Notifications.cancelAllScheduledNotificationsAsync();
   }
 
+  export async function cancelAllPushNotifications(){
+    await Notifications.cancelAllScheduledNotificationsAsync();
+  }
+
   export async function updatePushNotification(name, interval){
+    if(obj[name] != null){
     await Notifications.cancelScheduledNotificationAsync(obj[name]);
+    }
     await schedulePushNotification(name, interval);
   }
   
