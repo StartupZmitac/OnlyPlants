@@ -5,7 +5,7 @@ import { Entypo } from '@expo/vector-icons';
 import styles from './CustomPlant.style.js'
 import { addPlant, addPlanted, dropEverything, exportDb, selectAllWatering,} from '../../database/PlantsDb.js'
 
-const CustomPlant = () => {
+const CustomPlant = ( { navigation } ) => {
   const [name, setName] = useState('');
   const [interval, setInterval] = useState('');
   const [sunlight, setSunlight] = useState('');
@@ -147,7 +147,7 @@ const CustomPlant = () => {
               </Column>
             </Box>
             <Row style={{alignItems: 'center', padding: '10%'}}>
-            <Button size="lg" onPress={addToDatabase} style={styles.button}>Add Plant</Button>
+            <Button size="lg" onPress={() => {navigation.navigate('PlantPlant'); addToDatabase()}}  style={styles.button}>Add Plant</Button>
             </Row>
           </Box>
         </Box>
