@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Animated, Easing } from 'react-native'
 import { NativeBaseProvider, Text, Icon, useToast, Box, Row, Button, Heading, Column, Checkbox } from "native-base";
-import { selectPlanted } from '../../database/PlantsDb.js'
+import { selectPlanted, updateDateWatered } from '../../database/PlantsDb.js'
 import styles from './Mainpage.style.js'
 import { AntDesign, Entypo } from '@expo/vector-icons';
 
@@ -50,8 +50,12 @@ const MainPage = () => {
     }
 
     const waterPlant = (checkbox) => {
-        console.log("here");
+        now = new Date()
         checkbox.checked = true;
+
+        console.log(now.toString());
+        updateDateWatered(checkbox.id, now.toString())
+
         toast.show({
             description: `Watered plant called: ${checkbox.name}`
         });

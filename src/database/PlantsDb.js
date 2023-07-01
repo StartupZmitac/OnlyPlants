@@ -276,7 +276,16 @@ export const selectInterval = (plantId, getInterval) => {
   (_t, _success) => { console.log("loaded select interval from plant")}
   );
 }
-
+//update
+export const updateDateWatered = (plantId, dateWatered) => {
+  db.transaction(tx => {
+    tx.executeSql("UPDATE planted SET date_watered=? WHERE id=?", [dateWatered, plantId],
+    );
+  },
+  (t, error) => { console.log("db error update planted"); console.log(error) },
+  (_t, _success) => { console.log("updated date watered")}
+  );
+}
 //others
 export const initWatering = () => {
   addWatering('Frequent', 1, ()=>{});
