@@ -6,6 +6,7 @@ import { selectPlanted, deletePlanted } from '../../database/PlantsDb.js'
 import { useNavigation } from '@react-navigation/native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { cancelPushNotification } from '../../notifications/Notifications.js';
 
 const MyPlantsManagement = ({navigation}) => {
     const [selectedPlant, setSelectedPlant] = useState('');
@@ -57,6 +58,7 @@ const MyPlantsManagement = ({navigation}) => {
         toast.show({
             description: `Deleted ${plant.name}`
         });
+        cancelPushNotification(plant.name);
     }
 
     return (
