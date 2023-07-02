@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './ManageGroups.style.js'
 import { TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { Box, Button, Modal, NativeBaseProvider, Text, Row, Column, Image, ScrollView } from "native-base"
+import { Box, Button, Modal, NativeBaseProvider,Input, Text, Row, Column, Image, ScrollView } from "native-base"
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const ManageGroups = ({ route }) => {
@@ -56,11 +56,19 @@ const ManageGroups = ({ route }) => {
                     <Modal borderRadius={50} isOpen={isModalOpen} onClose={handleCloseModal}>
                         <Modal.Content style={{ height: '60%', backgroundColor: '#F7F6DC', padding: '5%' }}>
                             <Column>
-                                <Box style={styles.infoBox}>
-                                    <Text bold fontSize="md" style={{ color: '#ffffff' }}>Group name: {selectedGroup.name}</Text>
-                                </Box>
-                                <Box  style={{backgroundColor: '#B1D7B4', borderRadius: 50, padding: '7%' }}>
-                                <ScrollView w={['100%', '100%']} h='72%'>
+                                    <Input
+                                        variant="rounded"
+                                        placeholder={selectedGroup.name}
+                                        onChangeText={newName => setCustomName(newName)}
+                                        placeholderTextColor="#F7F6DC"
+                                        color="#F7F6DC"
+                                        defaultValue={selectedGroup.name}
+                                        fontSize={'18'}
+                                        style={styles.inputField}
+                                        marginBottom={'8%'}
+                                    />
+                                <Box style={{ backgroundColor: '#B1D7B4', borderRadius: 50, padding: '7%' }}>
+                                    <ScrollView w={['100%', '100%']} h='73%'>
                                         {testPlants.map((plant) => (
                                             <Button key={plant.id} style={{ backgroundColor: '#7FB77E', borderRadius: 50, marginBottom: '5%' }}>
                                                 <Text bold style={styles.label}>{plant.name}</Text>
@@ -68,16 +76,13 @@ const ManageGroups = ({ route }) => {
                                         ))}
                                     </ScrollView>
                                 </Box>
-
-
-
                             </Column>
                             <Row style={{ position: 'absolute', bottom: '5%', width: '100%', left: '8%' }}>
                                 <Button size="lg" style={{ ...styles.button, marginRight: '10%', width: '45%' }}>
-                                    Button 1
+                                    Save
                                 </Button>
                                 <Button size="lg" style={{ ...styles.button, width: '45%' }}>
-                                    Button 2
+                                    Delete
                                 </Button>
                             </Row>
                         </Modal.Content>
