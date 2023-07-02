@@ -50,6 +50,12 @@ const MainPage = () => {
         return days[index];
     }
 
+    const getDateText = () => {
+        now = new Date()
+        now.setDate(now.getDate()+counter)
+        return now
+    }
+
     const waterPlant = (checkbox) => {
         now = new Date()
         checkbox.checked = true;
@@ -70,20 +76,23 @@ const MainPage = () => {
 
         day = 1000*60*60*24;
         //check difference between dates, if modulo == interval
-        difference = Math.abs(now.getTime() - date.date.getTime())/day
+        difference = (now.getTime() - date.date.getTime())/day
         console.log(difference)
         
         if (date.date.getDate() === now.getDate()&&
         date.date.getMonth() === now.getMonth()&&
         date.date.getFullYear() === now.getFullYear()){
+            date.clickable=true
             return true;
         }
 
-        if(difference%date.interval==0){
+        if(difference%date.interval==0&&difference>=0){
             console.log(date.name)
             date.clickable=false
+            return true;
             //here we can have unclickable forecast
         }
+        console.log(date.clickable)
         return false;
 
     }
@@ -97,7 +106,7 @@ const MainPage = () => {
                         <AntDesign name="leftcircleo" size={24} color="#FFFFFF" />
                     </Button>
                     <Box style={styles.dayHeader}>
-                        <Text bold fontSize="3xl" style={{ color: '#ffffff' }}>{getDayName()}</Text>
+                        <Text bold fontSize="2xl" style={{ color: '#ffffff', bottom: '-9%' }}>{`${getDayName()} ${getDateText().getDate()}.${getDateText().getMonth()+1}`}</Text>
                     </Box>
                     <Button style={{bottom: '25%', marginLeft: '5%', backgroundColor: '#FFC090', borderRadius: 50}} onPress={clickRight}>
                         <AntDesign name="rightcircleo" size={24} color="#FFFFFF" />
@@ -115,10 +124,10 @@ const MainPage = () => {
                                 alignItems: "center",
                                 paddingBottom: '5%',
                             }}>
-                                <Box style={styles.plantButton}>
+                                <Box style={[styles.plantButton, {backgroundColor: checkbox.clickable ? '#FFC090' : '#c8ccc2'}]}>
                                     <Icon color="#FFFFFF" size={6} as={<Entypo name="drop" />} />
                                 </Box>
-                                <Button onPress={() => waterPlant(checkbox)} style={styles.inputField}>
+                                <Button disabled={!checkbox.clickable} onPress={() => waterPlant(checkbox)} style={[styles.inputField, {backgroundColor: checkbox.clickable ? '#FFC090' : '#c8ccc2'}]}>
                                     <Text bold style={styles.label}>{checkbox.name}</Text>
                                 </Button>
                             </Box>
