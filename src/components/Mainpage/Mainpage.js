@@ -33,7 +33,7 @@ const MainPage = () => {
             date_watered = new Date(parsed.date_watered)
             date_watered.setDate(date_watered.getDate()+parsed.interval)
             console.log(date_watered)
-            options.push({id: parsed.id, name: parsed.custom_name, checked: false, day: date_watered.getDate(), month: date_watered.getMonth()+1, year: date_watered.getFullYear(), interval: parsed.interval});
+            options.push({id: parsed.id, name: parsed.custom_name, checked: false, date: date_watered, interval: parsed.interval, clickable:true});
             console.log("row: ", options[i]);
         }
         setPlantList(options);
@@ -53,22 +53,36 @@ const MainPage = () => {
     const waterPlant = (checkbox) => {
         now = new Date()
         checkbox.checked = true;
-
         console.log(now.toString());
         updateDateWatered(checkbox.id, now.toString())
         updatePushNotification(checkbox.name, checkbox.interval);
 
         toast.show({
-            description: `Watered plant called: ${checkbox.name}`
+            description: `Watered plant: ${checkbox.name}`
         });
     }
     const checkDate = (date) => {
         now = new Date()
         now.setDate(now.getDate()+counter)
-        if (date.day === now.getDate()&&
-        date.month === now.getMonth()+1&&
-        date.year === now.getFullYear()){
+        now.setHours(0, 0, 0, 0);
+        
+        date.date.setHours(0, 0, 0, 0);
+
+        day = 1000*60*60*24;
+        //check difference between dates, if modulo == interval
+        difference = Math.abs(now.getTime() - date.date.getTime())/day
+        console.log(difference)
+        
+        if (date.date.getDate() === now.getDate()&&
+        date.date.getMonth() === now.getMonth()&&
+        date.date.getFullYear() === now.getFullYear()){
             return true;
+        }
+
+        if(difference%date.interval==0){
+            console.log(date.name)
+            date.clickable=false
+            //here we can have unclickable forecast
         }
         return false;
 
