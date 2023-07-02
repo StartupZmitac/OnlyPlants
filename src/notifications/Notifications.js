@@ -12,13 +12,13 @@ Notifications.setNotificationHandler({
   });
 
   export async function schedulePushNotification(name, interval) {
-
     var notiName = name;
     name = null;
     obj[notiName] = await Notifications.scheduleNotificationAsync({
       content: {
         title: 'Hej! '+ notiName + ' cos chce Ci powiedziec!🪴',
         body: 'Podalej mnie bo umrem',
+        categoryIdentifier: 'plant',
       },
       trigger: {seconds: interval*10, repeats: true}
       
@@ -74,3 +74,21 @@ Notifications.setNotificationHandler({
   
     return token;
   }
+
+  Notifications.setNotificationCategoryAsync('plant', [
+    {
+      actionId: 'one',
+      buttonTitle: 'Podlano! 💦',
+      isDestructive: false,
+      isAuthenticationRequired: false,
+
+    },
+
+  ])
+    .then(() => {
+      console.log(`Category 'plant' created!`);
+    })
+    .catch(() => {
+      console.log(`Category 'plant' not created!`);
+    });
+  
