@@ -5,6 +5,8 @@ import { selectPlanted, updateDateWatered } from '../../database/PlantsDb.js'
 import styles from './Mainpage.style.js'
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import { updatePushNotification } from "../../notifications/Notifications.js";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { weatherConditions } from "../../weather/WeatherConditions.js";
 
 const MainPage = () => {
     const [counter, setCounter] = useState(0);
@@ -67,6 +69,47 @@ const MainPage = () => {
             description: `Watered plant: ${checkbox.name}`
         });
     }
+
+    const fetchWeather = (counter) => {
+        lat = 50.27
+        lon = 19.03
+        fetch(
+          `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weathercode,temperature_2m_max&timezone=Europe%2FBerlin`
+        )
+          .then(res => res.json())
+          .then(json => {
+            console.log(json)
+            temperature = json.daily.temperature_2m_max[counter],
+            weatherCondition = json.daily.weathercode[counter]
+          }
+          );
+        return{temp:temperature, weather: Number(String(weatherCondition)[0])};
+      }
+
+    const getWeather = () => {
+        if(counter>=0&&counter<7){
+            info = fetchWeather(counter)
+            console.log(info)
+            return(
+            <Row>
+            <Center mr='4' mb='2'>
+            <MaterialCommunityIcons
+                  size={72}
+                  name={weatherConditions[info.weather].icon}
+                  color={'#fff'}
+                />
+            </Center>
+            <Center ml='4' mb='2'>
+            <Text bold fontSize="3xl" style={{ color: '#ffffff'}}>{info.temp}˚</Text>
+            </Center>
+            </Row>)
+        }
+        else{
+            return
+        }
+        
+    }
+
     const checkDate = (date) => {
         now = new Date()
         now.setDate(now.getDate()+counter)
@@ -90,11 +133,18 @@ const MainPage = () => {
             console.log(date.name)
             date.clickable=false
             return true;
-            //here we can have unclickable forecast
         }
         console.log(date.clickable)
         return false;
 
+    }
+    const chooseChoiceBoxStyle = () => {
+        if(counter>=0&&counter<7){
+            return true
+        }
+        else{
+            return false
+        }
     }
     const toast = useToast();
 
@@ -112,8 +162,10 @@ const MainPage = () => {
                         <AntDesign name="rightcircleo" size={24} color="#FFFFFF" />
                     </Button>
                 </Row>
-                <Box style={styles.choiceBox}>
-                    
+                <Box>
+                    {getWeather()}
+                </Box>
+                <Box style={chooseChoiceBoxStyle()?styles.choiceBoxWeather:styles.choiceBox}>
                     <ScrollView w={["200", "200"]} h="80">
                     <VStack flex="1">
                     {plantsList.map((checkbox) => (

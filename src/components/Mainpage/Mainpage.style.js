@@ -38,6 +38,16 @@ export default StyleSheet.create({
         paddingLeft: '5%',
         paddingTop: '5%'
       },
+      choiceBoxWeather: {
+        display: 'flex',
+        backgroundColor: '#F7F6DC',
+        height: '75%',
+        width: '80%',
+        alignItems: 'flex-start',
+        borderRadius: 50,
+        paddingLeft: '5%',
+        paddingTop: '5%'
+      },
       plantButton:{
         display: 'flex',
         width: '15%',
