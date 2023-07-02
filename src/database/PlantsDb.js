@@ -293,12 +293,10 @@ export const selectInterval = (plantId, getInterval) => {
 export const modifyPlanted = (plantId, groupId, customName) => {
   console.log(plantId, groupId, customName);
   db.transaction(tx => {
-    //tx.executeSql('UPDATE planted SET group_id_fk=?, custom_name=? WHERE id=?', [groupId, customName, plantId],
-    tx.executeSql("UPDATE planted SET group_id_fk=1, custom_name='Test Plant' WHERE id=?", [plantId],
+    tx.executeSql('UPDATE planted SET group_id_fk=?, custom_name=? WHERE id=?', [groupId, customName, plantId],);},
     (t, error) => { console.log("db error updating data"); console.log(error) },
-    (_t, _success) => { console.log("loaded select interval from plant")}
+    (_t, _success) => { console.log("update successful")}
     );
-  })
 }
 
 //others
