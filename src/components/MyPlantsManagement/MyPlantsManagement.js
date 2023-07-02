@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { RefreshControl } from 'react-native';
 import styles from './MyPlantsManagement.style.js'
-import { Box, Button, NativeBaseProvider, Modal, Text, Row, Blur, Heading, View, ScrollView, Center, VStack, Column, Image } from "native-base"
-import { selectPlanted } from '../../database/PlantsDb.js'
+import { Box, Button, NativeBaseProvider, Modal, Text, Row, Blur, Heading, View, ScrollView, Center, VStack, Column, Image, useToast } from "native-base"
+import { selectPlanted, deletePlanted } from '../../database/PlantsDb.js'
+import { useNavigation } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-const MyPlantsManagement = () => {
+const MyPlantsManagement = ({navigation}) => {
     const [selectedPlant, setSelectedPlant] = useState('');
     const [plantsList, setPlantList] = useState([]); 
 
@@ -27,6 +31,16 @@ const MyPlantsManagement = () => {
       }, []);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [refreshing, setRefreshing] = React.useState(false);
+    const toast = useToast();
+
+    const onRefresh = React.useCallback(() => {
+      setRefreshing(true);
+      selectPlanted(setAndParsePlantList);
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 2000);
+    }, []);  
 
     const handleOpenModal = (plant) => {
         setSelectedPlant(plant);
@@ -37,11 +51,40 @@ const MyPlantsManagement = () => {
         setIsModalOpen(false);
     };
 
+    function setAndParsePlantList(resultSet){
+        var options = []
+        for (let i = 0; i < resultSet.length; i++) {
+            temp = JSON.stringify(resultSet.at(i));
+            parsed = JSON.parse(temp);
+            console.log(parsed)
+            date_watered = new Date(parsed.date_watered)
+            date_watered.setDate(date_watered.getDate()+parsed.interval)
+            console.log(date_watered)
+            options.push({key: parsed.id, name: parsed.custom_name, checked: false, day: date_watered.getDate(), month: date_watered.getMonth()+1, year: date_watered.getFullYear()});
+            console.log("row: ", options[i]);
+        }
+        setPlants(options);
+    }
+
+    function deletePlant(plant)
+    {
+        deletePlanted(plant.key, () => {console.log("deleted")});
+        toast.show({
+            description: `Deleted ${plant.name}`
+        });
+    }
+
+    useEffect(() => {
+        selectPlanted(setAndParsePlantList);
+    }, []);
+
     return (
         <NativeBaseProvider>
             <Box style={styles.mainBody}>
                 <Box style={styles.choiceBox}>
-                    <ScrollView w="200" h="80">
+                    <ScrollView w="200" h="80" refreshControl={
+                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                    }>
                         <VStack flex="1">
                             {plantsList.map((item) => (
                                 <View key={item.key}>
@@ -64,13 +107,10 @@ const MyPlantsManagement = () => {
                             </Column>
                         </Box>
                         <Column style={{ paddingTop: '20%' }}>
-                            <Button size="lg" style={{ ...styles.button, marginBottom: '10%' }}>
-                                Change name
+                            <Button size="lg" style={{ ...styles.button, marginBottom: '10%' }} onPress={() => navigation.navigate('ModifyPlant', {id: selectedPlant.key})}>
+                                Modify plant data
                             </Button>
-                            <Button size="lg" style={{ ...styles.button, marginBottom: '10%' }}>
-                                Manage groups
-                            </Button>
-                            <Button size="lg" style={styles.button}>
+                            <Button size="lg" style={styles.button} onPress={() => deletePlant(selectedPlant)}>
                                 Remove plant
                             </Button>
                         </Column>
