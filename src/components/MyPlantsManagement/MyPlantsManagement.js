@@ -51,21 +51,6 @@ const MyPlantsManagement = ({navigation}) => {
         setIsModalOpen(false);
     };
 
-    function setAndParsePlantList(resultSet){
-        var options = []
-        for (let i = 0; i < resultSet.length; i++) {
-            temp = JSON.stringify(resultSet.at(i));
-            parsed = JSON.parse(temp);
-            console.log(parsed)
-            date_watered = new Date(parsed.date_watered)
-            date_watered.setDate(date_watered.getDate()+parsed.interval)
-            console.log(date_watered)
-            options.push({key: parsed.id, name: parsed.custom_name, checked: false, day: date_watered.getDate(), month: date_watered.getMonth()+1, year: date_watered.getFullYear()});
-            console.log("row: ", options[i]);
-        }
-        setPlants(options);
-    }
-
     function deletePlant(plant)
     {
         deletePlanted(plant.key, () => {console.log("deleted")});
@@ -73,10 +58,6 @@ const MyPlantsManagement = ({navigation}) => {
             description: `Deleted ${plant.name}`
         });
     }
-
-    useEffect(() => {
-        selectPlanted(setAndParsePlantList);
-    }, []);
 
     return (
         <NativeBaseProvider>
