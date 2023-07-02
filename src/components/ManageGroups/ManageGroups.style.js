@@ -27,6 +27,14 @@ export default StyleSheet.create({
   button: {
     backgroundColor: '#FFC090',
     color: "#F7F6DC",
+    borderRadius: 50,
+    alignItems: 'center',
+    width: '100%',
+  },
+  plantButton:{
+    backgroundColor: '#FFC090',
+    borderRadius: 50,
+    paddingBottom: '5%',
   },
   plantColumn:{
     alignItems: 'center',
@@ -34,5 +42,13 @@ export default StyleSheet.create({
   label: {
     color: '#FFFFFF',
     fontSize: 20, 
+  },
+  infoBox: {
+    backgroundColor: '#FFC090',
+    color: 'white',
+    borderRadius: 50,
+    padding: '5%',
+    alignItems: 'center',
+    marginBottom: '5%'
   },
   });
