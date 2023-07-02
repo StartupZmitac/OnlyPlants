@@ -78,12 +78,13 @@ const PlantPlant = () => {
         }
       }
     }
-    toast.show({
-      description: `Plant planted: ${plantName}`
-    });
+    
     console.log(datePlanted, dateWatered, dateNotified, parsed.interval, plantName, inside, plantId, groupId, locationId);
     addPlanted(datePlanted.toString(), dateWatered.toString(), dateNotified.toString(), parsed.interval, plantName, inside, plantId, groupId, locationId, () => { console.log("planted") });
     schedulePushNotification(plantName, parsed.interval);
+    toast.show({
+      description: `Plant planted: ${plantName}`
+    });
   }
 
   function plantsToPlantList() {
