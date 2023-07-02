@@ -11,8 +11,6 @@ const PlantPlant = () => {
   const [datePlanted, setDatePlanted] = useState('');
   const [dateWatered, setDateWatered] = useState('');
   const [dateNotified, setDateNotified] = useState('');
-  //const [interval, setInterval] = useState('');
-  const interval = useRef(null);
   const [customName, setCustomName] = useState('');
   const [inside, setInside] = useState('');
   const [plantId, setPlantId] = useState('');
@@ -20,18 +18,13 @@ const PlantPlant = () => {
   const [locationId, setLocationId] = useState('');
   const [plantList, setPlantList] = useState([]);
   const [groupList, setGroupList] = useState([]);
+  const [plantedList, setPlantedList] = useState([]);
   const [locationList, setLocationList] = useState([]);
   const [datePlantedString, setDatePlantedString] = useState('');
   const [dateWateredString, setDateWateredString] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [plantedDatePressed, setPlantedDatePressed] = useState(false);
   const [wateredDatePressed, setWateredDatePressed] = useState(false);
-
-  function setInterval (val) {
-    interval.current = val;
-    console.log("val to set: ", val);
-    console.log("interval: ", interval.current);
-  }
 
   async function exportDatabase() {
     try {
@@ -52,6 +45,7 @@ const PlantPlant = () => {
     selectAllPlants(setPlantList);
     selectAllGroups(setGroupList);
     selectAllLocation(setLocationList);
+    selectPlanted(setPlantedList);
     //dropEverything();
     //deleteDb();
   }, []);
@@ -59,6 +53,13 @@ const PlantPlant = () => {
   const toast = useToast();
 
   function parseAndAddToDb(_interval) {
+    const today = Date.now();
+    if (plantId.length === 0) {
+      toast.show({
+        description: `Error: No plant selected!`
+      });
+      return;
+    }
     console.log("parsing");
     temp = JSON.stringify(_interval.at(0));
     console.log("temp: ", temp)
@@ -66,25 +67,74 @@ const PlantPlant = () => {
     console.log("parsed: ", parsed.interval);
     
     plantName = customName;
-    if (plantName.length === 0)
-    {
+    if (plantName.length === 0) {
       console.log("no name");
       for (let i = 0; i < plantList.length; i++) {
         tempPlant = JSON.stringify(plantList.at(i));
         parsedPlant = JSON.parse(tempPlant);
-        if (parsedPlant.id === plantId)
-        {
+        if (parsedPlant.id === plantId) {
           plantName = parsedPlant.name;
         }
       }
+      let counter = 1;
+      for (let i = 0; i < plantedList.length; i++) {
+        tempPlanted = JSON.stringify(plantedList.at(i));
+        parsedPlanted = JSON.parse(tempPlanted);
+        if (parsedPlanted.plant_id_fk === plantId) {
+          counter++;
+        }
+      }
+      plantName = plantName + " " + counter;
     }
-    
+    for (let i = 0; i < plantedList.length; i++) {
+      tempPlanted = JSON.stringify(plantedList.at(i));
+      parsedPlanted = JSON.parse(tempPlanted);
+      if (parsedPlanted.custom_name === plantName) {
+        toast.show({
+          description: `Error: Custom names have to be unique!`
+        });
+        return;
+      }
+    }
+    console.log("test: ", inside == 1)
+    console.log(inside)
+    if (!(inside == 0 || inside == 1)) {
+      toast.show({
+        description: `Error: Not specified if plant is planted inside or outside!`
+      });
+      return;
+    }
+    if (datePlanted > today) {
+      toast.show({
+        description: `Error: Plant planted in the future!`
+      });
+      return;
+    }
+    if (dateWatered > today) {
+      toast.show({
+        description: `Error: Plant watered in the future!`
+      });
+      return;
+    }
+    if (dateWatered.length === 0) {
+      toast.show({
+        description: `Error: Date of last watering not selected!`
+      });
+      return;
+    }
+    if (datePlanted.length === 0) {
+      toast.show({
+        description: `Error: Date of planting not selected!`
+      });
+      return;
+    }
     console.log(datePlanted, dateWatered, dateNotified, parsed.interval, plantName, inside, plantId, groupId, locationId);
     addPlanted(datePlanted.toString(), dateWatered.toString(), dateNotified.toString(), parsed.interval, plantName, inside, plantId, groupId, locationId, () => { console.log("planted") });
     schedulePushNotification(plantName, parsed.interval);
     toast.show({
       description: `Plant planted: ${plantName}`
     });
+    selectPlanted(setPlantedList);  //update local copy of planted table
   }
 
   function plantsToPlantList() {
