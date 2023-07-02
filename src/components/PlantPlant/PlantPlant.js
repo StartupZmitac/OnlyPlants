@@ -25,7 +25,8 @@ const PlantPlant = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [plantedDatePressed, setPlantedDatePressed] = useState(false);
   const [wateredDatePressed, setWateredDatePressed] = useState(false);
-
+  const toast = useToast();
+  
   async function exportDatabase() {
     try {
       await exportDb();
@@ -50,7 +51,7 @@ const PlantPlant = () => {
     //deleteDb();
   }, []);
 
-  const toast = useToast();
+  
 
   function parseAndAddToDb(_interval) {
     const today = Date.now();

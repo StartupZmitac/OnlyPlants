@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {TouchableWithoutFeedback, Keyboard} from 'react-native';
-import {Box, Button, NativeBaseProvider, Heading, Input, Column, Row, Select, extendTheme} from "native-base"
+import {Box, Button, NativeBaseProvider, Heading, Input, Column, Row, Select, extendTheme, useToast, Text } from "native-base"
 import { Entypo } from '@expo/vector-icons'; 
 import styles from './CustomPlant.style.js'
-import { addPlant, addPlanted, dropEverything, exportDb, selectAllWatering,} from '../../database/PlantsDb.js'
+import { addPlant, selectAllPlants, dropEverything, exportDb, selectAllWatering,} from '../../database/PlantsDb.js'
 
 const CustomPlant = ( { navigation } ) => {
   const [name, setName] = useState('');
@@ -13,7 +13,9 @@ const CustomPlant = ( { navigation } ) => {
   const [edible, setEdible] = useState('');
   const [poisonous, setPoisonous] = useState('');
   const [wateringOptions, setWateringOptions] = useState([]);
-  
+  const [plants, setPlants] = useState([]);
+  const toast = useToast();
+
   async function exportDatabase() {
     try {
       await exportDb()
@@ -24,7 +26,8 @@ const CustomPlant = ( { navigation } ) => {
   }
   
   useEffect(() => {
-    selectAllWatering(setWateringOptions)
+    selectAllWatering(setWateringOptions);
+    selectAllPlants(setPlants);
     //dropEverything();
   }, []);
   
@@ -39,8 +42,35 @@ const CustomPlant = ( { navigation } ) => {
     return (options)
   }
 
+  function handleAddPlant() {
+    for (let i = 0; i < plants.length; i++) {
+      temp = JSON.stringify(plants.at(i));
+      parsed = JSON.parse(temp);
+      if (parsed.name === name) {
+        toast.show({
+          description: `Error: Names have to be unique!`
+        });
+        return;
+      }
+    }
+    addToDatabase()
+    navigation.navigate('PlantPlant')
+  }
+
   function addToDatabase()
   {
+    if (name.length === 0){
+      toast.show({
+        description: `Error: No name entered!`
+      });
+      return;
+    }
+    if (interval.length === 0){
+      toast.show({
+        description: `Error: No watering frequency selected!`
+      });
+      return;
+    }
     addPlant(name, sunlight, cycle, edible, poisonous, interval, ()=>{console.log("plant added to plants")});
   }
 
@@ -51,6 +81,7 @@ const CustomPlant = ( { navigation } ) => {
           <Box style={styles.mainBody}>
             <Box style={styles.choiceBox}>
               <Column space={4} alignItems="center">
+              <Text color="#B1D7B4" fontSize={'16'} alignSelf='flex-start' fontWeight='bold'> Required: </Text>
               <Input 
                 variant="rounded"
                 placeholder="Plant name"
@@ -63,7 +94,6 @@ const CustomPlant = ( { navigation } ) => {
               />
               <Select selectedValue={interval}
                 width='100%'
-                accessibilityLabel="Watering frequency"
                 placeholder="Watering frequency"
                 placeholderTextColor="#F7F6DC"
                 backgroundColor="#FFC090"
@@ -76,9 +106,9 @@ const CustomPlant = ( { navigation } ) => {
                 }} mt={1} onValueChange={itemValue => setInterval(itemValue)}>
                   {wateringList()}
               </Select>
+              <Text color="#B1D7B4" fontSize={'16'} alignSelf='flex-start' fontWeight='bold'> Optional: </Text>
               <Select selectedValue={sunlight}
                 width='100%'
-                accessibilityLabel="Insolation"
                 placeholder="Insolation"
                 placeholderTextColor="#F7F6DC"
                 backgroundColor="#FFC090"
@@ -96,7 +126,6 @@ const CustomPlant = ( { navigation } ) => {
               </Select>
               <Select selectedValue={cycle}
                 width='100%'
-                accessibilityLabel="Plant cycle"
                 placeholder="Plant cycle"
                 placeholderTextColor="#F7F6DC"
                 backgroundColor="#FFC090"
@@ -114,7 +143,6 @@ const CustomPlant = ( { navigation } ) => {
               </Select>
               <Select selectedValue={edible}
                 width='100%'
-                accessibilityLabel="Is the plant edible?"
                 placeholder="Is the plant edible?"
                 placeholderTextColor="#F7F6DC"
                 backgroundColor="#FFC090"
@@ -130,7 +158,6 @@ const CustomPlant = ( { navigation } ) => {
               </Select>
               <Select selectedValue={poisonous}
                 width='100%'
-                accessibilityLabel="Is the plant poisonous?"
                 placeholder="Is the plant poisonous?"
                 placeholderTextColor="#F7F6DC"
                 backgroundColor="#FFC090"
@@ -147,7 +174,7 @@ const CustomPlant = ( { navigation } ) => {
               </Column>
             </Box>
             <Row style={{alignItems: 'center', padding: '10%'}}>
-            <Button size="lg" onPress={() => {navigation.navigate('PlantPlant'); addToDatabase()}}  style={styles.button}>Add Plant</Button>
+            <Button size="lg" onPress={handleAddPlant}  style={styles.button}>Add Plant</Button>
             </Row>
           </Box>
         </Box>
