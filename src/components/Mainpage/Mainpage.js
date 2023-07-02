@@ -46,7 +46,6 @@ const MainPage = () => {
     const getDayName = () => {
         const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         const index = (new Date().getDay() + (counter % 7) + 7) % 7;
-        console.log(days[index]);
         return days[index];
     }
 

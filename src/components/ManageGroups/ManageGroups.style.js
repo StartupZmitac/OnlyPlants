@@ -16,8 +16,9 @@ export default StyleSheet.create({
   },
   inputField:{
     backgroundColor: '#FFC090',
-    width: '60%',
+    width: '80%',
     height: '100%',
+    borderRadius: 50,
   },
   titleBox: {
     backgroundColor: '#7FB77E',
@@ -28,6 +29,10 @@ export default StyleSheet.create({
     color: "#F7F6DC",
   },
   plantColumn:{
-    width: '100%',
-  }
+    alignItems: 'center',
+  },
+  label: {
+    color: '#FFFFFF',
+    fontSize: 20, 
+  },
   });
