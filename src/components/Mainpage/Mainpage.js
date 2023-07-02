@@ -1,9 +1,10 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Animated, Easing } from 'react-native'
-import { NativeBaseProvider, Text, Icon, useToast, Box, Row, Button, Heading, Column, Checkbox } from "native-base";
-import { selectPlanted } from '../../database/PlantsDb.js'
+import { NativeBaseProvider, Text, Icon, useToast, Box, Row, Button, Heading, Column, Checkbox, ScrollView, Center, VStack } from "native-base";
+import { selectPlanted, updateDateWatered } from '../../database/PlantsDb.js'
 import styles from './Mainpage.style.js'
 import { AntDesign, Entypo } from '@expo/vector-icons';
+import { updatePushNotification } from "../../notifications/Notifications.js";
 
 const MainPage = () => {
     const [counter, setCounter] = useState(0);
@@ -32,7 +33,7 @@ const MainPage = () => {
             date_watered = new Date(parsed.date_watered)
             date_watered.setDate(date_watered.getDate()+parsed.interval)
             console.log(date_watered)
-            options.push({id: parsed.id, name: parsed.custom_name, checked: false, day: date_watered.getDate(), month: date_watered.getMonth()+1, year: date_watered.getFullYear()});
+            options.push({id: parsed.id, name: parsed.custom_name, checked: false, day: date_watered.getDate(), month: date_watered.getMonth()+1, year: date_watered.getFullYear(), interval: parsed.interval});
             console.log("row: ", options[i]);
         }
         setPlantList(options);
@@ -50,8 +51,13 @@ const MainPage = () => {
     }
 
     const waterPlant = (checkbox) => {
-        console.log("here");
+        now = new Date()
         checkbox.checked = true;
+
+        console.log(now.toString());
+        updateDateWatered(checkbox.id, now.toString())
+        updatePushNotification(checkbox.name, checkbox.interval);
+
         toast.show({
             description: `Watered plant called: ${checkbox.name}`
         });
@@ -84,8 +90,10 @@ const MainPage = () => {
                     </Button>
                 </Row>
                 <Box style={styles.choiceBox}>
-                    <Box style={styles.checkboxContainer}>
-                        {plantsList.map((checkbox) => (
+                    
+                    <ScrollView w={["200", "200"]} h="80">
+                    <VStack flex="1">
+                    {plantsList.map((checkbox) => (
                             checkbox.checked === false &&
                             checkDate(checkbox) &&
                             (<Box key={checkbox.id} style={{
@@ -101,7 +109,8 @@ const MainPage = () => {
                                 </Button>
                             </Box>
                             )))}
-                    </Box>
+                    </VStack>
+                    </ScrollView>
                 </Box>
             </Box>
         </NativeBaseProvider>

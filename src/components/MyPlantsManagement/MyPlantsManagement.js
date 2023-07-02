@@ -9,22 +9,27 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const MyPlantsManagement = ({navigation}) => {
     const [selectedPlant, setSelectedPlant] = useState('');
-    /*
-    const [plants] = useState([
-        { key: 1, name: 'Plant 1', day: 28, month: 6, year: 2023 },
-        { key: 2, name: 'Plant 2', day: 28, month: 6, year: 2023 },
-        { key: 3, name: 'Plant 3', day: 28, month: 6, year: 2023 },
-        { key: 4, name: 'Plant 4', day: 28, month: 6, year: 2023 },
-        { key: 5, name: 'Plant 5', day: 29, month: 6, year: 2023 },
-        { key: 6, name: 'Plant 6', day: 29, month: 6, year: 2023 },
-        { key: 7, name: 'Plant 7', day: 30, month: 6, year: 2023 },
-        { key: 8, name: 'Plant 8', day: 30, month: 6, year: 2023 },
-        { key: 9, name: 'Plant 9', day: 30, month: 6, year: 2023 },
-        { key: 10, name: 'Plant 10', day: 1, month: 7, year: 2023 },
-        { key: 11, name: 'Plant 11', day: 1, month: 7, year: 2023 }
-    ]);
-    */
-    const [plants, setPlants] = useState([]);
+    const [plantsList, setPlantList] = useState([]); 
+
+    function setAndParsePlantList(resultSet){
+        var options = []
+        for (let i = 0; i < resultSet.length; i++) {
+            temp = JSON.stringify(resultSet.at(i));
+            parsed = JSON.parse(temp);
+            console.log(parsed)
+            date_watered = new Date(parsed.date_watered)
+            date_watered.setDate(date_watered.getDate()+parsed.interval)
+            console.log(date_watered)
+            options.push({id: parsed.id, name: parsed.custom_name, checked: false, day: date_watered.getDate(), month: date_watered.getMonth()+1, year: date_watered.getFullYear()});
+            console.log("row: ", options[i]);
+        }
+        setPlantList(options);
+    }
+
+    useEffect(() => {
+        selectPlanted(setAndParsePlantList);
+      }, []);
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [refreshing, setRefreshing] = React.useState(false);
     const toast = useToast();
@@ -81,7 +86,7 @@ const MyPlantsManagement = ({navigation}) => {
                         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                     }>
                         <VStack flex="1">
-                            {plants.map((item) => (
+                            {plantsList.map((item) => (
                                 <View key={item.key}>
                                     <Button mt="3" size="lg" onPress={() => handleOpenModal(item)} style={{ backgroundColor: '#FFC090', color: '#F7F6DC', borderRadius: 50 }}>
                                         {item.name}

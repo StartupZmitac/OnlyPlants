@@ -290,6 +290,7 @@ export const selectInterval = (plantId, getInterval) => {
   );
 }
 
+//update
 export const modifyPlanted = (plantId, groupId, customName) => {
   console.log(plantId, groupId, customName);
   db.transaction(tx => {
@@ -297,6 +298,16 @@ export const modifyPlanted = (plantId, groupId, customName) => {
     (t, error) => { console.log("db error updating data"); console.log(error) },
     (_t, _success) => { console.log("update successful")}
     );
+}
+
+export const updateDateWatered = (plantId, dateWatered) => {
+  db.transaction(tx => {
+    tx.executeSql("UPDATE planted SET date_watered=? WHERE id=?", [dateWatered, plantId],
+    );
+  },
+  (t, error) => { console.log("db error update planted"); console.log(error) },
+  (_t, _success) => { console.log("updated date watered")}
+  );
 }
 
 //others
