@@ -33,10 +33,10 @@ export default StyleSheet.create({
         backgroundColor: '#F7F6DC',
         height: '90%',
         width: '80%',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         borderRadius: 50,
-        paddingLeft: '5%',
-        paddingTop: '5%'
+        paddingTop: '5%',
+        paddingBottom: '5%'
       },
       plantButton:{
         display: 'flex',

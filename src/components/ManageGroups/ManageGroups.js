@@ -94,7 +94,7 @@ const ManageGroups = ({navigation}) => {
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                 <Box style={styles.mainBody}>
                     <Box style={styles.choiceBox}>
-                      <ScrollView w="300" h="80" refreshControl={
+                      <ScrollView w="100%" h="80%" refreshControl={
                           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                       }>
                         <Column style={styles.plantColumn}>
