@@ -20,7 +20,7 @@ Notifications.setNotificationHandler({
         body: 'Podalej mnie bo umrem',
         categoryIdentifier: 'plant',
       },
-      trigger: {seconds: interval*10, repeats: true}
+      trigger: {seconds: interval*60*60*24, repeats: true}
       
     });
     //await Notifications.cancelScheduledNotificationAsync(name);
