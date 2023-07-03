@@ -36,13 +36,7 @@ const PlantPlant = () => {
     }
   }
 
-  function addFakeNulls() {
-    addLocation("No location", "NULL", () => { console.log("null location added") });
-    addGroups("No group", "NULL", 1, () => { console.log("null group added") });
-  }
-
   useEffect(() => {
-    addFakeNulls();
     selectAllPlants(setPlantList);
     selectAllGroups(setGroupList);
     selectAllLocation(setLocationList);
