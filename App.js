@@ -17,7 +17,7 @@ import PlantPlant from './src/components/PlantPlant/PlantPlant';
 import MyPlantsManagement from './src/components/MyPlantsManagement/MyPlantsManagement.js';
 import ModifyPlant from './src/components/ModifyPlant/ModifyPlant.js';
 import ManageGroups from './src/components/ManageGroups/ManageGroups.js';
-
+import AddGroup from './src/components/AddGroup/AddGroup.js';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -29,6 +29,7 @@ export function MyProfileNavigation() {
               <Stack.Screen name="MyPlantsManagement" component={MyPlantsManagement} headerName = "My Plants Management" options={{ headerShown: false }} />
               <Stack.Screen name="ModifyPlant" component={ModifyPlant} headerName = "Modify Plant" options={{ headerShown: false }} />
               <Stack.Screen name="ManageGroups" component={ManageGroups} headerName = "Manage Groups" options={{ headerShown: false }} />
+              <Stack.Screen name="AddGroup" component={AddGroup} headerName = "Add Group" options={{ headerShown: false }} />
           </Stack.Navigator>
         )
 }
