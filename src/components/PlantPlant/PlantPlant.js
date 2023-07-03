@@ -123,8 +123,16 @@ const PlantPlant = () => {
       });
       return;
     }
-    console.log(datePlanted, dateWatered, dateNotified, parsed.interval, plantName, inside, plantId, groupId, locationId);
-    addPlanted(datePlanted.toString(), dateWatered.toString(), dateNotified.toString(), parsed.interval, plantName, inside, plantId, groupId, locationId, () => { console.log("planted") });
+    let tempGroupId = groupId;
+    let tempLocationId = locationId;
+    if (tempGroupId == -1) {
+      tempGroupId = null;
+    }
+    if (tempLocationId == -1) {
+      tempLocationId = null;
+    }
+    console.log(datePlanted, dateWatered, dateNotified, parsed.interval, plantName, inside, plantId, tempGroupId, tempLocationId);
+    addPlanted(datePlanted.toString(), dateWatered.toString(), dateNotified.toString(), parsed.interval, plantName, inside, plantId, tempGroupId, tempLocationId, () => { console.log("planted") });
     schedulePushNotification(plantName, parsed.interval);
     toast.show({
       description: `Plant planted: ${plantName}`
@@ -149,6 +157,7 @@ const PlantPlant = () => {
       parsed = JSON.parse(temp);
       options.push(<Select.Item label={parsed.name} value={parsed.group_id} key={parsed.group_id}></Select.Item>);
     }
+    options.push(<Select.Item label="none" value="-1" key="0"></Select.Item>);
     return (options);
   }
 
@@ -159,6 +168,7 @@ const PlantPlant = () => {
       parsed = JSON.parse(temp);
       options.push(<Select.Item label={parsed.name} value={parsed.location_id} key={parsed.location_id}></Select.Item>);
     }
+    options.push(<Select.Item label="none" value="-1" key="0"></Select.Item>);
     return (options);
   }
 

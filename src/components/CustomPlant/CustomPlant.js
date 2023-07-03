@@ -59,19 +59,35 @@ const CustomPlant = ( { navigation } ) => {
 
   function addToDatabase()
   {
-    if (name.length === 0){
+    let tempSunlight = sunlight;
+    let tempCycle = cycle;
+    let tempPoison = poisonous;
+    let tempEdible = edible;
+    if (name.length === 0) {
       toast.show({
         description: `Error: No name entered!`
       });
       return;
     }
-    if (interval.length === 0){
+    if (interval.length === 0) {
       toast.show({
         description: `Error: No watering frequency selected!`
       });
       return;
     }
-    addPlant(name, sunlight, cycle, edible, poisonous, interval, ()=>{console.log("plant added to plants")});
+    if (tempSunlight == -1) {
+      tempSunlight = null;
+    }
+    if (tempCycle == -1) {
+      tempCycle = null;
+    }
+    if (tempPoison == -1) {
+      tempPoison = null;
+    }
+    if (tempEdible == -1) {
+      tempEdible = null;
+    }
+    addPlant(name, tempSunlight, tempCycle, tempEdible, tempPoison, interval, ()=>{console.log("plant added to plants")});
   }
 
   return (
@@ -123,6 +139,7 @@ const CustomPlant = ( { navigation } ) => {
                   <Select.Item label="Part shade" value="1" />
                   <Select.Item label="Patially in sun" value="2" />
                   <Select.Item label="Fully in sun" value="3" />
+                  <Select.Item label="Unknown insolation (no value)" value="-1" />
               </Select>
               <Select selectedValue={cycle}
                 width='100%'
@@ -140,6 +157,7 @@ const CustomPlant = ( { navigation } ) => {
                   <Select.Item label="Annual" value="1" />
                   <Select.Item label="Biennial" value="2" />
                   <Select.Item label="Biannual" value="3" />
+                  <Select.Item label="Unknown cycle (no value)" value="-1" />
               </Select>
               <Select selectedValue={edible}
                 width='100%'
@@ -155,6 +173,7 @@ const CustomPlant = ( { navigation } ) => {
                 }} mt={1} onValueChange={itemValue => setEdible(itemValue)}>
                   <Select.Item label="Edible" value="1" />
                   <Select.Item label="Inedible" value="0" />
+                  <Select.Item label="Unknown edibility (no value)" value="-1" />
               </Select>
               <Select selectedValue={poisonous}
                 width='100%'
@@ -170,6 +189,7 @@ const CustomPlant = ( { navigation } ) => {
                 }} mt={1} onValueChange={itemValue => setPoisonous(itemValue)}>
                   <Select.Item label="Poisonous" value="1" />
                   <Select.Item label="Not poisonous" value="0" />
+                  <Select.Item label="Unknown if poisonous (no value)" value="-1" />
               </Select>
               </Column>
             </Box>
