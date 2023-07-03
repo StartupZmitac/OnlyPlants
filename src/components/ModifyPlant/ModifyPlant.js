@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Box, Button, NativeBaseProvider, Input, Column, Row, Select, useToast } from "native-base"
-import { selectAllGroups, select1Planted, modifyPlanted } from '../../database/PlantsDb.js'
+import { selectAllGroups, select1Planted, modifyPlanted, selectPlanted } from '../../database/PlantsDb.js'
 import { Entypo } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import styles from './ModifyPlant.style.js'
@@ -12,9 +12,13 @@ const ModifyPlant = ({route}) => {
   const [defaultGroup, setDefaultGroup] = useState('');
   const [plant, setPlant] = useState('');
   const [groupList, setGroupList] = useState([]);
+  const [parsedGroupList, setParsedGroupList] = useState([]);
   const [customName, setCustomName] = useState('');
+  const [oldName, setOldName] = useState('');
   const [plantId, setPlantId] = useState('');
+  const [plants, setPlants] = useState([]);
   const toast = useToast();
+  var tempId;
 
   function groupsToGroupList() {
     var options = []
@@ -23,6 +27,7 @@ const ModifyPlant = ({route}) => {
       parsed = JSON.parse(temp);
       options.push(<Select.Item label={parsed.name} value={parsed.group_id} key={parsed.group_id}></Select.Item>);
     }
+    options.push(<Select.Item label="none" value="-1" key="0"></Select.Item>);
     return (options);
   }
 
@@ -33,24 +38,60 @@ const ModifyPlant = ({route}) => {
     console.log("custom name: ", parsed.custom_name)
     var tempGroupId = parsed.group_id_fk;
     console.log(tempGroupId);
-    if (tempGroupId === null) {
+    tempId = tempGroupId;
+    if (tempGroupId == null) {
       setDefaultGroup("no group assigned");
     }
     else {
-      for (let i = 0; i < groupList.length; i++) {
-        tempGroup = JSON.stringify(groupList.at(i));
-        parsedGroup = JSON.parse(temp);
-        if (parsedGroup.group_id === tempGroupId) {
-          setDefaultGroup(parsedGroup.name);
-        }
-      }
+      console.log("else entered", parsedGroupList.length)
+      selectAllGroups(setAndParseGroupList);
     }
     setPlant(parsed);
     setCustomName(tempName);
+    setOldName(tempName);
+}
+
+function setAndParseGroupList(resultSet) {
+  var options = []
+  for (let i = 0; i < resultSet.length; i++) {
+      temp = JSON.stringify(resultSet.at(i));
+      parsed = JSON.parse(temp);
+      options.push({id: parsed.group_id, name: parsed.name});
+  }
+  for (let i = 0; i < options.length; i++) {
+    console.log("plant group: ", tempId);
+    if (options.at(i).id == tempId) {
+      setDefaultGroup(options.at(i).name);
+    }
+  }
+  setParsedGroupList(options);
 }
 
 function saveChanges() {
-  modifyPlanted(plantId, groupId, customName);
+  if (customName !== oldName)
+  {
+    for (let i = 0; i < plants.length; i++) {
+      temp = JSON.stringify(plants.at(i));
+      parsed = JSON.parse(temp);
+      if (parsed.custom_name == customName) {
+        toast.show({
+          description: `Error: Custom names have to be unique!`
+        });
+        return;
+      }
+    }
+  }
+  if (customName.length == 0) {
+    toast.show({
+      description: `Error: No name entered!`
+    });
+    return;
+  }
+  let tempGroupId = groupId;
+  if (tempGroupId == -1) {
+    tempGroupId = null;
+  }
+  modifyPlanted(plantId, tempGroupId, customName);
   toast.show({
     description: `Changes saved!`
   });
@@ -62,6 +103,7 @@ function saveChanges() {
     parsed = JSON.parse(temp);
     select1Planted(parsed.id, setAndParsePlant);
     setPlantId(parsed.id);
+    selectPlanted(setPlants);
   }, []);
 
   return (
