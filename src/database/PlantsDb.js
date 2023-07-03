@@ -137,9 +137,9 @@ export const deleteLocation = (location_id, successFunc) => {
   })
 }
 
-export const deleteGroups = (group_id, successFunc) => {
+export const deleteGroup = (group_id, successFunc) => {
   db.transaction(tx => {
-    tx.executeSql('DELETE FROM location WHERE group_id=?', [group_id],
+    tx.executeSql('DELETE FROM groups WHERE group_id=?', [group_id],
     (txObj, success) => {successFunc()},
     (txObj, error) => {console.log(error);}
     );
@@ -295,8 +295,16 @@ export const modifyPlanted = (plantId, groupId, customName) => {
   console.log(plantId, groupId, customName);
   db.transaction(tx => {
     tx.executeSql('UPDATE planted SET group_id_fk=?, custom_name=? WHERE id=?', [groupId, customName, plantId],);},
-    (t, error) => { console.log("db error updating data"); console.log(error) },
-    (_t, _success) => { console.log("update successful")}
+    (t, error) => { console.log("db error updating planted data"); console.log(error) },
+    (_t, _success) => { console.log("planted update successful")}
+    );
+}
+
+export const modifyGroup = (groupId, name) => {
+  db.transaction(tx => {
+    tx.executeSql('UPDATE groups SET name=? WHERE group_id=?', [name, groupId],);},
+    (t, error) => { console.log("db error updating group data"); console.log(error) },
+    (_t, _success) => { console.log("group update successful")}
     );
 }
 

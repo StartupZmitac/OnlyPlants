@@ -13,7 +13,7 @@ const MyPlantsManagement = ({navigation}) => {
 
     const [plants, setPlants] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [refreshing, setRefreshing] = React.useState(false);
+    const [refreshing, setRefreshing] = useState(false);
     const toast = useToast();
 
     const onRefresh = React.useCallback(() => {
@@ -65,7 +65,7 @@ const MyPlantsManagement = ({navigation}) => {
         <NativeBaseProvider>
             <Box style={styles.mainBody}>
                 <Box style={styles.choiceBox}>
-                    <ScrollView w="200" h="80" refreshControl={
+                    <ScrollView w="250" h="80" refreshControl={
                         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                     }>
                         <VStack flex="1">
