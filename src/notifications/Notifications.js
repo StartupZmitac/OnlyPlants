@@ -17,7 +17,7 @@ Notifications.setNotificationHandler({
     obj[notiName] = await Notifications.scheduleNotificationAsync({
       content: {
         title: 'Hej! '+ notiName + ' cos chce Ci powiedziec!🪴',
-        body: 'Podalej mnie bo umrem',
+        body: 'Podlej mnie bo umrem',
         categoryIdentifier: 'plant',
       },
       trigger: {seconds: interval*60*60*24, repeats: true}
