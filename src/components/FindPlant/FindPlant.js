@@ -1,15 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { Text, View, ActivityIndicator, TextInput} from 'react-native';
+import { Text, View, ActivityIndicator, TextInput } from 'react-native';
 import styles from './FindPlant.style.js'
-import { NativeBaseProvider, Box, Button, Heading, Input, Row, ScrollView, Center, VStack} from 'native-base';
+import { NativeBaseProvider, Box, Button, Heading, Input, Row, ScrollView, Center, VStack } from 'native-base';
 import { addPlantAPI, selectAllWatering } from '../../database/PlantsDb.js'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // @flow
 
-const FindPlant = ( { navigation } ) => {
+const FindPlant = ({ navigation }) => {
   let [isLoading, setIsLoading] = useState(true);
   let [error, setError] = useState();
   let [response, setResponse] = useState();
@@ -30,7 +30,7 @@ const FindPlant = ( { navigation } ) => {
   const handleCall = () => {
     const apiKey = 'sk-ROVe642993dacc8c4178';
     fetch(`https://perenual.com/api/species-list?q=${query}&key=${apiKey}`)
-      .then(res => res.json())  
+      .then(res => res.json())
       .then(
         (result) => {
           setIsLoading(false);
@@ -48,10 +48,10 @@ const FindPlant = ( { navigation } ) => {
 
   const parseResponse = (response) => {
     records = []
-    for(const key in response.data){
+    for (const key in response.data) {
       record = response.data[key]
       console.log(key, response.data[key])
-      if(record.cycle.indexOf("I'm sorry")==-1){
+      if (record.cycle.indexOf("I'm sorry") == -1) {
         records.push(
           {
             data: response.data[key],
@@ -67,7 +67,7 @@ const FindPlant = ( { navigation } ) => {
 
   const addPlantDB = () => {
     //TODO: first check if this plant is already in db, then proceed
-    addPlantAPI(name, sunlight, cycle, edible, poisonous, 3, ()=>{});
+    addPlantAPI(name, sunlight, cycle, edible, poisonous, 3, () => { });
   }
 
   const plantAdded = (index) => {
@@ -76,7 +76,7 @@ const FindPlant = ( { navigation } ) => {
     setName(response.data[index].scientific_name[0]); //protect from undefined
     setCycle(response.data[index].cycle);
     setSunlight(response.data[index].sunlight.join());
-    setEdible(null); 
+    setEdible(null);
     setPoisonous(null);
 
     //watering - todo 
@@ -94,44 +94,44 @@ const FindPlant = ( { navigation } ) => {
       return <Text>{error}</Text>
     }
 
-    if(typeof(response)!== 'undefined'){
+    if (typeof (response) !== 'undefined') {
       //navigate to plant plant component to actually plant it
       responseJson = JSON.stringify(response)
-      if(responseJson.includes("Surpassed API Rate Limit")){
-        seconds = responseJson.slice(65,70)
+      if (responseJson.includes("Surpassed API Rate Limit")) {
+        seconds = responseJson.slice(65, 70)
         return <Text>{`Too many API calls :( Retry in ${seconds} seconds`}</Text>;
       }
-      if(response.total == 0){
+      if (response.total == 0) {
         return <Text>{'No results'}</Text>;
       }
-      else{
-      records = parseResponse(response)
-      return (
-              <NativeBaseProvider>
-                <Box>
-                <ScrollView w={["200", "200"]} h="80">
-                  <Center mb="4">
-                    <Heading fontSize="xl" style={{color: "#0b3b0c"}}>Results:</Heading>
-                  </Center>
-                  <VStack flex="1">
-                    {records.map((item) => {
-                      return (<View>
-                                <Button mt="3" size="lg" onPress={()=>{plantAdded(item.index)}} style={{backgroundColor: '#FFC090', color: "#F7F6DC"}}>{item.data.scientific_name}</Button>
-                              </View>)
+      else {
+        records = parseResponse(response)
+        return (
+          <NativeBaseProvider>
+            <Box>
+              <Center mb="4">
+                <Heading fontSize="xl" style={{ color: "#0b3b0c" }}>Results:</Heading>
+              </Center>
+              <ScrollView w="100%" h="80%">
+                <VStack flex="1">
+                  {records.map((item) => {
+                    return (<View>
+                      <Button mt="3" size="lg" onPress={() => { plantAdded(item.index) }} style={{ backgroundColor: '#FFC090', color: "#F7F6DC", borderRadius: 50 }}>{item.data.scientific_name}</Button>
+                    </View>)
                   })}
-                  </VStack>
-                </ScrollView>
-                <Center  mb="4">
-                <Row style={{alignItems: 'center', padding: '5%'}}>
+                </VStack>
+              </ScrollView>
+              <Center mb="4">
+                <Row style={{ alignItems: 'center', padding: '5%' }}>
 
-                    <Button size="lg" onPress={() => {navigation.navigate('PlantPlant'); addPlantDB()}}  style={{backgroundColor: '#FFC090', color: "#F7F6DC"}}>Add</Button>
-                  </Row>
-                  </Center>
-                  
-                </Box>
-                
-              </NativeBaseProvider>
-      );
+                  <Button size="lg" onPress={() => { navigation.navigate('PlantPlant'); addPlantDB() }} style={{ backgroundColor: '#FFC090', color: "#F7F6DC", borderRadius: 50 }}>Add</Button>
+                </Row>
+              </Center>
+
+            </Box>
+
+          </NativeBaseProvider>
+        );
       }
     }
   };
@@ -140,25 +140,25 @@ const FindPlant = ( { navigation } ) => {
     <NativeBaseProvider>
       <Box>
         <Box style={styles.mainBody}>
-          <Input 
-              bold
-              variant="rounded"
-              placeholder="Search..."
-              onChangeText={text => setQuery(text)}
-              placeholderTextColor="#F7F6DC"
-              defaultValue={""}
-              fontSize={'20'} 
-              width={'80%'}
-              style={styles.inputField}
+          <Input
+            bold
+            variant="rounded"
+            placeholder="Search..."
+            onChangeText={text => setQuery(text)}
+            placeholderTextColor="#F7F6DC"
+            defaultValue={""}
+            fontSize={'20'}
+            width={'80%'}
+            style={styles.inputField}
           />
-          <Row style={{alignItems: 'center', padding: '5%'}}>
-          <Button size="lg" onPress={handleCall} style={{backgroundColor: '#FFC090', color: "#F7F6DC"}}>Find</Button>
-          <Button size="lg" onPress={() => {navigation.navigate('CustomPlant')}} style={{backgroundColor: '#FFC090', color: "#F7F6DC", marginLeft: 50}}>Custom</Button>
+          <Row style={{ alignItems: 'center', padding: '5%' }}>
+            <Button size="lg" onPress={handleCall} style={{ backgroundColor: '#FFC090', color: "#F7F6DC" }}>Find</Button>
+            <Button size="lg" onPress={() => { navigation.navigate('CustomPlant') }} style={{ backgroundColor: '#FFC090', color: "#F7F6DC", marginLeft: 50 }}>Custom</Button>
           </Row>
           <Box style={styles.choiceBox}>
             {getContent()}
           </Box>
-          
+
         </Box>
       </Box>
     </NativeBaseProvider>
