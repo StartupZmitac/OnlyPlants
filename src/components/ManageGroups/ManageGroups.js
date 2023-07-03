@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { Box, Button, Modal, NativeBaseProvider, Input, Text, Row, Column, ScrollView, } from 'native-base';
+import { Box, Button, Modal, NativeBaseProvider, Input, Text, Row, Column, ScrollView, useToast} from 'native-base';
+import { RefreshControl } from 'react-native';
 import styles from './ManageGroups.style.js';
+import { selectPlanted, selectAllGroups, deleteGroup, modifyGroup, selectAllLocation } from '../../database/PlantsDb.js'
 
 const ManageGroups = ({ route }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
-    const [selectedGroup, setSelectedGroup] = useState('');
+    const [selectedGroupName, setSelectedGroupName] = useState('');
+    const [selectedGroupId, setSelectedGroupId] = useState(0);
     const [selectedPlant, setSelectedPlant] = useState('');
-
+    const [groupList, setGroupList] = useState([]);
+    const [plantList, setPlantList] = useState([]);
+    /*
     const testPlants = [
         { id: 1, name: 'Plant 1' },
         { id: 2, name: 'Plant 2' },
@@ -26,9 +31,49 @@ const ManageGroups = ({ route }) => {
         { id: 2, name: 'Group 2', plants: [] },
         { id: 3, name: 'Group 3', plants: [] },
     ];
+    */
+
+    function setAndParsePlantList(resultSet) {
+        var options = []
+        for (let i = 0; i < resultSet.length; i++) {
+            temp = JSON.stringify(resultSet.at(i));
+            parsed = JSON.parse(temp);
+            console.log(parsed)
+            options.push({key: parsed.id, name: parsed.custom_name, group: parsed.group_id_fk});
+            console.log("row: ", options[i]);
+        }
+        setPlantList(options);
+    }
+
+    function setAndParseGroupList(resultSet) {
+        var options = []
+        for (let i = 0; i < resultSet.length; i++) {
+            temp = JSON.stringify(resultSet.at(i));
+            parsed = JSON.parse(temp);
+            console.log(parsed)
+            options.push({key: parsed.group_id, name: parsed.name});
+            console.log("row: ", options[i]);
+        }
+        setGroupList(options);
+    }
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        selectPlanted(setAndParsePlantList);
+        selectAllGroups(setAndParseGroupList);
+        setTimeout(() => {
+          setRefreshing(false);
+        }, 2000);
+    }, []);  
+
+    useEffect(() => {
+      selectPlanted(setAndParsePlantList);
+      selectAllGroups(setAndParseGroupList);
+    }, []);
 
     const handleOpenModal = (group) => {
-        setSelectedGroup(group);
+        setSelectedGroupId(group.key);
+        setSelectedGroupName(group.name);
         setIsModalOpen(true);
     };
 
@@ -51,7 +96,7 @@ const ManageGroups = ({ route }) => {
                 <Box style={styles.mainBody}>
                     <Box style={styles.choiceBox}>
                         <Column style={styles.plantColumn}>
-                            {testGroups.map((group) => (
+                            {groupList.map((group) => (
                                 <Box
                                     key={group.id}
                                     style={{
@@ -82,45 +127,37 @@ const ManageGroups = ({ route }) => {
                             <Column>
                                 <Input
                                     variant="rounded"
-                                    placeholder={selectedGroup.name}
+                                    placeholder={selectedGroupName}
                                     onChangeText={(newName) => setCustomName(newName)}
                                     placeholderTextColor="#F7F6DC"
                                     color="#F7F6DC"
-                                    defaultValue={selectedGroup.name}
+                                    defaultValue={selectedGroupName}
                                     fontSize={18}
                                     style={styles.inputField}
                                     marginBottom="8%"
                                 />
                                 <Box style={{ backgroundColor: '#B1D7B4', borderRadius: 50, padding: '7%', }}>
                                     <ScrollView w="100%" h="73%">
-                                        {testPlants.map((plant) => (
-                                            <Button key={plant.id} style={{ backgroundColor: '#7FB77E', borderRadius: 50, marginBottom: '5%', }} onPress={() => handleOpenSecondModal(plant)}>
-                                                <Text bold style={styles.label}>
-                                                    {plant.name}
-                                                </Text>
-                                            </Button>
-                                        ))}
+                                        {plantList.filter((plant) => {
+                                            if(plant.group == selectedGroupId) {
+                                                console.log(plant);
+                                                return plant;
+                                            }}).map((plant) => {
+                                                console.log(plant);
+                                                return(
+                                                  <Button key={plant.key} style={{ backgroundColor: '#7FB77E', borderRadius: 50, marginBottom: '5%', }} >
+                                                    <Text bold style={styles.label}>
+                                                      {plant.name}
+                                                    </Text>
+                                                  </Button>
+                                                );
+                                        })}
                                     </ScrollView>
                                 </Box>
                             </Column>
                             <Row style={{ position: 'absolute', bottom: '5%', width: '100%', left: '8%', }}>
                                 <Button size="lg" style={{ ...styles.button, marginRight: '10%', width: '45%' }} >
                                     Save
-                                </Button>
-                                <Button size="lg" style={{ ...styles.button, width: '45%' }}>
-                                    Delete
-                                </Button>
-                            </Row>
-                        </Modal.Content>
-                    </Modal>
-                    <Modal borderRadius={50} isOpen={isSecondModalOpen} onClose={handleCloseSecondModal}>
-                        <Modal.Content style={{ height: '20%', backgroundColor: '#F7F6DC', padding: '5%', }}>
-                            <Box style={styles.infoBox}>
-                                <Text bold style={styles.label}>Plant name: {selectedPlant.name}</Text>
-                            </Box>
-                            <Row style={{ position: 'absolute', bottom: '10%', width: '100%', left: '8%', }}>
-                                <Button size="lg" style={{ ...styles.button, marginRight: '10%', width: '45%' }}>
-                                    Modify
                                 </Button>
                                 <Button size="lg" style={{ ...styles.button, width: '45%' }}>
                                     Delete
