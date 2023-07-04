@@ -1,13 +1,17 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Animated, Easing } from 'react-native'
 import { NativeBaseProvider, Text, Icon, useToast, Box, Row, Button, Heading, Column, Checkbox, ScrollView, Center, VStack } from "native-base";
-import { selectPlanted, updateDateWatered } from '../../database/PlantsDb.js'
+import { selectPlanted, updateDateWatered, selectAllGroups } from '../../database/PlantsDb.js'
 import styles from './Mainpage.style.js'
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import { updatePushNotification } from "../../notifications/Notifications.js";
 
 const MainPage = () => {
     const [counter, setCounter] = useState(0);
+    const [plantsList, setPlantList] = useState([]);
+    const [groupList, setGroupList] = useState([]);
+    const [stateList, setStateList] = useState([]);
+
     const clickRight = () => {
         setCounter((prevCounter) => {
             const newCounter = prevCounter + 1;
@@ -22,25 +26,35 @@ const MainPage = () => {
         });
     };
 
-    const [plantsList, setPlantList] = useState([]);
-
     function setAndParsePlantList(resultSet) {
         var options = []
         for (let i = 0; i < resultSet.length; i++) {
             temp = JSON.stringify(resultSet.at(i));
             parsed = JSON.parse(temp);
-            console.log(parsed)
             date_watered = new Date(parsed.date_watered)
             date_watered.setDate(date_watered.getDate() + parsed.interval)
-            console.log(date_watered)
-            options.push({ id: parsed.id, name: parsed.custom_name, checked: false, date: date_watered, interval: parsed.interval, clickable: true });
-            console.log("row: ", options[i]);
+            options.push({ id: parsed.id, name: parsed.custom_name, checked: false, date: date_watered, interval: parsed.interval, group: parsed.group_id_fk, clickable: true });
         }
         setPlantList(options);
     }
 
+    function setAndParseGroupList(resultSet) {
+        var options = []
+        var states = [];
+        for (let i = 0; i < resultSet.length; i++) {
+            temp = JSON.stringify(resultSet.at(i));
+            parsed = JSON.parse(temp);
+            console.log(parsed)
+            options.push({id: parsed.group_id, name: parsed.name});
+            states.push({groupId: parsed.group_id, checked: false});
+        }
+        setGroupList(options);
+        setStateList(states);
+    }
+
     useEffect(() => {
         selectPlanted(setAndParsePlantList);
+        selectAllGroups(setAndParseGroupList);
     }, []);
 
     const getDayName = () => {
@@ -55,17 +69,143 @@ const MainPage = () => {
         return now
     }
 
-    const waterPlant = (checkbox) => {
+    const waterGroup = (checkbox) => {
         now = new Date()
-        checkbox.checked = true;
+        //console.log("watering group", checkbox)
+        var tempStates = []
+        for (let i = 0; i < stateList.length; i++) {
+            if (stateList.at(i).groupId == checkbox.id) {
+                tempStates.push({groupId: stateList.at(i).groupId, checked: true});
+                console.log("watering grop: ", stateList.at(i).groupId)
+            }
+            else {
+                if (stateList.at(i).checked === false) {
+                    tempStates.push({groupId: stateList.at(i).groupId, checked: false});
+                }
+            }
+        }
+        console.log("current states: ", tempStates)
+        setStateList(tempStates);
         console.log(now.toString());
-        updateDateWatered(checkbox.id, now.toString())
+        var groupedPlants = plantsList.filter((plant) => {
+            if (plant.group == checkbox.id) {
+              console.log("watering plant: ", plant);
+              return plant;
+            }
+          });
+        for (let i = 0; i < groupedPlants.length; i ++) {
+          updateDateWatered(groupedPlants.at(i).id, now.toString())
+        }
         updatePushNotification(checkbox.name, checkbox.interval);
-
         toast.show({
-            description: `Watered plant: ${checkbox.name}`
+            description: `Watered group: ${checkbox.name}`
         });
     }
+
+    const waterPlant = (checkbox) => {
+      now = new Date()
+      checkbox.checked = true;
+      updateDateWatered(checkbox.id, now.toString());
+      console.log(now.toString());
+      updatePushNotification(checkbox.name, checkbox.interval);
+      toast.show({
+        description: `Watered plant: ${checkbox.name}`
+      });
+    }
+
+    const displayPlants = () => {
+        var plantsNotGrouped = plantsList.filter((plant) => {
+          if (plant.group == null) {
+            return plant;
+          }
+        });
+
+        var groupedPlants = plantsList.filter((plant) => {
+          if (plant.group !== null) {
+            return plant;
+          }
+        });
+
+        var groupsToDisplay = checkGroups(groupedPlants);
+
+        console.log("groups to display: ", groupsToDisplay);
+        return ((plantsNotGrouped.filter((checkbox) => {
+            if(checkbox.checked === false && checkDate(checkbox)) {
+                return checkbox;
+              }
+            }).map((checkbox) => {
+              return (<Box key={checkbox.id} style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  paddingBottom: '5%',
+                }}>
+                <Box style={[styles.plantButton, { backgroundColor: checkbox.clickable ? '#FFC090' : '#c8ccc2' }]}>
+                  <Icon color="#FFFFFF" size={6} as={<Entypo name="drop" />} />
+                </Box>
+                <Button disabled={!checkbox.clickable} onPress={() => waterPlant(checkbox)} style={[styles.inputField, { backgroundColor: checkbox.clickable ? '#FFC090' : '#c8ccc2' }]}>
+                    <Text bold style={styles.label}>{checkbox.name}</Text>
+                </Button>
+              </Box>
+            )})).concat(groupsToDisplay.filter((checkbox) => {
+                var state = true;
+                for (let i = 0; i < stateList.length; i++) {
+                    if (stateList.at(i).groupId == checkbox.id) {
+                        state = stateList.at(i).checked;
+                    }
+                }
+                console.log("group watered: ", state);
+                if(state === false && checkDate(checkbox)) {
+                    return checkbox;
+                  }
+                }).map((checkbox) => {
+                  return (<Box key={checkbox.id} style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      paddingBottom: '5%',
+                    }}>
+                    <Box style={[styles.plantButton, { backgroundColor: checkbox.clickable ? '#FFC090' : '#c8ccc2' }]}>
+                      <Icon color="#FFFFFF" size={6} as={<Entypo name="drop" />} />
+                    </Box>
+                    <Button disabled={!checkbox.clickable} onPress={() => waterGroup(checkbox)} style={[styles.inputField, { backgroundColor: checkbox.clickable ? '#FFC090' : '#c8ccc2' }]}>
+                        <Text bold style={styles.label}>{checkbox.name}</Text>
+                    </Button>
+                  </Box>
+                )})));
+    }
+
+    const checkGroups = (groupedPlants) => {
+      var groupsToDisplay = [];
+      var groupIds = [];
+      var groupIntervals = [];
+      var groupWateringDates = [];
+      //console.log("plants: ", groupedPlants);
+      for (let i = 0; i < groupedPlants.length; i++) {
+        if (!groupIds.includes(groupedPlants.at(i).group)) {
+          console.log(groupedPlants.at(i));
+          groupIds.push(groupedPlants.at(i).group);
+          groupIntervals.push(groupedPlants.at(i).interval);
+          var date_watered = new Date(groupedPlants.at(i).date);
+          date_watered.setDate(date_watered.getDate() + groupedPlants.at(i).interval);
+          groupWateringDates.push(date_watered);
+        }
+      }
+      console.log("ids: ", groupIds);
+      console.log("intervals: ", groupIntervals);
+      console.log("dates: ", groupWateringDates);
+      for (let i = 0; i < groupIds.length; i++) {
+        var groupName;
+        for (let j = 0; j < groupList.length; j++) {
+          if (groupList.at(j).id == groupIds.at(i)) {
+            groupName = groupList.at(j).name;
+          }
+        }
+        console.log(groupName);
+        groupsToDisplay.push({id: groupIds.at(i), name: groupName,
+          interval: groupIntervals.at(i), clickable: true, checked: false, date: groupWateringDates.at(i)});
+      }
+      return groupsToDisplay;
+    }
+
     const checkDate = (date) => {
         now = new Date()
         now.setDate(now.getDate() + counter)
@@ -114,22 +254,7 @@ const MainPage = () => {
                 <Box style={styles.choiceBox}>
                     <ScrollView w="80%" h="70%">
                         <VStack flex="1">
-                            {plantsList.map((checkbox) => (
-                                checkbox.checked === false &&
-                                checkDate(checkbox) &&
-                                (<Box key={checkbox.id} style={{
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                    paddingBottom: '5%',
-                                }}>
-                                    <Box style={[styles.plantButton, { backgroundColor: checkbox.clickable ? '#FFC090' : '#c8ccc2' }]}>
-                                        <Icon color="#FFFFFF" size={6} as={<Entypo name="drop" />} />
-                                    </Box>
-                                    <Button disabled={!checkbox.clickable} onPress={() => waterPlant(checkbox)} style={[styles.inputField, { backgroundColor: checkbox.clickable ? '#FFC090' : '#c8ccc2' }]}>
-                                        <Text bold style={styles.label}>{checkbox.name}</Text>
-                                    </Button>
-                                </Box>
-                                )))}
+                            {displayPlants()}
                         </VStack>
                     </ScrollView>
                 </Box>
