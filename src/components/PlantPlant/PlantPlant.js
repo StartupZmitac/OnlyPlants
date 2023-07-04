@@ -322,6 +322,7 @@ const PlantPlant = () => {
                   }} mt={1} onValueChange={itemValue => setLocationId(itemValue)}>
                   {locationsToLocationList()}
                 </Select>
+                <Text color="#B1D7B4" fontSize={'12'} alignSelf='stretch' textAlign='center' fontWeight='bold'> Note: Watering interval for the whole group is assumed to be equal to that of the first plant in the group</Text>
               </Column>
             </Box>
             <Row style={{ alignItems: 'center', padding: '10%' }}>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { Box, Button, NativeBaseProvider, Input, Column, Row, Select, useToast } from "native-base"
+import { Box, Button, NativeBaseProvider, Input, Column, Row, Select, useToast, Text } from "native-base"
 import { selectAllGroups, select1Planted, modifyPlanted, selectPlanted } from '../../database/PlantsDb.js'
 import { Entypo } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -139,6 +139,7 @@ function saveChanges() {
                   }} mt={1} onValueChange={itemValue => setGroupId(itemValue)}>
                   {groupsToGroupList()}
                 </Select>
+                <Text color="#B1D7B4" fontSize={'12'} alignSelf='stretch' textAlign='center' fontWeight='bold'> Note: Watering interval for the whole group is assumed to be equal to that of the first plant in the group</Text>
               </Column>
           </Box>
             <Row style={{ alignItems: 'center', padding: '10%' }}>
