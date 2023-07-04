@@ -131,7 +131,6 @@ const FindPlant = ({ navigation }) => {
                 </VStack>
               </ScrollView>
             </Box>
-
           </NativeBaseProvider>
         );
       }
@@ -162,7 +161,6 @@ const FindPlant = ({ navigation }) => {
           </Box>
 
         </Box>
-      </Box>
       <Modal isOpen={isModalOpen}
         onClose={handleCloseModal}
       >
@@ -178,6 +176,7 @@ const FindPlant = ({ navigation }) => {
           <Button size="lg" onPress={() => { navigation.navigate('PlantPlant'); addPlantDB() }} style={{ backgroundColor: '#FFC090', color: "#F7F6DC", borderRadius: 50, position: 'absolute', width: '50%', bottom: '10%', left: '32%' }}>Add</Button>
         </Modal.Content>
       </Modal>
+      </Box>
     </NativeBaseProvider>
   );
 }
