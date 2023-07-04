@@ -30,5 +30,17 @@ export default StyleSheet.create({
   button: {
     backgroundColor: '#FFC090',
     color: "#F7F6DC"
-  }
+  },
+  label: {
+    color: '#FFFFFF',
+    fontSize: 20, 
+  },
+  infoBox: {
+    backgroundColor: '#FFC090',
+    color: 'white',
+    borderRadius: 50,
+    padding: '10%',
+    alignItems: 'flex-start',
+    marginBottom: '5%',
+  },
   });

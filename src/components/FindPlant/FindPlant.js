@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { Text, View, ActivityIndicator, TextInput } from 'react-native';
 import styles from './FindPlant.style.js'
-import { NativeBaseProvider, Box, Button, Heading, Input, Row, ScrollView, Center, VStack } from 'native-base';
+import { NativeBaseProvider, Modal, Box, Button, Heading, Input, Row, ScrollView, Center, VStack } from 'native-base';
 import { addPlantAPI, selectAllWatering } from '../../database/PlantsDb.js'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -15,6 +15,7 @@ const FindPlant = ({ navigation }) => {
   let [response, setResponse] = useState();
   let [query, setQuery] = useState('');
   let [wateringOptions, setWateringOptions] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   let [name, setName] = useState('');
   let [interval, setInterval] = useState('');
   let [sunlight, setSunlight] = useState('');
@@ -27,6 +28,14 @@ const FindPlant = ({ navigation }) => {
     //selectAllWatering(setWateringOptions)
   }, []);
 
+  const handleOpenModal = (index) => {
+    plantAdded(index);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
   const handleCall = () => {
     const apiKey = 'sk-ROVe642993dacc8c4178';
     fetch(`https://perenual.com/api/species-list?q=${query}&key=${apiKey}`)
@@ -116,18 +125,11 @@ const FindPlant = ({ navigation }) => {
                 <VStack flex="1">
                   {records.map((item) => {
                     return (<View>
-                      <Button mt="3" size="lg" onPress={() => { plantAdded(item.index) }} style={{ backgroundColor: '#FFC090', color: "#F7F6DC", borderRadius: 50 }}>{item.data.scientific_name}</Button>
+                      <Button key={item.index} mt="3" size="lg" onPress={() => { handleOpenModal(item.index); plantAdded(item.index) }} style={{ backgroundColor: '#FFC090', color: "#F7F6DC", borderRadius: 50 }}>{item.data.scientific_name}</Button>
                     </View>)
                   })}
                 </VStack>
               </ScrollView>
-              <Center mb="4">
-                <Row style={{ alignItems: 'center', padding: '5%' }}>
-
-                  <Button size="lg" onPress={() => { navigation.navigate('PlantPlant'); addPlantDB() }} style={{ backgroundColor: '#FFC090', color: "#F7F6DC", borderRadius: 50 }}>Add</Button>
-                </Row>
-              </Center>
-
             </Box>
 
           </NativeBaseProvider>
@@ -161,6 +163,21 @@ const FindPlant = ({ navigation }) => {
 
         </Box>
       </Box>
+      <Modal isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      >
+        <Modal.Content style={{ backgroundColor: '#F7F6DC', padding: '5%', height: '50%', width: '90%' }}>
+          <Box style={styles.infoBox}>
+            <Text bold style={styles.label}>Plant name: {name}</Text>
+            <Text bold style={styles.label}>Watering interval: {interval}</Text>
+            <Text bold style={styles.label}>Sunlight: {sunlight}</Text>
+            <Text bold style={styles.label}>Cycle: {cycle}</Text>
+            <Text bold style={styles.label}>Edible: {edible}</Text>
+            <Text bold style={styles.label}>Poisonous: {poisonous}</Text>
+          </Box>
+          <Button size="lg" onPress={() => { navigation.navigate('PlantPlant'); addPlantDB() }} style={{ backgroundColor: '#FFC090', color: "#F7F6DC", borderRadius: 50, position: 'absolute', width: '50%', bottom: '10%', left: '32%' }}>Add</Button>
+        </Modal.Content>
+      </Modal>
     </NativeBaseProvider>
   );
 }
