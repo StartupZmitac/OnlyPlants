@@ -5,13 +5,22 @@ import { selectPlanted, updateDateWatered, selectAllGroups } from '../../databas
 import styles from './Mainpage.style.js'
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import { updatePushNotification } from "../../notifications/Notifications.js";
+import { RefreshControl } from 'react-native';
 
 const MainPage = () => {
     const [counter, setCounter] = useState(0);
     const [plantsList, setPlantList] = useState([]);
     const [groupList, setGroupList] = useState([]);
     const [stateList, setStateList] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
 
+    const onRefresh = React.useCallback(() => {
+      setRefreshing(true);
+      selectPlanted(setAndParsePlantList);
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 2000);
+    }, []);  
     const clickRight = () => {
         setCounter((prevCounter) => {
             const newCounter = prevCounter + 1;
@@ -167,7 +176,7 @@ const MainPage = () => {
                       <Icon color="#FFFFFF" size={6} as={<Entypo name="drop" />} />
                     </Box>
                     <Button disabled={!checkbox.clickable} onPress={() => waterGroup(checkbox)} style={[styles.inputField, { backgroundColor: checkbox.clickable ? '#FFC090' : '#c8ccc2' }]}>
-                        <Text bold style={styles.label}>{checkbox.name}</Text>
+                        <Text bold style={styles.label}>{`group: ${checkbox.name}`}</Text>
                     </Button>
                   </Box>
                 )})));
@@ -185,7 +194,7 @@ const MainPage = () => {
           groupIds.push(groupedPlants.at(i).group);
           groupIntervals.push(groupedPlants.at(i).interval);
           var date_watered = new Date(groupedPlants.at(i).date);
-          date_watered.setDate(date_watered.getDate() + groupedPlants.at(i).interval);
+          //date_watered.setDate(date_watered.getDate() + groupedPlants.at(i).interval);
           groupWateringDates.push(date_watered);
         }
       }
@@ -239,7 +248,7 @@ const MainPage = () => {
 
     return (
         <NativeBaseProvider>
-            <Box style={styles.mainBody}>
+            <Box style={styles.mainBody} >
                 <Row>
                     <Button style={{ bottom: '25%', marginRight: '5%', backgroundColor: '#FFC090', borderRadius: 50 }} onPress={clickLeft}>
                         <AntDesign name="leftcircleo" size={24} color="#FFFFFF" />
@@ -252,7 +261,9 @@ const MainPage = () => {
                     </Button>
                 </Row>
                 <Box style={styles.choiceBox}>
-                    <ScrollView w="80%" h="70%">
+                    <ScrollView w="80%" h="70%" refreshControl={
+                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                    }>
                         <VStack flex="1">
                             {displayPlants()}
                         </VStack>
