@@ -103,9 +103,10 @@ const MainPage = () => {
             }
           });
         for (let i = 0; i < groupedPlants.length; i ++) {
-          updateDateWatered(groupedPlants.at(i).id, now.toString())
+          updateDateWatered(groupedPlants.at(i).id, now.toString());
+          updatePushNotification(groupedPlants.at(i).name, groupedPlants.at(i).interval);
+
         }
-        updatePushNotification(checkbox.name, checkbox.interval);
         toast.show({
             description: `Watered group: ${checkbox.name}`
         });
